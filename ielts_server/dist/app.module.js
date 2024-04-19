@@ -14,11 +14,23 @@ const user_module_1 = require("./module/user/user.module");
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const config_1 = require("@nestjs/config");
+const configuration_1 = require("./lib/config/configuration");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [firebase_module_1.FirebaseModule, word_module_1.WordModule, shared_module_1.SharedModule, user_module_1.UserModule],
+        imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                load: [configuration_1.default],
+                cache: true,
+            }),
+            firebase_module_1.FirebaseModule,
+            word_module_1.WordModule,
+            shared_module_1.SharedModule,
+            user_module_1.UserModule,
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
