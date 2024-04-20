@@ -1,5 +1,4 @@
-export declare class User {
-    id: number;
+export declare class CreateDto {
     username: string;
     password: string;
 }

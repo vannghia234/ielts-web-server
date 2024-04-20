@@ -7,8 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
-const firebase_module_1 = require("./shared/file-upload/firebase/firebase.module");
-const word_module_1 = require("./shared/file-upload/word/word.module");
 const shared_module_1 = require("./shared/shared.module");
 const user_module_1 = require("./module/user/user.module");
 const common_1 = require("@nestjs/common");
@@ -16,6 +14,8 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const config_1 = require("@nestjs/config");
 const configuration_1 = require("./lib/config/configuration");
+const typeorm_1 = require("@nestjs/typeorm");
+const orm_config_1 = require("./lib/config/orm.config");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -23,11 +23,13 @@ AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                load: [configuration_1.default],
-                cache: true,
+                load: [configuration_1.AppConfig],
             }),
-            firebase_module_1.FirebaseModule,
-            word_module_1.WordModule,
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: orm_config_1.TypeOrmPostgresConfig,
+            }),
             shared_module_1.SharedModule,
             user_module_1.UserModule,
         ],

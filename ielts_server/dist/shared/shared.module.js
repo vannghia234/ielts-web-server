@@ -8,11 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SharedModule = void 0;
 const common_1 = require("@nestjs/common");
+const word_module_1 = require("./file-upload/word/word.module");
 let SharedModule = class SharedModule {
 };
 SharedModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
+        imports: [word_module_1.WordModule],
         controllers: [],
         providers: [],
     })
