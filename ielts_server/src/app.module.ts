@@ -1,10 +1,11 @@
+import { WordService } from './shared/file-upload/word/word.service';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './module/user/user.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppConfig } from './lib/config/configuration';
+import { AppConfig } from './lib/config/app.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmPostgresConfig } from './lib/config/orm.config';
 @Module({
@@ -28,6 +29,7 @@ import { TypeOrmPostgresConfig } from './lib/config/orm.config';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+        WordService, AppService],
 })
 export class AppModule {}

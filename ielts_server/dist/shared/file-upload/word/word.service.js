@@ -6,17 +6,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SharedModule = void 0;
+exports.WordService = void 0;
 const common_1 = require("@nestjs/common");
-const word_service_1 = require("./file-upload/word/word.service");
-let SharedModule = class SharedModule {
+let WordService = class WordService {
 };
-SharedModule = __decorate([
-    (0, common_1.Module)({
-        imports: [],
-        controllers: [],
-        providers: [word_service_1.WordService],
-    })
-], SharedModule);
-exports.SharedModule = SharedModule;
-//# sourceMappingURL=shared.module.js.map
+WordService = __decorate([
+    (0, common_1.Injectable)()
+], WordService);
+exports.WordService = WordService;
+//# sourceMappingURL=word.service.js.map

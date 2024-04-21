@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 
 export const TypeOrmPostgresConfig = async (
   configService: ConfigService,
@@ -16,6 +17,6 @@ export const TypeOrmPostgresConfig = async (
     ),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     autoLoadEntities: true,
-    synchronize: true,
+    synchronize: configService.get<boolean>('app.isDev', false),
   };
 };

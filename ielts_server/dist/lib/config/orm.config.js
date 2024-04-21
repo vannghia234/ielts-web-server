@@ -11,7 +11,7 @@ const TypeOrmPostgresConfig = async (configService) => {
         database: configService.get('app.database.databaseName', 'postgres'),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: configService.get('app.isDev', false),
     };
 };
 exports.TypeOrmPostgresConfig = TypeOrmPostgresConfig;

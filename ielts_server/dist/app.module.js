@@ -7,13 +7,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const word_service_1 = require("./shared/file-upload/word/word.service");
 const shared_module_1 = require("./shared/shared.module");
 const user_module_1 = require("./module/user/user.module");
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const config_1 = require("@nestjs/config");
-const configuration_1 = require("./lib/config/configuration");
+const app_config_1 = require("./lib/config/app.config");
 const typeorm_1 = require("@nestjs/typeorm");
 const orm_config_1 = require("./lib/config/orm.config");
 let AppModule = class AppModule {
@@ -23,7 +24,7 @@ AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                load: [configuration_1.AppConfig],
+                load: [app_config_1.AppConfig],
             }),
             typeorm_1.TypeOrmModule.forRootAsync({
                 imports: [config_1.ConfigModule],
@@ -34,7 +35,9 @@ AppModule = __decorate([
             user_module_1.UserModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [
+            word_service_1.WordService, app_service_1.AppService
+        ],
     })
 ], AppModule);
 exports.AppModule = AppModule;

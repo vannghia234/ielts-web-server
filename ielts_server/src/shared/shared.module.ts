@@ -3,11 +3,11 @@ https://docs.nestjs.com/modules
 */
 
 import { Module } from '@nestjs/common';
-import { WordModule } from './file-upload/word/word.module';
+import { WordService } from './file-upload/word/word.service';
 
 @Module({
-  imports: [WordModule],
+  imports: [],
   controllers: [],
-  providers: [],
+  providers: [WordService],
 })
 export class SharedModule {}
