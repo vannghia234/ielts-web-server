@@ -1,6 +1,14 @@
 # dependencies
 node_modules/
 
+dist/*
+!/dist/v4
+!/dist/v5
+!/dist/v6
+!/dist/v7
+!/dist/v8
+!/dist/v9
+
 # IDE
 /.idea
 /.awcache

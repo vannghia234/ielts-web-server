@@ -7,6 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const exam_module_1 = require("./module/exam/exam.module");
+const question_module_1 = require("./module/question/question.module");
 const word_service_1 = require("./shared/file-upload/word/word.service");
 const shared_module_1 = require("./shared/shared.module");
 const user_module_1 = require("./module/user/user.module");
@@ -33,6 +35,8 @@ AppModule = __decorate([
             }),
             shared_module_1.SharedModule,
             user_module_1.UserModule,
+            exam_module_1.ExamModule,
+            question_module_1.QuestionModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

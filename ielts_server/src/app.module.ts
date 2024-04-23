@@ -1,3 +1,5 @@
+import { ExamModule } from './module/exam/exam.module';
+import { QuestionModule } from './module/question/question.module';
 import { WordService } from './shared/file-upload/word/word.service';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './module/user/user.module';
@@ -10,6 +12,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmPostgresConfig } from './lib/config/orm.config';
 @Module({
   imports: [
+      
     ConfigModule.forRoot({
       isGlobal: true,
       load: [AppConfig],
@@ -27,6 +30,8 @@ import { TypeOrmPostgresConfig } from './lib/config/orm.config';
     }),
     SharedModule,
     UserModule,
+    ExamModule, 
+    QuestionModule, 
   ],
   controllers: [AppController],
   providers: [

@@ -1,26 +1,42 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entity/user/user.entity';
+import { User } from 'src/lib/entity/user/user.entity';
 import { Repository } from 'typeorm';
+
 @Injectable()
-export class UserRepository {
+export class UsersRepository {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
-  findOne(id: number): Promise<User | null> {
-    return this.usersRepository.findOneBy({ id });
-  }
-  async create(user: User): Promise<User | null> {
-    return await this.usersRepository.save(user);
+  async findOne(id: string): Promise<User | null> {
+    const user = await this.usersRepository.findOne({ where: { id: id } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
-  async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+  async create(user: Partial<User>): Promise<User> {
+    const newUser = this.usersRepository.create(user);
+    return this.usersRepository.save(newUser);
+  }
+
+  async update(id: string, updateUser: Partial<User>): Promise<User> {
+    await this.findOne(id); // Ensure user exists
+    await this.usersRepository.update(id, updateUser);
+    return this.findOne(id);
+  }
+
+  async remove(id: string): Promise<void> {
+    const result = await this.usersRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException('User not found');
+    }
   }
 }

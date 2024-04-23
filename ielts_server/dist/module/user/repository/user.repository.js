@@ -12,32 +12,45 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRepository = void 0;
+exports.UsersRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const user_entity_1 = require("../../../entity/user/user.entity");
+const user_entity_1 = require("../../../lib/entity/user/user.entity");
 const typeorm_2 = require("typeorm");
-let UserRepository = class UserRepository {
+let UsersRepository = class UsersRepository {
     constructor(usersRepository) {
         this.usersRepository = usersRepository;
     }
-    findAll() {
+    async findAll() {
         return this.usersRepository.find();
     }
-    findOne(id) {
-        return this.usersRepository.findOneBy({ id });
+    async findOne(id) {
+        const user = await this.usersRepository.findOne({ where: { id: id } });
+        if (!user) {
+            throw new common_1.NotFoundException('User not found');
+        }
+        return user;
     }
     async create(user) {
-        return await this.usersRepository.save(user);
+        const newUser = this.usersRepository.create(user);
+        return this.usersRepository.save(newUser);
+    }
+    async update(id, updateUser) {
+        await this.findOne(id);
+        await this.usersRepository.update(id, updateUser);
+        return this.findOne(id);
     }
     async remove(id) {
-        await this.usersRepository.delete(id);
+        const result = await this.usersRepository.delete(id);
+        if (result.affected === 0) {
+            throw new common_1.NotFoundException('User not found');
+        }
     }
 };
-UserRepository = __decorate([
+UsersRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __metadata("design:paramtypes", [typeorm_2.Repository])
-], UserRepository);
-exports.UserRepository = UserRepository;
+], UsersRepository);
+exports.UsersRepository = UsersRepository;
 //# sourceMappingURL=user.repository.js.map
