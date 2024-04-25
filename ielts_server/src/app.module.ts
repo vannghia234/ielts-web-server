@@ -1,3 +1,5 @@
+import { GenerateJwtService } from './shared/jwt/generate-jwt.service';
+import { AuthModule } from './module/auth/auth.module';
 import { ExamModule } from './module/exam/exam.module';
 import { QuestionModule } from './module/question/question.module';
 import { WordService } from './shared/file-upload/word/word.service';
@@ -12,7 +14,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmPostgresConfig } from './lib/config/orm.config';
 @Module({
   imports: [
-      
+    AuthModule,
+
     ConfigModule.forRoot({
       isGlobal: true,
       load: [AppConfig],
@@ -30,11 +33,10 @@ import { TypeOrmPostgresConfig } from './lib/config/orm.config';
     }),
     SharedModule,
     UserModule,
-    ExamModule, 
-    QuestionModule, 
+    ExamModule,
+    QuestionModule,
   ],
   controllers: [AppController],
-  providers: [
-        WordService, AppService],
+  providers: [GenerateJwtService, WordService, AppService],
 })
 export class AppModule {}

@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { GroupQuestion } from '../question/group-question.entity';
-import { Skill } from 'src/shared/enum/enum_database';
+import { Skill } from 'src/shared/constant/enum/enum_database';
 
 @Entity()
 export class PartOfExam {
@@ -19,7 +19,7 @@ export class PartOfExam {
   @Column()
   src: string;
 
-  @Column({ type: 'enum', enum: Skill, default: Skill.Listening })
+  @Column({ type: 'enum', enum: Skill, default: Skill.LISTENING })
   skill: Skill;
 
   @OneToMany(() => GroupQuestion, (type) => type.partOfExam)

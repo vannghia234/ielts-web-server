@@ -1,14 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { v4 as uuidv4 } from 'uuid';
-export enum ResponseStatus {
-  Success = 'Success',
-  Failure = 'Failure',
-}
 export class ResponseBase {
   public readonly id: string;
   public readonly timestamp: Date;
   public readonly apiVersion: string;
-  public readonly status: string;
+  public readonly statusCode: string;
   public readonly message: string;
   public readonly data: any;
 
@@ -16,17 +12,17 @@ export class ResponseBase {
     this.id = uuidv4();
     this.timestamp = new Date();
     this.apiVersion = '1.0';
-    this.status = status;
+    this.statusCode = status;
     this.message = message;
     this.data = data;
   }
 
-  protected toJSON(): any {
+  toJSON(): any {
     return {
       id: this.id,
       timestamp: this.timestamp.toISOString(),
       apiVersion: this.apiVersion,
-      status: this.status,
+      status: this.statusCode,
       message: this.message,
       data: this.data,
     };

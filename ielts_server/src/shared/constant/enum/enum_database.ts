@@ -1,8 +1,8 @@
 export enum Skill {
-  Reading = 'Reading',
-  Listening = 'Listening',
-  Writing = 'Writing',
-  Speaking = 'Speaking',
+  READING = 'READING',
+  LISTENING = 'LISTENING',
+  WRITING = 'WRITING',
+  SPEAKING = 'SPEAKING',
 }
 
 export enum TestStatus {
@@ -18,12 +18,9 @@ export enum UserRole {
   TEMPUSER = 'TEMPUSER',
 }
 
-
 export enum QuestionType {
-  OneChoice = 'OneChoice',
-  DragOfDrop ="DragOfDrop",
-  SortAnswer = "SortAnswer",
-  MultiChoice = "MultiChoice",
+  ONECHOICE = 'ONECHOICE',
+  DRAGOFDROP = 'DRAGOFDROP',
+  SORTANSWER = 'SORTANSWER',
+  MULTICHOICE = 'MULTICHOICE',
 }
-
-

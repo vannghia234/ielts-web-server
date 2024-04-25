@@ -15,14 +15,15 @@ const repository_1 = require("./repository");
 const user_entity_1 = require("../../lib/entity/user/user.entity");
 const user_answer_entity_1 = require("../../lib/entity/user/user-answer.entity");
 const user_answer_detail_entity_1 = require("../../lib/entity/user/user-answer-detail.entity");
+const bcrypt_service_1 = require("./service/bcrypt.service");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, user_answer_entity_1.UserAnswer, user_answer_detail_entity_1.UserAnswerDetail])],
         controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService, ...repository_1.userRepositories],
-        exports: [user_service_1.UserService, ...repository_1.userRepositories],
+        providers: [user_service_1.UserService, bcrypt_service_1.BCryptService, ...repository_1.userRepositories],
+        exports: [user_service_1.UserService, bcrypt_service_1.BCryptService, ...repository_1.userRepositories],
     })
 ], UserModule);
 exports.UserModule = UserModule;

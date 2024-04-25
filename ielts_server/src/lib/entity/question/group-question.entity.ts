@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { PartOfExam } from '../exam/part-of-exam.entity';
 import { Question } from './question.entity';
-import { QuestionType } from 'src/shared/enum/enum_database';
+import { QuestionType } from 'src/shared/constant/enum/enum_database';
 
 @Entity()
 export class GroupQuestion {
@@ -20,7 +20,7 @@ export class GroupQuestion {
   @ManyToOne(() => PartOfExam, (type) => type.groupQuestion)
   partOfExam: PartOfExam;
 
-  @Column({ type: 'enum', enum: QuestionType, default: QuestionType.OneChoice })
+  @Column({ type: 'enum', enum: QuestionType, default: QuestionType.ONECHOICE })
   type: QuestionType;
 
   @OneToMany(() => Question, (type) => type.groupQuestion)

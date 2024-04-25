@@ -7,6 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const generate_jwt_service_1 = require("./shared/jwt/generate-jwt.service");
+const auth_module_1 = require("./module/auth/auth.module");
 const exam_module_1 = require("./module/exam/exam.module");
 const question_module_1 = require("./module/question/question.module");
 const word_service_1 = require("./shared/file-upload/word/word.service");
@@ -24,6 +26,7 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            auth_module_1.AuthModule,
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 load: [app_config_1.AppConfig],
@@ -39,9 +42,7 @@ AppModule = __decorate([
             question_module_1.QuestionModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [
-            word_service_1.WordService, app_service_1.AppService
-        ],
+        providers: [generate_jwt_service_1.GenerateJwtService, word_service_1.WordService, app_service_1.AppService],
     })
 ], AppModule);
 exports.AppModule = AppModule;

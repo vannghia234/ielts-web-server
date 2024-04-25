@@ -8,8 +8,10 @@ import {
   SwaggerDocumentOptions,
   SwaggerModule,
 } from '@nestjs/swagger';
+import { GenerateJwtService } from './shared/jwt/generate-jwt.service';
 
 async function bootstrap() {
+  GenerateJwtService.generateToken();
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.setGlobalPrefix('/api');

@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserAnswer } from './user-answer.entity';
-import { UserRole } from 'src/shared/enum/enum_database';
+import { UserRole } from 'src/shared/constant/enum/enum_database';
 
 @Entity()
 export class User {

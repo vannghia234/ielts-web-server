@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { GroupQuestion } from './group-question.entity';
-import { Answer } from 'src/shared/interface/answer-of-question.interface';
+import { Answer } from 'src/shared/constant/interface/answer-of-question.interface';
 
 @Entity()
 export class Question {

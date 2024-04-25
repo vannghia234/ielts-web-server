@@ -5,7 +5,9 @@ const app_module_1 = require("./app.module");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const swagger_1 = require("@nestjs/swagger");
+const generate_jwt_service_1 = require("./shared/jwt/generate-jwt.service");
 async function bootstrap() {
+    generate_jwt_service_1.GenerateJwtService.generateToken();
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
     app.setGlobalPrefix('/api');

@@ -25,7 +25,19 @@ let UsersRepository = class UsersRepository {
         return this.usersRepository.find();
     }
     async findOne(id) {
-        const user = await this.usersRepository.findOne({ where: { id: id } });
+        const user = await this.usersRepository.findOne({
+            where: { id: id },
+            select: ['id', 'mail', 'name', 'role'],
+        });
+        if (!user) {
+            throw new common_1.NotFoundException('User not found');
+        }
+        return user;
+    }
+    async findByUsername(username) {
+        const user = await this.usersRepository.findOne({
+            where: { mail: username },
+        });
         if (!user) {
             throw new common_1.NotFoundException('User not found');
         }

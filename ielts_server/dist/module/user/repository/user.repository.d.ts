@@ -5,6 +5,7 @@ export declare class UsersRepository {
     constructor(usersRepository: Repository<User>);
     findAll(): Promise<User[]>;
     findOne(id: string): Promise<User | null>;
+    findByUsername(username: string): Promise<User | null>;
     create(user: Partial<User>): Promise<User>;
     update(id: string, updateUser: Partial<User>): Promise<User>;
     remove(id: string): Promise<void>;

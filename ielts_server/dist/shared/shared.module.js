@@ -9,13 +9,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SharedModule = void 0;
 const common_1 = require("@nestjs/common");
 const word_service_1 = require("./file-upload/word/word.service");
+const generate_jwt_service_1 = require("./jwt/generate-jwt.service");
 let SharedModule = class SharedModule {
 };
 SharedModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [],
-        providers: [word_service_1.WordService],
+        providers: [word_service_1.WordService, generate_jwt_service_1.GenerateJwtService],
+        exports: [],
     })
 ], SharedModule);
 exports.SharedModule = SharedModule;

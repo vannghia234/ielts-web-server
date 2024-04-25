@@ -5,20 +5,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var UserService_1;
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
-let UserService = UserService_1 = class UserService {
-    constructor() {
-        this.logger = new common_1.Logger(UserService_1.name);
+const user_repository_1 = require("../repository/user.repository");
+const user_entity_1 = require("../../../lib/entity/user/user.entity");
+const bcrypt_service_1 = require("./bcrypt.service");
+let UserService = class UserService {
+    constructor(userRepo, bCryptService) {
+        this.userRepo = userRepo;
+        this.bCryptService = bCryptService;
     }
-    in() {
-        this.logger.debug('debug by logger user');
+    async findByUsername(username) {
+        return await this.userRepo.findByUsername(username);
+    }
+    async createUser(userDto) {
+        const user = new user_entity_1.User();
+        user.mail = userDto.mail;
+        user.name = userDto.name;
+        user.password = await this.bCryptService.hashPassWord(userDto.password);
+        user.role = userDto.role;
+        return await this.userRepo.create(user);
     }
 };
-UserService = UserService_1 = __decorate([
-    (0, common_1.Injectable)()
+UserService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [user_repository_1.UsersRepository,
+        bcrypt_service_1.BCryptService])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map
