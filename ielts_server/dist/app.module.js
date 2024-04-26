@@ -21,6 +21,8 @@ const config_1 = require("@nestjs/config");
 const app_config_1 = require("./lib/config/app.config");
 const typeorm_1 = require("@nestjs/typeorm");
 const orm_config_1 = require("./lib/config/orm.config");
+const post_interceptor_1 = require("./interceptor/post.interceptor");
+const core_1 = require("@nestjs/core");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -42,7 +44,15 @@ AppModule = __decorate([
             question_module_1.QuestionModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [generate_jwt_service_1.GenerateJwtService, word_service_1.WordService, app_service_1.AppService],
+        providers: [
+            generate_jwt_service_1.GenerateJwtService,
+            word_service_1.WordService,
+            app_service_1.AppService,
+            {
+                provide: core_1.APP_INTERCEPTOR,
+                useClass: post_interceptor_1.PostInterceptor,
+            },
+        ],
     })
 ], AppModule);
 exports.AppModule = AppModule;

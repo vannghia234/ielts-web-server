@@ -7,7 +7,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/module/auth/guard/auth.guard';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './strategy/jwt.strategy';
 import { JWTService } from './service/jwt.service';
 import { BCryptService } from '../user/service/bcrypt.service';
 

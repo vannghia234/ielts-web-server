@@ -14,6 +14,7 @@ const common_1 = require("@nestjs/common");
 const user_repository_1 = require("../repository/user.repository");
 const user_entity_1 = require("../../../lib/entity/user/user.entity");
 const bcrypt_service_1 = require("./bcrypt.service");
+const response_base_1 = require("../../../shared/constant/response-base/response_base");
 let UserService = class UserService {
     constructor(userRepo, bCryptService) {
         this.userRepo = userRepo;
@@ -23,6 +24,9 @@ let UserService = class UserService {
         return await this.userRepo.findByUsername(username);
     }
     async createUser(userDto) {
+        if (userDto.password.length < 8) {
+            throw new common_1.BadRequestException(new response_base_1.ResponseBase('40002', 'Mật khẩu tối thiểu 8 kí tự').toJSON());
+        }
         const user = new user_entity_1.User();
         user.mail = userDto.mail;
         user.name = userDto.name;

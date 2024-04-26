@@ -12,6 +12,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppConfig } from './lib/config/app.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmPostgresConfig } from './lib/config/orm.config';
+import { PostInterceptor } from './interceptor/post.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 @Module({
   imports: [
     AuthModule,
@@ -37,6 +39,15 @@ import { TypeOrmPostgresConfig } from './lib/config/orm.config';
     QuestionModule,
   ],
   controllers: [AppController],
-  providers: [GenerateJwtService, WordService, AppService],
+  providers: [
+    GenerateJwtService,
+    WordService,
+    AppService,
+
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: PostInterceptor,
+    },
+  ],
 })
 export class AppModule {}

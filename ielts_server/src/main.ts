@@ -27,10 +27,10 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
+  // Define default responses globally
 
   SwaggerModule.setup('api', app, document);
-  const configService: ConfigService = new ConfigService();
-  const b = configService.get<boolean>('app.isDev');
+
   await app.listen(process.env.APP_PORT);
   new Logger().debug('Server is running with port ' + process.env.APP_PORT);
   new Logger().debug('Go to swagger ' + 'http://localhost:3000/api/');

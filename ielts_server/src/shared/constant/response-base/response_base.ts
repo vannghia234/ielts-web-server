@@ -8,11 +8,11 @@ export class ResponseBase {
   public readonly message: string;
   public readonly data: any;
 
-  constructor(status: string, message: string, data?: any) {
+  constructor(statusCode: string, message: string, data?: any) {
     this.id = uuidv4();
     this.timestamp = new Date();
     this.apiVersion = '1.0';
-    this.statusCode = status;
+    this.statusCode = statusCode;
     this.message = message;
     this.data = data;
   }

@@ -1,4 +1,3 @@
-
 import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { SkillExamRepository } from '../repository/skill-exam.repository';
 import { SkillExam } from 'src/lib/entity/exam/skill-exam.entity';
@@ -14,13 +13,6 @@ export class ExamController {
 
   @Get()
   getAllExam() {
-    const user = {
-      userId: 2,
-      username: 'nghia1231',
-      password: 'passw22303',
-    };
-    const { ...result } = user;
-    console.log(result);
     return this.skillExamRepo.findAll();
   }
 

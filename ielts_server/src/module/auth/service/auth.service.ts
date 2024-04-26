@@ -24,12 +24,12 @@ export class AuthService {
     private readonly JWTService: JWTService,
   ) {}
 
-  async login(username: string, password: string) {
+  async login(username: string, pass: string) {
     this.logger.debug('start login');
 
     const user = await this.usersService.findByUsername(username);
     const isEqualPassword = await this.bcryptService.comparePassword(
-      password,
+      pass,
       user.password,
     );
     this.logger.debug('password compare:' + isEqualPassword);
@@ -50,8 +50,10 @@ export class AuthService {
       expiresIn: '7d',
     });
 
+    const { password, ...userInfo } = user;
+
     return new ResponseBase('200', 'Login Successfully', {
-      user,
+      userInfo,
       ...{
         accessToken,
         refreshToken,
@@ -60,6 +62,8 @@ export class AuthService {
   }
 
   async register(createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto);
+    const user = await this.usersService.createUser(createUserDto);
+    const { password, ...value } = user;
+    return value;
   }
 }
