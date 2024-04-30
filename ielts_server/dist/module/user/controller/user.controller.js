@@ -16,6 +16,7 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("../service/user.service");
 const swagger_1 = require("@nestjs/swagger");
+const meta_data_1 = require("../../../shared/constant/meta-data");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -75,6 +76,7 @@ UserController = __decorate([
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Not Found' }),
     (0, swagger_1.ApiResponse)({ status: 500, description: 'Server Error' }),
     (0, common_1.Controller)('user'),
+    (0, meta_data_1.Public)(),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 exports.UserController = UserController;

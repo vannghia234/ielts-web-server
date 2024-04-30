@@ -12,19 +12,21 @@ import { Exam } from 'src/lib/entity/exam/exam.entity';
 import { ExamService } from '../service/exam.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/module/auth/guard/jwt-auth.guard';
+import { Public } from 'src/shared/constant/meta-data';
 
 @ApiTags('exam')
-// @ApiResponse({
-//   status: 200,
-//   description: 'OK',
-//   content: {
-//     ApiResponse: {
-//       example: 'OK '
-//     },
-//   },
-// })
-// @ApiResponse({ status: 404, description: 'Not Found' })
-// @ApiResponse({ status: 500, description: 'Server Error' })
+@ApiResponse({
+  status: 200,
+  description: 'OK',
+  content: {
+    ApiResponse: {
+      example: 'OK ',
+    },
+  },
+})
+@ApiResponse({ status: 404, description: 'Not Found' })
+@ApiResponse({ status: 500, description: 'Server Error' })
+@Public()
 @Controller('exam')
 export class ExamController {
   constructor(private examService: ExamService) {}

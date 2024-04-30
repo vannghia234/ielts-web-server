@@ -10,6 +10,7 @@ import {
 import { User } from 'src/lib/entity/user/user.entity';
 import { UserService } from '../service/user.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/shared/constant/meta-data';
 
 @ApiTags('user')
 @ApiResponse({
@@ -24,6 +25,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
 @Controller('user')
+@Public()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

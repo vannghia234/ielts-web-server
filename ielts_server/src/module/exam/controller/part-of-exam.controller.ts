@@ -2,6 +2,7 @@ import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common'
 import { PartOfExam } from 'src/lib/entity/exam/part-of-exam.entity';
 import { PartOfExamService } from '../service/part-of-exam.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/shared/constant/meta-data';
 
 
 @ApiTags('Part-of-exam')
@@ -17,6 +18,8 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
 @Controller('part-of-exam')
+@Public()
+
 export class PartOfExamController {
   constructor(private partOfExamService: PartOfExamService) {}
 

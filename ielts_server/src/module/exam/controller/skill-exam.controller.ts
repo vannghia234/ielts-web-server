@@ -10,6 +10,7 @@ import {
 import { SkillExam } from 'src/lib/entity/exam/skill-exam.entity';
 import { SkillExamService } from '../service/skill-exam.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/shared/constant/meta-data';
 
 @ApiTags('skill-exam')
 @ApiResponse({
@@ -17,13 +18,14 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
   description: 'OK',
   content: {
     ApiResponse: {
-      example: 'OK '
+      example: 'OK ',
     },
   },
 })
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
 @Controller('skill-exam')
+@Public()
 export class SkillExamController {
   constructor(private skillExamService: SkillExamService) {}
 

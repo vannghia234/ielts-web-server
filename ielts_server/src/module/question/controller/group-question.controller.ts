@@ -10,20 +10,22 @@ import {
 import { GroupQuestion } from 'src/lib/entity/question/group-question.entity';
 import { GroupQuestionService } from '../service/group-question.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/shared/constant/meta-data';
 
 @ApiTags('group-question')
-// @ApiResponse({
-//   status: 200,
-//   description: 'OK',
-//   content: {
-//     ApiResponse: {
-//       example: 'OK ',
-//     },
-//   },
-// })
-// @ApiResponse({ status: 404, description: 'Not Found' })
-// @ApiResponse({ status: 500, description: 'Server Error' })
+@ApiResponse({
+  status: 200,
+  description: 'OK',
+  content: {
+    ApiResponse: {
+      example: 'OK ',
+    },
+  },
+})
+@ApiResponse({ status: 404, description: 'Not Found' })
+@ApiResponse({ status: 500, description: 'Server Error' })
 @Controller('group-question')
+@Public()
 export class GroupQuestionController {
   constructor(private readonly groupQuestionService: GroupQuestionService) {}
 

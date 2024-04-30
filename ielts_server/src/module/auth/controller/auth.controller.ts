@@ -27,9 +27,9 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 })
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
+@Public()
 export class AuthController {
   constructor(private authService: AuthService) {}
-  @Public()
   @Post('login')
   @ApiResponse({
     status: 400,
@@ -44,7 +44,6 @@ export class AuthController {
     return this.authService.login(user.username, user.password);
   }
 
-  @Public()
   @ApiOperation({
     summary: 'Đăng ký',
     description:
