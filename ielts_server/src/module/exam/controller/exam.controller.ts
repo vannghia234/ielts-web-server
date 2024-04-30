@@ -1,34 +1,59 @@
-import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
-import { SkillExamRepository } from '../repository/skill-exam.repository';
-import { SkillExam } from 'src/lib/entity/exam/skill-exam.entity';
-import { Skill } from 'src/shared/constant/enum/enum_database';
-import { ExamRepository } from '../repository/exam.repository';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  Put,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
+import { Exam } from 'src/lib/entity/exam/exam.entity';
+import { ExamService } from '../service/exam.service';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/module/auth/guard/jwt-auth.guard';
 
+@ApiTags('exam')
+// @ApiResponse({
+//   status: 200,
+//   description: 'OK',
+//   content: {
+//     ApiResponse: {
+//       example: 'OK '
+//     },
+//   },
+// })
+// @ApiResponse({ status: 404, description: 'Not Found' })
+// @ApiResponse({ status: 500, description: 'Server Error' })
 @Controller('exam')
 export class ExamController {
-  constructor(
-    private readonly skillExamRepo: SkillExamRepository,
-    private readonly examRepo: ExamRepository,
-  ) {}
+  constructor(private examService: ExamService) {}
 
   @Get()
-  getAllExam() {
-    return this.skillExamRepo.findAll();
+  async findAll(): Promise<Exam[]> {
+    return this.examService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<Exam> {
+    return this.examService.findOne(id);
   }
 
   @Post()
-  async create(@Body() createSkillExamDto: CreateSkillExamDto) {
-    const a = new SkillExam();
-    const { name, examId } = createSkillExamDto;
-    a.name = createSkillExamDto.name;
-    a.exam = await this.examRepo.findOne(createSkillExamDto.examId);
-    new Logger().debug('name ' + name + 'ExamId ' + examId);
-
-    return this.skillExamRepo.create(a);
+  async create(@Body() exam: Partial<Exam>): Promise<Exam> {
+    return this.examService.create(exam);
   }
-}
 
-export interface CreateSkillExamDto {
-  name: Skill;
-  examId: string;
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateExam: Partial<Exam>,
+  ): Promise<Exam> {
+    return this.examService.update(id, updateExam);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string): Promise<void> {
+    return this.examService.remove(id);
+  }
 }

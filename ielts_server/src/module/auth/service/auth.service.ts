@@ -10,7 +10,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { BCryptService } from 'src/module/user/service/bcrypt.service';
 import { UserService } from 'src/module/user/service/user.service';
-import { ResponseBase } from 'src/shared/constant/response-base/response_base';
+import { ResponseBase } from 'src/shared/constant/response_base';
 import { JWTService } from './jwt.service';
 import { CreateUserDto } from 'src/module/user/dto/create-user.dto';
 

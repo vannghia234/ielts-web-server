@@ -3,9 +3,13 @@ import { User } from 'src/lib/entity/user/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { BCryptService } from './bcrypt.service';
 export declare class UserService {
-    private readonly userRepo;
+    private readonly usersRepository;
     private readonly bCryptService;
-    constructor(userRepo: UsersRepository, bCryptService: BCryptService);
+    constructor(usersRepository: UsersRepository, bCryptService: BCryptService);
+    findAll(): Promise<User[]>;
+    findOne(id: string): Promise<User | null>;
+    update(id: string, updateUser: Partial<User>): Promise<User>;
+    remove(id: string): Promise<void>;
     findByUsername(username: string): Promise<User | undefined>;
     createUser(userDto: CreateUserDto): Promise<User | undefined>;
 }

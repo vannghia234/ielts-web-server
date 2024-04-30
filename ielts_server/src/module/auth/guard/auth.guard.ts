@@ -7,7 +7,7 @@ import {
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from 'src/shared/constant/meta-data/meta-data';
+import { IS_PUBLIC_KEY } from 'src/shared/constant/meta-data';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -28,6 +28,7 @@ export class AuthGuard implements CanActivate {
     if (isPublic) {
       return true;
     }
+    console.log('token ' + token);
 
     if (!token) {
       throw new UnauthorizedException();

@@ -1,5 +1,4 @@
-import { QuestionService } from './service/question.service';
-import { QuestionController } from './controller/question.controller';
+// import { QuestionController } from './controller/QuestionController';
 /*
 https://docs.nestjs.com/modules
 */
@@ -7,13 +6,14 @@ https://docs.nestjs.com/modules
 import { Module } from '@nestjs/common';
 import { questionRepositories } from './repository';
 import { GroupQuestion } from 'src/lib/entity/question/group-question.entity';
-import { Question } from 'src/lib/entity/question/question.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { questionServices } from './service';
+import { GroupQuestionController } from './controller/group-question.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([GroupQuestion, Question])],
-  controllers: [QuestionController],
-  providers: [QuestionService, ...questionRepositories],
-  exports: [...questionRepositories, QuestionService],
+  imports: [TypeOrmModule.forFeature([GroupQuestion])],
+  controllers: [GroupQuestionController],
+  providers: [...questionServices, ...questionRepositories],
+  exports: [...questionRepositories, ...questionServices],
 })
 export class QuestionModule {}

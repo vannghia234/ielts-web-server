@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Exam } from './exam.entity';
-import { Skill } from 'src/shared/constant/enum/enum_database';
+import { Skill } from 'src/shared/constant/enum_database';
 
 @Entity()
 export class SkillExam {

@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-const enum_database_1 = require("../../../shared/constant/enum/enum_database");
+const enum_database_1 = require("../../../shared/constant/enum_database");
 class CreateUserDto {
 }
 __decorate([
@@ -40,6 +40,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         enum: enum_database_1.UserRole,
     }),
+    (0, class_validator_1.IsEnum)(enum_database_1.UserRole),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "role", void 0);
 exports.CreateUserDto = CreateUserDto;

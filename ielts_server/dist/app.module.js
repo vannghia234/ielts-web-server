@@ -11,7 +11,6 @@ const generate_jwt_service_1 = require("./shared/jwt/generate-jwt.service");
 const auth_module_1 = require("./module/auth/auth.module");
 const exam_module_1 = require("./module/exam/exam.module");
 const question_module_1 = require("./module/question/question.module");
-const word_service_1 = require("./shared/file-upload/word/word.service");
 const shared_module_1 = require("./shared/shared.module");
 const user_module_1 = require("./module/user/user.module");
 const common_1 = require("@nestjs/common");
@@ -46,7 +45,6 @@ AppModule = __decorate([
         controllers: [app_controller_1.AppController],
         providers: [
             generate_jwt_service_1.GenerateJwtService,
-            word_service_1.WordService,
             app_service_1.AppService,
             {
                 provide: core_1.APP_INTERCEPTOR,

@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { GroupQuestion } from '../question/group-question.entity';
-import { Skill } from 'src/shared/constant/enum/enum_database';
+import { Skill } from 'src/shared/constant/enum_database';
 
 @Entity()
 export class PartOfExam {

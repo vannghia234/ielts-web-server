@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { SkillExam } from './skill-exam.entity';
-import { TestStatus } from 'src/shared/constant/enum/enum_database';
+import { TestStatus } from 'src/shared/constant/enum_database';
 
 @Entity()
 export class Exam {

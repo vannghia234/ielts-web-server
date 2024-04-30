@@ -1,7 +1,3 @@
-import { GroupQuestionRepository } from "./group-question.repository";
-import { QuestionRepository } from "./question.repository";
+import { GroupQuestionRepository } from './group-question.repository';
 
-export const questionRepositories = [
-    QuestionRepository
-    , GroupQuestionRepository
-]
+export const questionRepositories = [GroupQuestionRepository];

@@ -14,14 +14,27 @@ const common_1 = require("@nestjs/common");
 const user_repository_1 = require("../repository/user.repository");
 const user_entity_1 = require("../../../lib/entity/user/user.entity");
 const bcrypt_service_1 = require("./bcrypt.service");
-const response_base_1 = require("../../../shared/constant/response-base/response_base");
+const response_base_1 = require("../../../shared/constant/response_base");
 let UserService = class UserService {
-    constructor(userRepo, bCryptService) {
-        this.userRepo = userRepo;
+    constructor(usersRepository, bCryptService) {
+        this.usersRepository = usersRepository;
         this.bCryptService = bCryptService;
     }
+    async findAll() {
+        return this.usersRepository.findAll();
+    }
+    async findOne(id) {
+        const user = await this.usersRepository.findOne(id);
+        return user;
+    }
+    async update(id, updateUser) {
+        return this.usersRepository.update(id, updateUser);
+    }
+    async remove(id) {
+        return this.usersRepository.remove(id);
+    }
     async findByUsername(username) {
-        return await this.userRepo.findByUsername(username);
+        return await this.usersRepository.findByUsername(username);
     }
     async createUser(userDto) {
         if (userDto.password.length < 8) {
@@ -32,7 +45,7 @@ let UserService = class UserService {
         user.name = userDto.name;
         user.password = await this.bCryptService.hashPassWord(userDto.password);
         user.role = userDto.role;
-        return await this.userRepo.create(user);
+        return await this.usersRepository.create(user);
     }
 };
 UserService = __decorate([

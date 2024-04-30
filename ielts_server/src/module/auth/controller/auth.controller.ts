@@ -1,4 +1,4 @@
-import { Public } from 'src/shared/constant/meta-data/meta-data';
+import { Public } from 'src/shared/constant/meta-data';
 import { AuthService } from '../service/auth.service';
 import {
   Body,
@@ -16,14 +16,30 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
 @ApiTags('Authentication')
-@ApiResponse({ status: 200, description: 'OK' })
+@ApiResponse({
+  status: 200,
+  description: 'OK',
+  content: {
+    ApiResponse: {
+      example: 'OK ',
+    },
+  },
+})
 @ApiResponse({ status: 404, description: 'Not Found' })
-@ApiResponse({ status: 400, description: 'Bad Request' })
+@ApiResponse({ status: 500, description: 'Server Error' })
 export class AuthController {
   constructor(private authService: AuthService) {}
   @Public()
   @Post('login')
-  @ApiResponse({ status: 40001, description: 'Sai tài khoản hoặc mật khẩu' })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    content: {
+      ApiResponse: {
+        example: 'statusCode 40001: Tài khoản hoặc mật khẩu sai',
+      },
+    },
+  })
   async login(@Body() user: LoginDto) {
     return this.authService.login(user.username, user.password);
   }
@@ -34,7 +50,15 @@ export class AuthController {
     description:
       'Role sử dụng các giá trị enum mặc định như "ADMIN, USER, LECTURE, TEMPUSER" ',
   })
-  @ApiResponse({ status: 40002, description: 'Mật khẩu tối thiểu 8 kí tự' })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    content: {
+      ApiResponse: {
+        example: 'statusCode 40002: Mật khẩu tối thiểu 8 kí tự',
+      },
+    },
+  })
   @Post('register')
   async register(@Body() user: CreateUserDto) {
     return this.authService.register(user);

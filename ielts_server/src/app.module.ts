@@ -1,8 +1,8 @@
+import { UserAnswerController } from './module/user/controller/user-answer.controller';
 import { GenerateJwtService } from './shared/jwt/generate-jwt.service';
 import { AuthModule } from './module/auth/auth.module';
 import { ExamModule } from './module/exam/exam.module';
 import { QuestionModule } from './module/question/question.module';
-import { WordService } from './shared/file-upload/word/word.service';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './module/user/user.module';
 import { Module } from '@nestjs/common';
@@ -41,7 +41,6 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
   controllers: [AppController],
   providers: [
     GenerateJwtService,
-    WordService,
     AppService,
 
     {

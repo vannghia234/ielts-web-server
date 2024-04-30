@@ -9,21 +9,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserModule = void 0;
 const typeorm_1 = require("@nestjs/typeorm");
 const user_controller_1 = require("./controller/user.controller");
-const user_service_1 = require("./service/user.service");
 const common_1 = require("@nestjs/common");
 const repository_1 = require("./repository");
 const user_entity_1 = require("../../lib/entity/user/user.entity");
 const user_answer_entity_1 = require("../../lib/entity/user/user-answer.entity");
 const user_answer_detail_entity_1 = require("../../lib/entity/user/user-answer-detail.entity");
 const bcrypt_service_1 = require("./service/bcrypt.service");
+const user_answer_controller_1 = require("./controller/user-answer.controller");
+const service_1 = require("./service");
+const user_answer_detail_controller_1 = require("./controller/user-answer-detail.controller");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, user_answer_entity_1.UserAnswer, user_answer_detail_entity_1.UserAnswerDetail])],
-        controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService, bcrypt_service_1.BCryptService, ...repository_1.userRepositories],
-        exports: [user_service_1.UserService, bcrypt_service_1.BCryptService, ...repository_1.userRepositories],
+        controllers: [
+            user_controller_1.UserController,
+            user_answer_controller_1.UserAnswerController,
+            user_answer_detail_controller_1.UserAnswerDetailController,
+        ],
+        providers: [...service_1.userServices, bcrypt_service_1.BCryptService, ...repository_1.userRepositories],
+        exports: [...service_1.userServices, bcrypt_service_1.BCryptService, ...repository_1.userRepositories],
     })
 ], UserModule);
 exports.UserModule = UserModule;

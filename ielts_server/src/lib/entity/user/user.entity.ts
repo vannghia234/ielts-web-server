@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserAnswer } from './user-answer.entity';
-import { UserRole } from 'src/shared/constant/enum/enum_database';
+import { UserRole } from 'src/shared/constant/enum_database';
 
 @Entity()
 export class User {
@@ -25,7 +25,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.TEMPUSER,
+    default: UserRole.TEMP_USER,
   })
   role: UserRole;
 

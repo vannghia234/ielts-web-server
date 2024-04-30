@@ -1,4 +1,4 @@
-import { Skill } from 'src/shared/constant/enum/enum_database';
+import { Skill } from 'src/shared/constant/enum_database';
 import { ExamSkillDetailRepository } from './exam-skill-detail.repository';
 import { ExamRepository } from './exam.repository';
 import { PartOfExamRepository } from './part-of-exam.repository';

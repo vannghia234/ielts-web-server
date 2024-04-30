@@ -27,7 +27,6 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  // Define default responses globally
 
   SwaggerModule.setup('api', app, document);
 
