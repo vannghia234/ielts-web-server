@@ -11,8 +11,10 @@ import { User } from 'src/lib/entity/user/user.entity';
 import { UserService } from '../service/user.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @ApiTags('user')
+@Controller('user')
 @ApiResponse({
   status: 200,
   description: 'OK',
@@ -24,7 +26,6 @@ import { Public } from 'src/shared/constant/meta-data';
 })
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
-@Controller('user')
 @Public()
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -42,7 +43,7 @@ export class UserController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateUser: Partial<User>,
+    @Body() updateUser: UpdateUserDto,
   ): Promise<User> {
     return this.userService.update(id, updateUser);
   }

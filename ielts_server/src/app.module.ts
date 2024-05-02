@@ -42,7 +42,6 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
   providers: [
     GenerateJwtService,
     AppService,
-
     {
       provide: APP_INTERCEPTOR,
       useClass: PostInterceptor,

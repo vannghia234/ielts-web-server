@@ -13,6 +13,7 @@ import { SkillExamController } from './controller/skill-exam.controller';
 import { PartOfExamController } from './controller/part-of-exam.controller';
 import { examServices } from './service';
 import { ApiResponse } from '@nestjs/swagger';
+import { SkillExamService } from './service/skill-exam.service';
 
 @Module({
   imports: [
@@ -24,7 +25,12 @@ import { ApiResponse } from '@nestjs/swagger';
     SkillExamController,
     PartOfExamController,
   ],
-  providers: [...examServices, ...examRepositories],
+  providers: [
+    ...examServices,
+    ...examRepositories,
+    ExamService,
+    SkillExamService,
+  ],
   exports: [...examServices, ...examRepositories],
 })
 export class ExamModule {}

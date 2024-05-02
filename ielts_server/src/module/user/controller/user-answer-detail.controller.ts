@@ -11,6 +11,8 @@ import { UserAnswerDetail } from 'src/lib/entity/user/user-answer-detail.entity'
 import { UserAnswerDetailService } from '../service/user-answer-detail.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
+import { CreateUserAnswerDetailDto } from '../dto/create-user-detail.dto';
+import { UpdateUserAnswerDetailDto } from '../dto/update-user-answer-detail.dto';
 
 @ApiTags('user-answer-detail')
 @ApiResponse({
@@ -43,7 +45,7 @@ export class UserAnswerDetailController {
 
   @Post()
   async create(
-    @Body() userAnswerDetail: Partial<UserAnswerDetail>,
+    @Body() userAnswerDetail: CreateUserAnswerDetailDto,
   ): Promise<UserAnswerDetail> {
     return this.userAnswerDetailService.create(userAnswerDetail);
   }
@@ -51,7 +53,7 @@ export class UserAnswerDetailController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateUserAnswerDetail: Partial<UserAnswerDetail>,
+    @Body() updateUserAnswerDetail: UpdateUserAnswerDetailDto,
   ): Promise<UserAnswerDetail> {
     return this.userAnswerDetailService.update(id, updateUserAnswerDetail);
   }

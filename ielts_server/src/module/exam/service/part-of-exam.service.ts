@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PartOfExam } from 'src/lib/entity/exam/part-of-exam.entity';
 import { PartOfExamRepository } from '../repository/part-of-exam.repository';
+import { CreatePartOfExamDto, UpdatePartOfExamDto } from '../dto/create-part.dto';
 
 @Injectable()
 export class PartOfExamService {
@@ -14,15 +15,23 @@ export class PartOfExamService {
     return this.partOfExamRepository.findOne(id);
   }
 
-  async create(partOfExam: Partial<PartOfExam>): Promise<PartOfExam> {
-    return this.partOfExamRepository.create(partOfExam);
+  async create(partOfExam: CreatePartOfExamDto): Promise<PartOfExam> {
+    const createInfo = new PartOfExam();
+    createInfo.description = partOfExam.description;
+    createInfo.skill = partOfExam.skill;
+    createInfo.src = partOfExam.src;
+    return this.partOfExamRepository.create(createInfo);
   }
 
   async update(
     id: string,
-    updatePartOfExam: Partial<PartOfExam>,
+    updatePartOfExam: UpdatePartOfExamDto,
   ): Promise<PartOfExam> {
-    return this.partOfExamRepository.update(id, updatePartOfExam);
+    const update = new PartOfExam();
+    update.description = updatePartOfExam.description;
+    update.skill = updatePartOfExam.skill;
+    update.src = updatePartOfExam.src;
+    return this.partOfExamRepository.update(id, update);
   }
 
   async remove(id: string): Promise<void> {

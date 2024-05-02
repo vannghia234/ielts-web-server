@@ -28,7 +28,12 @@ let UserService = class UserService {
         return user;
     }
     async update(id, updateUser) {
-        return this.usersRepository.update(id, updateUser);
+        const user = new user_entity_1.User();
+        user.mail = updateUser.mail;
+        user.name = updateUser.name;
+        user.password = await this.bCryptService.hashPassWord(updateUser.password);
+        user.role = updateUser.role;
+        return this.usersRepository.update(id, user);
     }
     async remove(id) {
         return this.usersRepository.remove(id);

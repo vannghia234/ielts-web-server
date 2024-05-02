@@ -13,6 +13,8 @@ import { ExamService } from '../service/exam.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/module/auth/guard/jwt-auth.guard';
 import { Public } from 'src/shared/constant/meta-data';
+import { CreateExamDto } from '../dto/create-exam.dto';
+import { UpdateExamDto } from '../dto/update-exam.dto';
 
 @ApiTags('exam')
 @ApiResponse({
@@ -42,14 +44,14 @@ export class ExamController {
   }
 
   @Post()
-  async create(@Body() exam: Partial<Exam>): Promise<Exam> {
+  async create(@Body() exam: CreateExamDto): Promise<Exam> {
     return this.examService.create(exam);
   }
 
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateExam: Partial<Exam>,
+    @Body() updateExam: UpdateExamDto,
   ): Promise<Exam> {
     return this.examService.update(id, updateExam);
   }

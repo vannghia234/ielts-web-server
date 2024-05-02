@@ -11,6 +11,9 @@ import { UserAnswer } from 'src/lib/entity/user/user-answer.entity';
 import { UserAnswerService } from '../service/user-answer.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
+import { CreateUserAnswerDto } from '../dto/create-user-answer.dto';
+import { UpdateUserAnswerDto } from '../dto/update-user-ansert.dto';
+
 
 @ApiTags('user-answer')
 @ApiResponse({
@@ -40,14 +43,14 @@ export class UserAnswerController {
   }
 
   @Post()
-  async create(@Body() userAnswer: Partial<UserAnswer>): Promise<UserAnswer> {
+  async create(@Body() userAnswer: CreateUserAnswerDto): Promise<UserAnswer> {
     return this.userAnswerService.create(userAnswer);
   }
 
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateUserAnswer: Partial<UserAnswer>,
+    @Body() updateUserAnswer: UpdateUserAnswerDto,
   ): Promise<UserAnswer> {
     return this.userAnswerService.update(id, updateUserAnswer);
   }

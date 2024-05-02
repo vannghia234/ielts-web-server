@@ -6,11 +6,15 @@ import {
   Body,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { GroupQuestion } from 'src/lib/entity/question/group-question.entity';
 import { GroupQuestionService } from '../service/group-question.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
+import { QuestionType } from 'src/shared/constant/enum_database';
+import { CreateGroupQuestionDto } from '../dto/create-group-quesiton.dto';
+import { UpdateGroupQuestionDto } from '../dto/update-group-question.dto';
 
 @ApiTags('group-question')
 @ApiResponse({
@@ -41,7 +45,7 @@ export class GroupQuestionController {
 
   @Post()
   async create(
-    @Body() groupQuestion: Partial<GroupQuestion>,
+    @Body() groupQuestion: CreateGroupQuestionDto,
   ): Promise<GroupQuestion> {
     return this.groupQuestionService.create(groupQuestion);
   }
@@ -49,7 +53,7 @@ export class GroupQuestionController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateGroupQuestion: Partial<GroupQuestion>,
+    @Body() updateGroupQuestion: UpdateGroupQuestionDto,
   ): Promise<GroupQuestion> {
     return this.groupQuestionService.update(id, updateGroupQuestion);
   }

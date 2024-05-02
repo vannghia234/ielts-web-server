@@ -25,8 +25,7 @@ export class UserAnswerRepository {
   }
 
   async create(userAnswer: Partial<UserAnswer>): Promise<UserAnswer> {
-    const newUserAnswer = this.userAnswerRepository.create(userAnswer);
-    return this.userAnswerRepository.save(newUserAnswer);
+    return this.userAnswerRepository.save(userAnswer);
   }
 
   async update(

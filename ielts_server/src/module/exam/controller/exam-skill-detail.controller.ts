@@ -11,6 +11,7 @@ import { ExamSkillDetail } from 'src/lib/entity/exam/exam-skill-detail.entity';
 import { ExamSkillDetailService } from '../service/exam-skill-detail.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
+import { CreateExamSkillDetailDto, UpdateExamSkillDetailDto } from '../dto/create-exam-skill-detail.dto';
 
 @ApiTags('exam-skill-detail')
 @ApiResponse({
@@ -41,7 +42,7 @@ export class ExamSkillDetailController {
 
   @Post()
   async create(
-    @Body() examSkillDetail: Partial<ExamSkillDetail>,
+    @Body() examSkillDetail: CreateExamSkillDetailDto,
   ): Promise<ExamSkillDetail> {
     return this.examSkillDetailService.create(examSkillDetail);
   }
@@ -49,7 +50,7 @@ export class ExamSkillDetailController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateExamSkillDetail: Partial<ExamSkillDetail>,
+    @Body() updateExamSkillDetail: UpdateExamSkillDetailDto,
   ): Promise<ExamSkillDetail> {
     return this.examSkillDetailService.update(id, updateExamSkillDetail);
   }

@@ -3,6 +3,7 @@ import { PartOfExam } from 'src/lib/entity/exam/part-of-exam.entity';
 import { PartOfExamService } from '../service/part-of-exam.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
+import { CreatePartOfExamDto, UpdatePartOfExamDto } from '../dto/create-part.dto';
 
 
 @ApiTags('Part-of-exam')
@@ -34,14 +35,14 @@ export class PartOfExamController {
   }
 
   @Post()
-  async create(@Body() partOfExam: Partial<PartOfExam>): Promise<PartOfExam> {
+  async create(@Body() partOfExam: CreatePartOfExamDto): Promise<PartOfExam> {
     return this.partOfExamService.create(partOfExam);
   }
 
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updatePartOfExam: Partial<PartOfExam>,
+    @Body() updatePartOfExam: UpdatePartOfExamDto,
   ): Promise<PartOfExam> {
     return this.partOfExamService.update(id, updatePartOfExam);
   }

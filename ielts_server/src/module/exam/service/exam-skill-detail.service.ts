@@ -1,10 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { ExamSkillDetail } from 'src/lib/entity/exam/exam-skill-detail.entity';
 import { ExamSkillDetailRepository } from '../repository/exam-skill-detail.repository';
+import {
+  CreateExamSkillDetailDto,
+  UpdateExamSkillDetailDto,
+} from '../dto/create-exam-skill-detail.dto';
+import { PartOfExamService } from './part-of-exam.service';
+import { SkillExamService } from './skill-exam.service';
 
 @Injectable()
 export class ExamSkillDetailService {
-  constructor(private examSkillDetailRepository: ExamSkillDetailRepository) {}
+  constructor(
+    private examSkillDetailRepository: ExamSkillDetailRepository,
+    private readonly skillExamService: SkillExamService,
+    private readonly PartService: PartOfExamService,
+  ) {}
 
   async findAll(): Promise<ExamSkillDetail[]> {
     return this.examSkillDetailRepository.findAll();
@@ -15,16 +25,32 @@ export class ExamSkillDetailService {
   }
 
   async create(
-    examSkillDetail: Partial<ExamSkillDetail>,
+    examSkillDetail: CreateExamSkillDetailDto,
   ): Promise<ExamSkillDetail> {
-    return this.examSkillDetailRepository.create(examSkillDetail);
+    const create = new ExamSkillDetail();
+    create.time = new Date(examSkillDetail.time);
+    create.partOfTest = await this.PartService.findOne(
+      examSkillDetail.partOfTestId,
+    );
+    create.skillExam = await this.skillExamService.findOne(
+      examSkillDetail.skillExamId,
+    );
+    return this.examSkillDetailRepository.create(create);
   }
 
   async update(
     id: string,
-    updateExamSkillDetail: Partial<ExamSkillDetail>,
+    updateExamSkillDetail: UpdateExamSkillDetailDto,
   ): Promise<ExamSkillDetail> {
-    return this.examSkillDetailRepository.update(id, updateExamSkillDetail);
+    const update = new ExamSkillDetail();
+    update.time = new Date(updateExamSkillDetail.time);
+    update.partOfTest = await this.PartService.findOne(
+      updateExamSkillDetail.partOfTestId,
+    );
+    update.skillExam = await this.skillExamService.findOne(
+      updateExamSkillDetail.skillExamId,
+    );
+    return this.examSkillDetailRepository.update(id, update);
   }
 
   async remove(id: string): Promise<void> {

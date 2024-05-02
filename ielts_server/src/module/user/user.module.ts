@@ -11,9 +11,14 @@ import { UserAnswerService } from './service/user-answer.service';
 import { UserAnswerController } from './controller/user-answer.controller';
 import { userServices } from './service';
 import { UserAnswerDetailController } from './controller/user-answer-detail.controller';
+import { ExamModule } from '../exam/exam.module';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, UserAnswer, UserAnswerDetail])],
+  imports: [
+    ExamModule,
+    TypeOrmModule.forFeature([User, UserAnswer, UserAnswerDetail]),
+  ],
   controllers: [
     UserController,
     UserAnswerController,

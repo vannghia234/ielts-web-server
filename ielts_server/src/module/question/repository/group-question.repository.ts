@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GroupQuestion } from 'src/lib/entity/question/group-question.entity';
+import { QuestionType } from 'src/shared/constant/enum_database';
 import { Repository } from 'typeorm';
 
 @Injectable()

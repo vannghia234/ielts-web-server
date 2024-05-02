@@ -9,9 +9,12 @@ import { GroupQuestion } from 'src/lib/entity/question/group-question.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { questionServices } from './service';
 import { GroupQuestionController } from './controller/group-question.controller';
+import { ExamModule } from '../exam/exam.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([GroupQuestion])],
+  imports: [
+    ExamModule,
+    TypeOrmModule.forFeature([GroupQuestion])],
   controllers: [GroupQuestionController],
   providers: [...questionServices, ...questionRepositories],
   exports: [...questionRepositories, ...questionServices],

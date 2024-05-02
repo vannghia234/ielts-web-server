@@ -46,8 +46,6 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'Đăng ký',
-    description:
-      'Role sử dụng các giá trị enum mặc định như "ADMIN, USER, LECTURE, TEMPUSER" ',
   })
   @ApiResponse({
     status: 400,

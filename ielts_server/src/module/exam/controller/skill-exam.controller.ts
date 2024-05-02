@@ -11,6 +11,8 @@ import { SkillExam } from 'src/lib/entity/exam/skill-exam.entity';
 import { SkillExamService } from '../service/skill-exam.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
+import { CreateSkillExamDto } from '../dto/create-skill-exam.dto';
+import { UpdateSkillExamDto } from '../dto/update-skill-exam.dto';
 
 @ApiTags('skill-exam')
 @ApiResponse({
@@ -40,14 +42,14 @@ export class SkillExamController {
   }
 
   @Post()
-  async create(@Body() skillExam: Partial<SkillExam>): Promise<SkillExam> {
+  async create(@Body() skillExam: CreateSkillExamDto): Promise<SkillExam> {
     return this.skillExamService.create(skillExam);
   }
 
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateSkillExam: Partial<SkillExam>,
+    @Body() updateSkillExam: UpdateSkillExamDto,
   ): Promise<SkillExam> {
     return this.skillExamService.update(id, updateSkillExam);
   }

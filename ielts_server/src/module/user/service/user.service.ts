@@ -4,6 +4,7 @@ import { User } from 'src/lib/entity/user/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { BCryptService } from './bcrypt.service';
 import { ResponseBase } from 'src/shared/constant/response_base';
+import { UpdateUserDto } from '../dto/update-user.dto';
 @Injectable()
 export class UserService {
   constructor(
@@ -19,8 +20,13 @@ export class UserService {
     const user = await this.usersRepository.findOne(id);
     return user;
   }
-  async update(id: string, updateUser: Partial<User>): Promise<User> {
-    return this.usersRepository.update(id, updateUser);
+  async update(id: string, updateUser: UpdateUserDto): Promise<User> {
+    const user = new User();
+    user.mail = updateUser.mail;
+    user.name = updateUser.name;
+    user.password = await this.bCryptService.hashPassWord(updateUser.password);
+    user.role = updateUser.role;
+    return this.usersRepository.update(id, user);
   }
 
   async remove(id: string): Promise<void> {

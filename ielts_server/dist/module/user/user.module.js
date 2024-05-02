@@ -18,11 +18,15 @@ const bcrypt_service_1 = require("./service/bcrypt.service");
 const user_answer_controller_1 = require("./controller/user-answer.controller");
 const service_1 = require("./service");
 const user_answer_detail_controller_1 = require("./controller/user-answer-detail.controller");
+const exam_module_1 = require("../exam/exam.module");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, user_answer_entity_1.UserAnswer, user_answer_detail_entity_1.UserAnswerDetail])],
+        imports: [
+            exam_module_1.ExamModule,
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, user_answer_entity_1.UserAnswer, user_answer_detail_entity_1.UserAnswerDetail]),
+        ],
         controllers: [
             user_controller_1.UserController,
             user_answer_controller_1.UserAnswerController,
