@@ -7,8 +7,10 @@ import {
 } from 'typeorm';
 import { GroupQuestion } from '../question/group-question.entity';
 import { Skill } from 'src/shared/constant/enum_database';
+import { Public } from 'src/shared/constant/meta-data';
 
 @Entity()
+
 export class PartOfExam {
   @PrimaryGeneratedColumn('uuid')
   id: string;

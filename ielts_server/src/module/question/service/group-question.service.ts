@@ -40,14 +40,14 @@ export class GroupQuestionService {
     id: string,
     updateGroupQuestion: UpdateGroupQuestionDto,
   ): Promise<GroupQuestion> {
-    const updateInfo = new GroupQuestion();
+    const updateInfo = await this.groupQuestionRepository.findOne(id);
     updateInfo.description = updateGroupQuestion.description;
     updateInfo.data = updateGroupQuestion.data;
     updateInfo.partOfExam = await this.partOfExamService.findOne(
       updateGroupQuestion.partOfExamId,
     );
     updateInfo.type = updateGroupQuestion.type;
-    return this.groupQuestionRepository.update(id, updateGroupQuestion);
+    return this.groupQuestionRepository.update(id, updateInfo);
   }
 
   async remove(id: string): Promise<void> {

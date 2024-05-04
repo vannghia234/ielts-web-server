@@ -33,7 +33,7 @@ export class SkillExamService {
     id: string,
     updateSkillExam: UpdateSkillExamDto,
   ): Promise<SkillExam> {
-    const updateInfo = new SkillExam();
+    const updateInfo = await this.skillExamRepository.findOne(id);
     updateInfo.name = updateSkillExam.name;
     updateInfo.exam = await this.examService.findOne(updateSkillExam.examId);
     return this.skillExamRepository.update(id, updateInfo);

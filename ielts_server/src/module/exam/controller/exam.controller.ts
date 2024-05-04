@@ -28,17 +28,18 @@ import { UpdateExamDto } from '../dto/update-exam.dto';
 })
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
-@Public()
 @Controller('exam')
 export class ExamController {
   constructor(private examService: ExamService) {}
 
   @Get()
+  @Public()
   async findAll(): Promise<Exam[]> {
     return this.examService.findAll();
   }
 
   @Get(':id')
+  @Public()
   async findOne(@Param('id') id: string): Promise<Exam> {
     return this.examService.findOne(id);
   }

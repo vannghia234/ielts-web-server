@@ -14,7 +14,6 @@ import { Public } from 'src/shared/constant/meta-data';
 import { CreateUserAnswerDto } from '../dto/create-user-answer.dto';
 import { UpdateUserAnswerDto } from '../dto/update-user-ansert.dto';
 
-
 @ApiTags('user-answer')
 @ApiResponse({
   status: 200,

@@ -11,7 +11,7 @@ exports.AppConfig = (0, config_1.registerAs)('app', () => ({
         port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
         username: process.env.DATABASE_USERNAME || 'postgres',
         password: process.env.DATABASE_PASSWORD || 'postgres',
-        databaseName: process.env.DATABASE_NAME || 'postgres',
+        databaseName: process.env.DATABASE_NAME || 'ielts-database',
     },
     jwt: {
         publicKey: process.env.JWT_PUBLIC_KEY,

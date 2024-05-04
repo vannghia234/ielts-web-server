@@ -22,7 +22,9 @@ let UsersRepository = class UsersRepository {
         this.usersRepository = usersRepository;
     }
     async findAll() {
-        return this.usersRepository.find();
+        return this.usersRepository.find({
+            select: ['id', 'mail', 'name', 'role'],
+        });
     }
     async findOne(id) {
         const user = await this.usersRepository.findOne({

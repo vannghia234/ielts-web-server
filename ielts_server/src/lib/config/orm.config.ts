@@ -13,7 +13,7 @@ export const TypeOrmPostgresConfig = async (
     password: configService.get<string>('app.database.password', 'postgres'),
     database: configService.get<string>(
       'app.database.databaseName',
-      'postgres',
+      'ielts-database',
     ),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     autoLoadEntities: true,

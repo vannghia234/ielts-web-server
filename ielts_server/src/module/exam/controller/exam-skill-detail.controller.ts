@@ -11,7 +11,10 @@ import { ExamSkillDetail } from 'src/lib/entity/exam/exam-skill-detail.entity';
 import { ExamSkillDetailService } from '../service/exam-skill-detail.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
-import { CreateExamSkillDetailDto, UpdateExamSkillDetailDto } from '../dto/create-exam-skill-detail.dto';
+import {
+  CreateExamSkillDetailDto,
+  UpdateExamSkillDetailDto,
+} from '../dto/create-exam-skill-detail.dto';
 
 @ApiTags('exam-skill-detail')
 @ApiResponse({
@@ -26,16 +29,17 @@ import { CreateExamSkillDetailDto, UpdateExamSkillDetailDto } from '../dto/creat
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
 @Controller('exam-skill-detail')
-@Public()
 export class ExamSkillDetailController {
   constructor(private examSkillDetailService: ExamSkillDetailService) {}
 
   @Get()
+  @Public()
   async findAll(): Promise<ExamSkillDetail[]> {
     return this.examSkillDetailService.findAll();
   }
 
   @Get(':id')
+  @Public()
   async findOne(@Param('id') id: string): Promise<ExamSkillDetail> {
     return this.examSkillDetailService.findOne(id);
   }

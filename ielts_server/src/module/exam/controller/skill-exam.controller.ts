@@ -31,11 +31,13 @@ import { UpdateSkillExamDto } from '../dto/update-skill-exam.dto';
 export class SkillExamController {
   constructor(private skillExamService: SkillExamService) {}
 
+  @Public()
   @Get()
   async findAll(): Promise<SkillExam[]> {
     return this.skillExamService.findAll();
   }
 
+  @Public()
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<SkillExam> {
     return this.skillExamService.findOne(id);

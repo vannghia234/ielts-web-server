@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { User } from 'src/lib/entity/user/user.entity';
 import { UserService } from '../service/user.service';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
@@ -26,11 +26,11 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 })
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
-@Public()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @ApiBearerAuth()
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
@@ -41,6 +41,7 @@ export class UserController {
   }
 
   @Put(':id')
+  @Public()
   async update(
     @Param('id') id: string,
     @Body() updateUser: UpdateUserDto,

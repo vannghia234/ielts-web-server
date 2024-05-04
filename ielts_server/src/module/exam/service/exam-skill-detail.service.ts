@@ -42,7 +42,7 @@ export class ExamSkillDetailService {
     id: string,
     updateExamSkillDetail: UpdateExamSkillDetailDto,
   ): Promise<ExamSkillDetail> {
-    const update = new ExamSkillDetail();
+    const update = await this.examSkillDetailRepository.findOne(id);
     update.time = new Date(updateExamSkillDetail.time);
     update.partOfTest = await this.PartService.findOne(
       updateExamSkillDetail.partOfTestId,

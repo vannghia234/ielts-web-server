@@ -37,6 +37,7 @@ let UserController = class UserController {
 };
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -50,6 +51,7 @@ __decorate([
 ], UserController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Put)(':id'),
+    (0, meta_data_1.Public)(),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -77,7 +79,6 @@ UserController = __decorate([
     }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Not Found' }),
     (0, swagger_1.ApiResponse)({ status: 500, description: 'Server Error' }),
-    (0, meta_data_1.Public)(),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 exports.UserController = UserController;

@@ -8,7 +8,7 @@ const TypeOrmPostgresConfig = async (configService) => {
         port: configService.get('app.database.port', 5432),
         username: configService.get('app.database.username', 'postgres'),
         password: configService.get('app.database.password', 'postgres'),
-        database: configService.get('app.database.databaseName', 'postgres'),
+        database: configService.get('app.database.databaseName', 'ielts-database'),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
         synchronize: configService.get('app.isDev', false),

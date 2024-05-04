@@ -29,16 +29,17 @@ import { UpdateGroupQuestionDto } from '../dto/update-group-question.dto';
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
 @Controller('group-question')
-@Public()
 export class GroupQuestionController {
   constructor(private readonly groupQuestionService: GroupQuestionService) {}
 
   @Get()
+  @Public()
   async findAll(): Promise<GroupQuestion[]> {
     return this.groupQuestionService.findAll();
   }
 
   @Get(':id')
+  @Public()
   async findOne(@Param('id') id: string): Promise<GroupQuestion> {
     return this.groupQuestionService.findOne(id);
   }

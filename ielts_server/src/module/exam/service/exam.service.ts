@@ -31,7 +31,7 @@ export class ExamService {
   }
 
   async update(id: string, updateExam: UpdateExamDto): Promise<Exam> {
-    const update = new Exam();
+    const update = await this.examRepository.findOne(id);
     update.code = updateExam.code;
     update.description = updateExam.description;
     update.name = updateExam.name;

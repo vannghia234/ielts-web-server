@@ -10,12 +10,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { JWTService } from './service/jwt.service';
 import { BCryptService } from '../user/service/bcrypt.service';
+import { PermissionLectureGuard } from './guard/permission.guard';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
     JwtModule.registerAsync({
+      global: true,
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_PRIVATE_KEY'),
@@ -26,6 +28,7 @@ import { BCryptService } from '../user/service/bcrypt.service';
   ],
   controllers: [AuthController],
   providers: [
+    PermissionLectureGuard,
     JwtStrategy,
     AuthService,
     JWTService,
@@ -34,5 +37,6 @@ import { BCryptService } from '../user/service/bcrypt.service';
       useClass: AuthGuard,
     },
   ],
+  exports: [PermissionLectureGuard],
 })
 export class AuthModule {}

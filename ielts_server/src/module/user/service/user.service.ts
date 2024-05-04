@@ -21,12 +21,22 @@ export class UserService {
     return user;
   }
   async update(id: string, updateUser: UpdateUserDto): Promise<User> {
-    const user = new User();
-    user.mail = updateUser.mail;
-    user.name = updateUser.name;
-    user.password = await this.bCryptService.hashPassWord(updateUser.password);
-    user.role = updateUser.role;
-    return this.usersRepository.update(id, user);
+    const userInfo = await this.usersRepository.findOne(id);
+    if (updateUser.mail) {
+      userInfo.mail = updateUser.mail;
+    }
+    if (updateUser.name) {
+      userInfo.name = updateUser.name;
+    }
+    if (updateUser.password) {
+      userInfo.password = await this.bCryptService.hashPassWord(
+        updateUser.password,
+      );
+    }
+    if (updateUser.role) {
+      userInfo.role = updateUser.role;
+    }
+    return this.usersRepository.update(id, userInfo);
   }
 
   async remove(id: string): Promise<void> {

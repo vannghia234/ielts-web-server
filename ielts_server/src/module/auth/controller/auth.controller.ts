@@ -12,7 +12,7 @@ import {
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { LoginDto } from '../../user/dto/login.dto';
 import { CreateUserDto } from 'src/module/user/dto/create-user.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
 @ApiTags('Authentication')

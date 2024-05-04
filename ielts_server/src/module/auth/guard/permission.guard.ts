@@ -7,11 +7,11 @@ import {
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from 'src/shared/constant/meta-data';
+import { IS_LECTURE, IS_PUBLIC_KEY } from 'src/shared/constant/meta-data';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class PermissionLectureGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
@@ -20,19 +20,9 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    console.log('token before ' + request.headers.authorization);
-
     const token = this.extractTokenFromHeader(request);
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
-
-    if (isPublic) {
-      return true;
-    }
-    console.log('token ' + token);
-
+ 
+    console.log('permission guard ');
     if (!token) {
       throw new UnauthorizedException();
     }
@@ -41,8 +31,8 @@ export class AuthGuard implements CanActivate {
         secret: this.configService.get<string>('app.jwt.privateKey'),
       });
       console.log('payload ' + JSON.stringify(payload));
-      if (payload.permissionName === 'ADMIN') {
-        console.log('is admin');
+      if (payload.permissionName === 'LECTURE' || payload.permissionName ==="ADMIN") {
+        console.log('is lecture');
         request['user'] = payload;
         return true;
       }

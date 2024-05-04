@@ -47,7 +47,7 @@ export class UserAnswerDetailService {
     id: string,
     updateUserAnswerDetail: UpdateUserAnswerDetailDto,
   ): Promise<UserAnswerDetail> {
-    const updateInfo = new UserAnswerDetail();
+    const updateInfo = await this.userAnswerDetailRepository.findOne(id);
     updateInfo.score = updateUserAnswerDetail.score;
     updateInfo.feedback = updateUserAnswerDetail.feedback;
     updateInfo.answer = updateUserAnswerDetail.answer;
@@ -57,7 +57,7 @@ export class UserAnswerDetailService {
     updateInfo.userAnswer = await this.userAnswerService.findOne(
       updateUserAnswerDetail.userAnswerId,
     );
-    return this.userAnswerDetailRepository.update(id, updateUserAnswerDetail);
+    return this.userAnswerDetailRepository.update(id, updateInfo);
   }
 
   async remove(id: string): Promise<void> {

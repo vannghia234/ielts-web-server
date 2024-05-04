@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PartOfExam } from 'src/lib/entity/exam/part-of-exam.entity';
 import { PartOfExamRepository } from '../repository/part-of-exam.repository';
-import { CreatePartOfExamDto, UpdatePartOfExamDto } from '../dto/create-part.dto';
+import {
+  CreatePartOfExamDto,
+  UpdatePartOfExamDto,
+} from '../dto/create-part.dto';
 
 @Injectable()
 export class PartOfExamService {
@@ -27,7 +30,7 @@ export class PartOfExamService {
     id: string,
     updatePartOfExam: UpdatePartOfExamDto,
   ): Promise<PartOfExam> {
-    const update = new PartOfExam();
+    const update = await this.partOfExamRepository.findOne(id);
     update.description = updatePartOfExam.description;
     update.skill = updatePartOfExam.skill;
     update.src = updatePartOfExam.src;

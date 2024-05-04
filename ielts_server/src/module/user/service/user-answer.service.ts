@@ -38,7 +38,7 @@ export class UserAnswerService {
     id: string,
     updateUserAnswer: UpdateUserAnswerDto,
   ): Promise<UserAnswer> {
-    const updateInfo = new UserAnswer();
+    const updateInfo = await this.userAnswerRepository.findOne(id);
     updateInfo.timeStart = new Date(updateUserAnswer.timeStart);
     updateInfo.user = await this.userService.findOne(updateUserAnswer.userId);
     return this.userAnswerRepository.update(id, updateInfo);
