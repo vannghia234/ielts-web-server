@@ -1,7 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ExamSkillDetail } from '../exam/exam-skill-detail.entity';
 import { UserAnswer } from './user-answer.entity';
-
 @Entity()
 export class UserAnswerDetail {
   @PrimaryGeneratedColumn('uuid')

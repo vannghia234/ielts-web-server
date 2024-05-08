@@ -5,15 +5,16 @@ import {
   CreateExamSkillDetailDto,
   UpdateExamSkillDetailDto,
 } from '../dto/create-exam-skill-detail.dto';
-import { PartOfExamService } from './part-of-exam.service';
+
 import { SkillExamService } from './skill-exam.service';
+import { PartService } from 'src/module/part/part.service';
 
 @Injectable()
 export class ExamSkillDetailService {
   constructor(
     private examSkillDetailRepository: ExamSkillDetailRepository,
     private readonly skillExamService: SkillExamService,
-    private readonly PartService: PartOfExamService,
+    private readonly PartService: PartService,
   ) {}
 
   async findAll(): Promise<ExamSkillDetail[]> {
@@ -29,9 +30,9 @@ export class ExamSkillDetailService {
   ): Promise<ExamSkillDetail> {
     const create = new ExamSkillDetail();
     create.time = new Date(examSkillDetail.time);
-    create.partOfTest = await this.PartService.findOne(
-      examSkillDetail.partOfTestId,
-    );
+    // create.partOfTest = await this.PartService.findOne(
+    //   examSkillDetail.partOfTestId,
+    // );
     create.skillExam = await this.skillExamService.findOne(
       examSkillDetail.skillExamId,
     );
@@ -44,9 +45,9 @@ export class ExamSkillDetailService {
   ): Promise<ExamSkillDetail> {
     const update = await this.examSkillDetailRepository.findOne(id);
     update.time = new Date(updateExamSkillDetail.time);
-    update.partOfTest = await this.PartService.findOne(
-      updateExamSkillDetail.partOfTestId,
-    );
+    // update.partOfTest = await this.PartService.findOne(
+    //   updateExamSkillDetail.partOfTestId,
+    // );
     update.skillExam = await this.skillExamService.findOne(
       updateExamSkillDetail.skillExamId,
     );

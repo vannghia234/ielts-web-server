@@ -4,7 +4,6 @@ import { SkillExamRepository } from '../repository/skill-exam.repository';
 import { CreateSkillExamDto } from '../dto/create-skill-exam.dto';
 import { ExamService } from './exam.service';
 import { PartialGraphHost } from '@nestjs/core';
-import { PartOfExamService } from './part-of-exam.service';
 import { UpdateSkillExamDto } from '../dto/update-skill-exam.dto';
 
 @Injectable()

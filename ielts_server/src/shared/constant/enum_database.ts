@@ -4,13 +4,11 @@ export enum Skill {
   WRITING = 'WRITING',
   SPEAKING = 'SPEAKING',
 }
-
 export enum TestStatus {
   DRAFT = 'DRAFT',
   PUBLISHED = 'PUBLISHED',
   LOCK = 'LOCK',
 }
-
 export enum UserRole {
   ADMIN = 'ADMIN',
   LECTURE = 'LECTURE',
@@ -19,8 +17,22 @@ export enum UserRole {
 }
 
 export enum QuestionType {
-  MULTIPLE_CHOICE = 'MULTIPLECHOICE',
-  DRAG_AND_DROP = 'DRAGANDDROP',
-  SHORT_ANSWER = 'SHORTANSWER',
-  MULTIPLE_ANSWER = 'MULTIPLEANSWER',
+  MultipleChoice = 'Multiple Choice',
+  MultipleResponse = 'Multiple Response',
+  Dropdown = 'Dropdown',
+  Matching = 'Matching',
+  MatchingHeading = 'Matching heading',
+  FillInTheBlank = 'Fill in the Blank',
+  MatchingFillInBlank = 'Matching fill in the blanks',
+  MatchingFillInTheBlanks = 'Matching Fill In The Blanks',
+}
+export enum PartNumber {
+  Part1 = 'Part 1',
+  Part2 = 'Part 2',
+  Part3 = 'Part 3',
+  Part4 = 'Part 4',
+}
+export interface SkillPart {
+  skill: Skill;
+  parts: PartNumber[];
 }

@@ -1,14 +1,14 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { PartOfExam } from './part-of-exam.entity';
 import { Exam } from './exam.entity';
 import { SkillExam } from './skill-exam.entity';
+import { Part } from '../part/Part.entity';
 
 @Entity()
 export class ExamSkillDetail {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @ManyToOne(() => PartOfExam, (type) => type.id)
-  partOfTest: PartOfExam;
+  @ManyToOne(() => Part, (type) => type.id)
+  parts: Part;
 
   @ManyToOne(() => SkillExam, (type) => type.id)
   skillExam: SkillExam;

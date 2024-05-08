@@ -1,5 +1,3 @@
-
-
 export type answerMultiChoice = {
   id: string;
   answerContent: string;

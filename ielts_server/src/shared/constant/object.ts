@@ -28,4 +28,3 @@ export class MultipleChoice {
 export class DragAndDrop {
   questionList: questionDragAndDropObj[];
 }
-

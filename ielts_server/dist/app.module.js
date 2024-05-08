@@ -7,13 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const part_module_1 = require("./module/part/part.module");
 const generate_jwt_service_1 = require("./shared/jwt/generate-jwt.service");
 const auth_module_1 = require("./module/auth/auth.module");
 const exam_module_1 = require("./module/exam/exam.module");
-const question_module_1 = require("./module/question/question.module");
 const shared_module_1 = require("./shared/shared.module");
 const user_module_1 = require("./module/user/user.module");
-const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const config_1 = require("@nestjs/config");
@@ -22,11 +21,21 @@ const typeorm_1 = require("@nestjs/typeorm");
 const orm_config_1 = require("./lib/config/orm.config");
 const post_interceptor_1 = require("./interceptor/post.interceptor");
 const core_1 = require("@nestjs/core");
+const upload_module_1 = require("./module/upload/upload.module");
+const serve_static_1 = require("@nestjs/serve-static");
+const path_1 = require("path");
+const common_1 = require("@nestjs/common");
+const group_question_module_1 = require("./module/group-question/group-question.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            group_question_module_1.GroupQuestionModule,
+            part_module_1.PartModule,
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: (0, path_1.join)(__dirname, '..', 'static'),
+            }),
             auth_module_1.AuthModule,
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
@@ -40,7 +49,7 @@ AppModule = __decorate([
             shared_module_1.SharedModule,
             user_module_1.UserModule,
             exam_module_1.ExamModule,
-            question_module_1.QuestionModule,
+            upload_module_1.UploadModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [
