@@ -5,7 +5,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { PartOfExam } from '../exam/part-of-exam.entity';
 import { QuestionType } from 'src/shared/constant/enum_database';
 import {
   Dropdown,
@@ -16,6 +15,7 @@ import {
   MultipleChoice,
   MultipleReponse,
 } from 'src/shared/constant/group-question_data_type';
+import { Part } from '../part/Part.entity';
 
 @Entity()
 export class GroupQuestion {
@@ -26,14 +26,14 @@ export class GroupQuestion {
   description: string;
 
   @Column({ type: 'jsonb' })
-  data:  
-  | MultipleChoice[]
-  | MultipleReponse[]
-  | Dropdown[]
-  | Matching[]
-  | MatchingHeading
-  | FillTheBlank
-  | MatchingFillBlank = [];
+  data:
+    | MultipleChoice[]
+    | MultipleReponse[]
+    | Dropdown[]
+    | Matching[]
+    | MatchingHeading
+    | FillTheBlank
+    | MatchingFillBlank = [];
 
   @Column({
     type: 'enum',
@@ -41,6 +41,6 @@ export class GroupQuestion {
   })
   type: QuestionType;
 
-  @ManyToOne(() => PartOfExam, (type) => type.groupQuestion)
-  partOfExam: PartOfExam;
+  @ManyToOne(() => Part, (type) => type.groupQuestions)
+  partOfExam: Part;
 }

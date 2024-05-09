@@ -37,6 +37,6 @@ import { PermissionLectureGuard } from './guard/permission.guard';
       useClass: AuthGuard,
     },
   ],
-  exports: [PermissionLectureGuard],
+  exports: [PermissionLectureGuard, AuthService],
 })
 export class AuthModule {}

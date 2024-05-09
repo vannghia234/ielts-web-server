@@ -23,6 +23,10 @@ async function bootstrap() {
   new Logger('main').debug(
     'Server is running with port ' + process.env.APP_PORT,
   );
-  new Logger('main').debug('Go to swagger ' + 'http://localhost:3000/api/');
+  new Logger('main').debug(
+    `Go to swagger  + http://localhost:${process.env.APP_PORT}/api/`,
+  );
+
+  new Logger('main').debug(`SOCKET ON PORT  + http://localhost:${8001}/`);
 }
 bootstrap();

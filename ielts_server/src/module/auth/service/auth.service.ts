@@ -60,6 +60,14 @@ export class AuthService {
       },
     });
   }
+  async authenticate(token) {
+    try {
+      const response = await this.JWTService.verifyToken(token);
+      return response.userId;
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
+  }
 
   async register(createUserDto: CreateUserDto) {
     const user = await this.usersService.createUser(createUserDto);

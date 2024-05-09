@@ -1,3 +1,4 @@
+import { EventModule } from './module/event/event.module';
 import { PartModule } from './module/part/part.module';
 import { UserAnswerController } from './module/user/controller/user-answer.controller';
 import { GenerateJwtService } from './shared/service/generate-jwt.service';
@@ -20,6 +21,7 @@ import { Module } from '@nestjs/common';
 import { GroupQuestionModule } from './module/group-question/group-question.module';
 @Module({
   imports: [
+    EventModule,
     GroupQuestionModule,
     PartModule,
     ServeStaticModule.forRoot({
@@ -48,7 +50,6 @@ import { GroupQuestionModule } from './module/group-question/group-question.modu
   ],
   controllers: [AppController],
   providers: [
-    GenerateJwtService,
     AppService,
     {
       provide: APP_INTERCEPTOR,

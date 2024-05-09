@@ -5,6 +5,6 @@ import { MailService } from './service/mail.service';
   imports: [],
   controllers: [],
   providers: [GenerateJwtService, MailService],
-  exports: [MailService],
+  exports: [MailService, GenerateJwtService],
 })
 export class SharedModule {}
