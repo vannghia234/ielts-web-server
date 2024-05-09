@@ -1,4 +1,9 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Part } from 'src/lib/entity/part/Part.entity';
 import { Repository } from 'typeorm';
@@ -43,7 +48,9 @@ export class PartService {
     return this.partRepository.findOne({ where: { id } });
   }
 
-  async remove(id: string): Promise<void> {
-    await this.partRepository.delete(id);
+  async remove(id: string): Promise<Part[]> {
+    const deleted = await this.partRepository.delete(id);
+    if (!deleted) console.log(`Part with ID ${id} not found`);
+    return this.findAll();
   }
 }

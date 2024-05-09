@@ -33,7 +33,7 @@ export class GroupQuestion {
     | FillTheBlank[]
     | MatchingFillBlank[];
 
-  @ManyToOne(() => Part, (part) => part.groupQuestions)
+  @ManyToOne(() => Part, (part) => part.groupQuestions, { onDelete: 'CASCADE' })
   part: Part;
   groupQuestion: Promise<Part>;
 }

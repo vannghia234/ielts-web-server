@@ -42,7 +42,7 @@ export class PartController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
+  async remove(@Param('id') id: string): Promise<Part[]> {
     return this.partService.remove(id);
   }
 }
