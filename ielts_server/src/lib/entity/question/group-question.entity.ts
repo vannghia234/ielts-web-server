@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { PartOfExam } from '../exam/part-of-exam.entity';
+import { Part } from '../part/Part.entity';
 import { QuestionType } from 'src/shared/constant/enum_database';
 import {
   Dropdown,
@@ -41,6 +41,6 @@ export class GroupQuestion {
   })
   type: QuestionType;
 
-  @ManyToOne(() => PartOfExam, (type) => type.groupQuestion)
-  partOfExam: PartOfExam;
+  @ManyToOne(() => Part, (type) => type.groupQuestions)
+  partOfExam: Part;
 }
