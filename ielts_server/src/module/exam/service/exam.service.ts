@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Exam } from 'src/lib/entity/exam/exam.entity';
 import { ExamRepository } from '../repository/exam.repository';
 import { CreateExamDto } from '../dto/create-exam.dto';
-import { SkillExamService } from './skill-exam.service';
 import { UpdateExamDto } from '../dto/update-exam.dto';
 
 @Injectable()

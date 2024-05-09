@@ -4,13 +4,11 @@ export enum Skill {
   WRITING = 'Writing',
   SPEAKING = 'Speaking',
 }
-
 export enum TestStatus {
   DRAFT = 'DRAFT',
   PUBLISHED = 'PUBLISHED',
   LOCK = 'LOCK',
 }
-
 export enum UserRole {
   ADMIN = 'ADMIN',
   LECTURE = 'LECTURE',
@@ -26,16 +24,15 @@ export enum QuestionType {
   MatchingHeading = 'Matching heading',
   FillInTheBlank = 'Fill in the Blank',
   MatchingFillInBlank = 'Matching fill in the blanks',
+  MatchingFillInTheBlanks = 'Matching Fill In The Blanks',
 }
-
-export enum PartEnum {
-  Part1= "Part 1",
-  Part2= "Part 2",
-  Part3= "Part 3",
-  Part4= "Part 4",
+export enum PartNumber {
+  Part1 = 'Part 1',
+  Part2 = 'Part 2',
+  Part3 = 'Part 3',
+  Part4 = 'Part 4',
 }
-
 export interface SkillPart {
-  skill: Skill
-  parts: PartEnum[]
+  skill: Skill;
+  parts: PartNumber[];
 }
