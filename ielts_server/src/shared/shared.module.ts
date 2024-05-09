@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { GenerateJwtService } from './jwt/generate-jwt.service';
+import { GenerateJwtService } from './service/generate-jwt.service';
+import { MailService } from './service/mail.service';
 @Module({
   imports: [],
   controllers: [],
-  providers: [GenerateJwtService],
-  exports: [],
+  providers: [GenerateJwtService, MailService],
+  exports: [MailService],
 })
 export class SharedModule {}

@@ -8,18 +8,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
+const mail_service_1 = require("./shared/service/mail.service");
+const meta_data_1 = require("./shared/constant/meta-data");
+const send_mail_dto_1 = require("./shared/dto/send-mail.dto");
 let AppController = class AppController {
-    constructor(appService) {
+    constructor(appService, mailService) {
         this.appService = appService;
+        this.mailService = mailService;
+    }
+    async sendMail(sendMailDto) {
+        return this.mailService.sendEmail(sendMailDto);
     }
 };
+__decorate([
+    (0, common_1.Post)('email'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [send_mail_dto_1.SendMailDto]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "sendMail", null);
 AppController = __decorate([
-    (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
+    (0, common_1.Controller)('app'),
+    (0, meta_data_1.Public)(),
+    __metadata("design:paramtypes", [app_service_1.AppService,
+        mail_service_1.MailService])
 ], AppController);
 exports.AppController = AppController;
 //# sourceMappingURL=app.controller.js.map

@@ -7,13 +7,15 @@ import {
 } from 'typeorm';
 import { PartOfExam } from '../exam/part-of-exam.entity';
 import { QuestionType } from 'src/shared/constant/enum_database';
-import {} from 'src/shared/constant/interface';
 import {
-  DragAndDrop,
-  MultipleAnswer,
+  Dropdown,
+  FillTheBlank,
+  Matching,
+  MatchingFillBlank,
+  MatchingHeading,
   MultipleChoice,
-  ShortAnswer,
-} from 'src/shared/constant/object';
+  MultipleReponse,
+} from 'src/shared/constant/group-question_data_type';
 
 @Entity()
 export class GroupQuestion {
@@ -24,7 +26,14 @@ export class GroupQuestion {
   description: string;
 
   @Column({ type: 'jsonb' })
-  data: MultipleChoice | DragAndDrop | ShortAnswer | MultipleAnswer;
+  data:  
+  | MultipleChoice[]
+  | MultipleReponse[]
+  | Dropdown[]
+  | Matching[]
+  | MatchingHeading
+  | FillTheBlank
+  | MatchingFillBlank = [];
 
   @Column({
     type: 'enum',

@@ -8,15 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SharedModule = void 0;
 const common_1 = require("@nestjs/common");
-const generate_jwt_service_1 = require("./jwt/generate-jwt.service");
+const generate_jwt_service_1 = require("./service/generate-jwt.service");
+const mail_service_1 = require("./service/mail.service");
 let SharedModule = class SharedModule {
 };
 SharedModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [],
-        providers: [generate_jwt_service_1.GenerateJwtService],
-        exports: [],
+        providers: [generate_jwt_service_1.GenerateJwtService, mail_service_1.MailService],
+        exports: [mail_service_1.MailService],
     })
 ], SharedModule);
 exports.SharedModule = SharedModule;

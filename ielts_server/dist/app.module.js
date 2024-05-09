@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
-const generate_jwt_service_1 = require("./shared/jwt/generate-jwt.service");
+const generate_jwt_service_1 = require("./shared/service/generate-jwt.service");
 const auth_module_1 = require("./module/auth/auth.module");
 const exam_module_1 = require("./module/exam/exam.module");
 const question_module_1 = require("./module/question/question.module");

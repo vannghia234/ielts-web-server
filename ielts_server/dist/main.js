@@ -4,7 +4,7 @@ const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const generate_jwt_service_1 = require("./shared/jwt/generate-jwt.service");
+const generate_jwt_service_1 = require("./shared/service/generate-jwt.service");
 const swagger_config_1 = require("./lib/config/swagger.config");
 async function bootstrap() {
     generate_jwt_service_1.GenerateJwtService.generateToken();

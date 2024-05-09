@@ -5,15 +5,8 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 import { QuestionType } from 'src/shared/constant/enum_database';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  DragAndDrop,
-  MultipleAnswer,
-  MultipleChoice,
-  ShortAnswer,
-} from 'src/shared/constant/object';
 
 export class CreateGroupQuestionDto {
   @IsNotEmpty()

@@ -4,7 +4,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from './module/user/service/user.service';
 import { SwaggerModule } from '@nestjs/swagger';
-import { GenerateJwtService } from './shared/jwt/generate-jwt.service';
+import { GenerateJwtService } from './shared/service/generate-jwt.service';
 import { configSwagger } from './lib/config/swagger.config';
 
 async function bootstrap() {

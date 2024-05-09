@@ -1,5 +1,5 @@
 import { UserAnswerController } from './module/user/controller/user-answer.controller';
-import { GenerateJwtService } from './shared/jwt/generate-jwt.service';
+import { GenerateJwtService } from './shared/service/generate-jwt.service';
 import { AuthModule } from './module/auth/auth.module';
 import { ExamModule } from './module/exam/exam.module';
 import { QuestionModule } from './module/question/question.module';
