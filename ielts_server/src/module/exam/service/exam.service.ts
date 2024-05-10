@@ -24,7 +24,7 @@ export class ExamService {
     examInfo.password = exam.password;
     examInfo.src = exam.src;
     examInfo.status = exam.status;
-    examInfo.time = new Date(exam.time);
+    examInfo.time = exam.time;
     examInfo.title = exam.title;
     return this.examRepository.create(examInfo);
   }
@@ -37,7 +37,7 @@ export class ExamService {
     update.password = updateExam.password;
     update.src = updateExam.src;
     update.status = updateExam.status;
-    update.time = new Date(updateExam.time);
+    update.time = updateExam.time;
     update.title = updateExam.title;
     return this.examRepository.update(id, update);
   }

@@ -1,11 +1,12 @@
 import {
-  MessageBody,
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-  OnGatewayInit,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
+	ConnectedSocket,
+	MessageBody,
+	OnGatewayConnection,
+	OnGatewayDisconnect,
+	OnGatewayInit,
+	SubscribeMessage,
+	WebSocketGateway,
+	WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { AuthService } from '../auth/service/auth.service';
@@ -13,47 +14,60 @@ import { Logger } from '@nestjs/common';
 
 @WebSocketGateway(8001)
 export class EventGateWay
-  implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect
+	implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect
 {
-  constructor(private readonly authService: AuthService) {}
-  private readonly logger = new Logger(EventGateWay.name);
+	constructor(private readonly authService: AuthService) {}
+	private readonly logger = new Logger(EventGateWay.name);
 
-  @WebSocketServer()
-  server: Server;
+	@WebSocketServer()
+	server: Server;
 
-  //handle connection
-  async handleConnection(socket: Socket, ...args: any[]) {
-    console.log(`client ${socket.id} connected`);
-    const authHeader = socket.handshake.headers.token;
-    console.log('header socket ' + authHeader);
-    if (authHeader) {
-      try {
-        const userId = await this.authService.authenticate(authHeader);
-        console.log(
-          'userId of socket ' + userId + ' with client Id ',
-          socket.id,
-        );
-        socket.data.userId = userId;
-      } catch (error) {
-        socket.disconnect();
-      }
-    } else {
-      socket.disconnect();
-    }
-  }
+	//handle connection
+	async handleConnection(socket: Socket, ...args: any[]) {
+		console.log(`client connected [${socket.id}]`);
+		const authHeader = socket.handshake.headers.token;
+		if (authHeader) {
+			try {
+				const userId = await this.authService.authenticate(authHeader);
+				this.logger.log('userId ' + `[${userId}]`);
+				socket.join(userId);
+				socket.data.userId = userId;
+			} catch (error) {
+				socket.disconnect();
+			}
+		} else {
+			socket.disconnect();
+		}
+	}
 
-  afterInit(server: any) {}
+	@SubscribeMessage('onStartExam')
+	handleStartExam(@MessageBody() body, @ConnectedSocket() socket: Socket) {
+		console.log('listening ' + socket.data.userId);
+		this.startCountDown(socket, 30);
+	}
 
-  //handle disconnection
-  handleDisconnect(socket: Socket) {
-    console.log(socket.id, socket.data.userId, ' disconnect');
-  }
+	afterInit(server: any) {}
 
-  @SubscribeMessage('mess')
-  handleEvent(@MessageBody() data: string) {
-    console.log(data);
-    this.server.emit('onMess', 'hi ag');
-    return 'hi mày';
-  }
-  //
+	//handle disconnection
+	handleDisconnect(@ConnectedSocket() socket: Socket) {
+		this.logger.log(`client disconnected ${socket.data.userId}`);
+	}
+
+	startCountDown(socket: Socket, countDownTimer: number) {
+		const countdownInterval = setInterval(() => {
+			this.handleEmitSocket(countDownTimer, socket.data.userId, 'onCountDown');
+			countDownTimer--;
+			if (countDownTimer < 0) {
+				clearInterval(countdownInterval);
+			}
+		}, 1000);
+	}
+
+	handleEmitSocket(data: any, to: string, event: string) {
+		if (to) {
+			this.server.to(to).emit(event, data);
+		} else {
+			this.server.emit(event, data);
+		}
+	}
 }

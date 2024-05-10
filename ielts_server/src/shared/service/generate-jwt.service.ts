@@ -10,28 +10,31 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GenerateJwtService {
-  constructor(private readonly configService: ConfigService) {}
+	constructor(private readonly configService: ConfigService) {}
 
-  static generateToken() {
-    // Generate a new RSA key pair
-    const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-      modulusLength: 2048, // Adjust the key size as needed
-      publicKeyEncoding: {
-        type: 'pkcs1', // or 'spki' depending on your use case
-        format: 'pem',
-      },
-      privateKeyEncoding: {
-        type: 'pkcs1', // or 'pkcs8' depending on your use case
-        format: 'pem',
-        cipher: 'aes-256-cbc', // optional
-        passphrase: 'your-passphrase', // optional
-      },
-    });
+	static generateToken() {
+		// Generate a new RSA key pair
+		const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+			modulusLength: 2048, // Adjust the key size as needed
+			publicKeyEncoding: {
+				type: 'pkcs1', // or 'spki' depending on your use case
+				format: 'pem',
+			},
+			privateKeyEncoding: {
+				type: 'pkcs1', // or 'pkcs8' depending on your use case
+				format: 'pem',
+				cipher: 'aes-256-cbc', // optional
+				passphrase: 'your-passphrase', // optional
+			},
+		});
+		console.log(publicKey);
+		console.log('-----++++');
+		console.log(privateKey);
 
-    if (!process.env.JWT_PRIVATE_KEY) {
-      process.env.JWT_PUBLIC_KEY = publicKey;
-      process.env.JWT_PRIVATE_KEY = privateKey;
-      console.log('saved');
-    }
-  }
+		if (!process.env.JWT_PRIVATE_KEY) {
+			process.env.JWT_PUBLIC_KEY = publicKey;
+			process.env.JWT_PRIVATE_KEY = privateKey;
+			console.log('saved');
+		}
+	}
 }

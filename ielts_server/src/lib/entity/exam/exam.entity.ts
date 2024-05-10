@@ -22,8 +22,8 @@ export class Exam {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'timestamp', nullable: true })
-  time: Date;
+  @Column({ type: 'time', nullable: true })
+  time: string;
 
   @Column({ type: 'enum', enum: TestStatus, default: TestStatus.DRAFT })
   status: TestStatus;

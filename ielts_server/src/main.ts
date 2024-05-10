@@ -8,7 +8,8 @@ import { GenerateJwtService } from './shared/service/generate-jwt.service';
 import { configSwagger } from './lib/config/swagger.config';
 
 async function bootstrap() {
-  GenerateJwtService.generateToken();
+  //TODO: mở comment khi không muốn set cứng key pair
+  // GenerateJwtService.generateToken();
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.setGlobalPrefix('/api');
@@ -26,7 +27,6 @@ async function bootstrap() {
   new Logger('main').debug(
     `Go to swagger  + http://localhost:${process.env.APP_PORT}/api/`,
   );
-
   new Logger('main').debug(`SOCKET ON PORT  + http://localhost:${8001}/`);
 }
 bootstrap();

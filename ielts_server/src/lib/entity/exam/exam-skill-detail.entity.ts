@@ -8,11 +8,11 @@ export class ExamSkillDetail {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @ManyToOne(() => Part, (type) => type.id)
-  parts: Part;
+  part: Part;
 
   @ManyToOne(() => SkillExam, (type) => type.id)
   skillExam: SkillExam;
 
-  @Column({ type: 'timestamp' })
-  time: Date;
+  @Column({ type: 'time' })
+  time: string;
 }
