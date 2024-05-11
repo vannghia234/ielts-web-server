@@ -9,12 +9,13 @@ import {
 } from '@nestjs/common';
 import { ExamSkillDetail } from 'src/lib/entity/exam/exam-skill-detail.entity';
 import { ExamSkillDetailService } from '../service/exam-skill-detail.service';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
 import {
   CreateExamSkillDetailDto,
   UpdateExamSkillDetailDto,
 } from '../dto/create-exam-skill-detail.dto';
+import { publicOperation } from 'src/module/user/controller/user-answer.controller';
 
 @ApiTags('exam-skill-detail')
 @ApiResponse({
@@ -34,12 +35,16 @@ export class ExamSkillDetailController {
 
   @Get()
   @Public()
+	@ApiOperation(publicOperation)
+
   async findAll(): Promise<ExamSkillDetail[]> {
     return this.examSkillDetailService.findAll();
   }
 
   @Get(':id')
   @Public()
+	@ApiOperation(publicOperation)
+
   async findOne(@Param('id') id: string): Promise<ExamSkillDetail> {
     return this.examSkillDetailService.findOne(id);
   }
