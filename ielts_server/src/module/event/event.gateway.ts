@@ -12,10 +12,8 @@ import { Server, Socket } from 'socket.io';
 import { AuthService } from '../auth/service/auth.service';
 import { Logger } from '@nestjs/common';
 
-@WebSocketGateway(8001)
-export class EventGateWay
-	implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect
-{
+@WebSocketGateway(8001, { transports: ['websocket'] })
+export class EventGateWay implements OnGatewayConnection, OnGatewayDisconnect {
 	constructor(private readonly authService: AuthService) {}
 	private readonly logger = new Logger(EventGateWay.name);
 
@@ -40,22 +38,24 @@ export class EventGateWay
 		}
 	}
 
+	//handle disconnection
+	handleDisconnect(@ConnectedSocket() socket: Socket) {
+		this.logger.log(`client disconnected ${socket.data.userId}`);
+	}
+
 	@SubscribeMessage('onStartExam')
 	handleStartExam(@MessageBody() body, @ConnectedSocket() socket: Socket) {
 		console.log('listening ' + socket.data.userId);
 		this.startCountDown(socket, 30);
 	}
 
-	afterInit(server: any) {}
-
-	//handle disconnection
-	handleDisconnect(@ConnectedSocket() socket: Socket) {
-		this.logger.log(`client disconnected ${socket.data.userId}`);
-	}
-
 	startCountDown(socket: Socket, countDownTimer: number) {
 		const countdownInterval = setInterval(() => {
-			this.handleEmitSocket(countDownTimer, socket.data.userId, 'onCountDown');
+			this.handleEmitSocket(
+				countDownTimer,
+				socket.data.userId,
+				'onCountDownExamTimer',
+			);
 			countDownTimer--;
 			if (countDownTimer < 0) {
 				clearInterval(countdownInterval);

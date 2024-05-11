@@ -30,7 +30,6 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @ApiBearerAuth()
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
   }

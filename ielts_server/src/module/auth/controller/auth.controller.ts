@@ -1,63 +1,66 @@
 import { Public } from 'src/shared/constant/meta-data';
 import { AuthService } from '../service/auth.service';
 import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Request,
-  UseGuards,
+	Body,
+	Controller,
+	HttpCode,
+	HttpStatus,
+	Post,
+	Request,
+	UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { LoginDto } from '../../user/dto/login.dto';
 import { CreateUserDto } from 'src/module/user/dto/create-user.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { publicOperation } from 'src/module/user/controller/user-answer.controller';
 
 @Controller('auth')
-@ApiTags('Authentication')
+@ApiTags('Auth')
 @ApiResponse({
-  status: 200,
-  description: 'OK',
-  content: {
-    ApiResponse: {
-      example: 'OK ',
-    },
-  },
+	status: 200,
+	description: 'OK',
+	content: {
+		ApiResponse: {
+			example: 'OK ',
+		},
+	},
 })
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
 @Public()
 export class AuthController {
-  constructor(private authService: AuthService) {}
-  @Post('login')
-  @ApiResponse({
-    status: 400,
-    description: 'Bad Request',
-    content: {
-      ApiResponse: {
-        example: 'statusCode 40001: Tài khoản hoặc mật khẩu sai',
-      },
-    },
-  })
-  async login(@Body() user: LoginDto) {
-    return this.authService.login(user.username, user.password);
-  }
+	constructor(private authService: AuthService) {}
+	@Post('login')
+	@ApiResponse({
+		status: 400,
+		description: 'Bad Request',
+		content: {
+			ApiResponse: {
+				example: 'statusCode 40001: Tài khoản hoặc mật khẩu sai',
+			},
+		},
+	})
+	@ApiOperation(publicOperation)
+	async login(@Body() user: LoginDto) {
+		return this.authService.login(user.username, user.password);
+	}
 
-  @ApiOperation({
-    summary: 'Đăng ký',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad Request',
-    content: {
-      ApiResponse: {
-        example: 'statusCode 40002: Mật khẩu tối thiểu 8 kí tự',
-      },
-    },
-  })
-  @Post('register')
-  async register(@Body() user: CreateUserDto) {
-    return this.authService.register(user);
-  }
+	@ApiOperation({
+		summary: 'Đăng ký',
+	})
+	@ApiResponse({
+		status: 400,
+		description: 'Bad Request',
+		content: {
+			ApiResponse: {
+				example: 'statusCode 40002: Mật khẩu tối thiểu 8 kí tự',
+			},
+		},
+	})
+	@ApiOperation(publicOperation)
+	@Post('register')
+	async register(@Body() user: CreateUserDto) {
+		return this.authService.register(user);
+	}
 }

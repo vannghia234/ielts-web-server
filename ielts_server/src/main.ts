@@ -8,25 +8,23 @@ import { GenerateJwtService } from './shared/service/generate-jwt.service';
 import { configSwagger } from './lib/config/swagger.config';
 
 async function bootstrap() {
-  //TODO: mở comment khi không muốn set cứng key pair
-  // GenerateJwtService.generateToken();
-  const app = await NestFactory.create(AppModule);
-  app.enableCors();
-  app.setGlobalPrefix('/api');
+	//TODO: mở comment khi không muốn set cứng key pair
+	// GenerateJwtService.generateToken();
+	const app = await NestFactory.create(AppModule);
+	app.enableCors();
+	app.setGlobalPrefix('/api');
+	app.useGlobalPipes(new ValidationPipe());
 
-  app.useGlobalPipes(new ValidationPipe());
+	const document = SwaggerModule.createDocument(app, configSwagger);
 
-  const document = SwaggerModule.createDocument(app, configSwagger);
+	SwaggerModule.setup('api', app, document);
 
-  SwaggerModule.setup('api', app, document);
+	await app.listen(process.env.APP_PORT);
 
-  await app.listen(process.env.APP_PORT);
-  new Logger('main').debug(
-    'Server is running with port ' + process.env.APP_PORT,
-  );
-  new Logger('main').debug(
-    `Go to swagger  + http://localhost:${process.env.APP_PORT}/api/`,
-  );
-  new Logger('main').debug(`SOCKET ON PORT  + http://localhost:${8001}/`);
+	new Logger('main').debug('Server is running on port ' + process.env.APP_PORT);
+	new Logger('main').debug(
+		`Go to swagger http://localhost:${process.env.APP_PORT}/api/`,
+	);
+	new Logger('main').debug(`SOCKET ON PORT http://localhost:${8001}/`);
 }
 bootstrap();

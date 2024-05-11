@@ -9,8 +9,8 @@ export class CreateUserAnswerDetailDto {
 
 	@IsNotEmpty()
 	@IsString()
-	@ApiProperty()
-	answer: string;
+	@ApiProperty({ type: 'jsonb' })
+	answer: any;
 
 	@IsNotEmpty()
 	@IsString()

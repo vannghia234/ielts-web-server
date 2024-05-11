@@ -16,18 +16,34 @@ import { GroupQuestion } from 'src/lib/entity/groupQuestion/GroupQuestion.entity
 import { Public } from 'src/shared/constant/meta-data';
 import { CreateManyGroupQuestionDto } from './dto/ create-many.dto';
 import { UpdateManyGroupQuestionDto } from './dto/update-many.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@Controller('group-questions')
+@Controller('group-question')
+@Controller('auth')
+@ApiTags('group-question')
+@ApiResponse({
+  status: 200,
+  description: 'OK',
+  content: {
+    ApiResponse: {
+      example: 'OK ',
+    },
+  },
+})
+@ApiResponse({ status: 404, description: 'Not Found' })
+@ApiResponse({ status: 500, description: 'Server Error' })
 @Public()
 export class GroupQuestionController {
   constructor(private readonly groupQuestionService: GroupQuestionService) {}
 
   @Get()
+  @Public()
   async findAll(): Promise<GroupQuestion[]> {
     return this.groupQuestionService.findAll();
   }
 
   @Get(':id')
+  @Public()
   async findOne(@Param('id') id: string): Promise<GroupQuestion> {
     return this.groupQuestionService.findOne(id);
   }

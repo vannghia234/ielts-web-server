@@ -33,6 +33,6 @@ export class GroupQuestion {
 		| FillTheBlank[]
 		| MatchingFillBlank[];
 
-	@ManyToOne(() => Part, (part) => part.groupQuestions, { onDelete: 'CASCADE' })
+	@ManyToOne(() => Part, (part) => part.groupQuestions)
 	part: Part;
 }
