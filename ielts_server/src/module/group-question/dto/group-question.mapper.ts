@@ -4,7 +4,7 @@ import { QuestionType } from 'src/shared/constant/enum_database';
 import {
   Dropdown,
   FillTheBlank,
-  Matching,
+  DragAndDrop,
   MatchingFillBlank,
   MatchingHeading,
   MultipleChoice,
@@ -35,8 +35,8 @@ export class GroupQuestionMapper {
       case QuestionType.Dropdown:
         groupQuestion.data = dto.data as Dropdown[];
         break;
-      case QuestionType.Matching:
-        groupQuestion.data = dto.data as Matching[];
+      case QuestionType.DragAndDrop:
+        groupQuestion.data = dto.data as DragAndDrop[];
         break;
       case QuestionType.MatchingHeading:
         groupQuestion.data = dto.data as MatchingHeading[];
@@ -44,7 +44,7 @@ export class GroupQuestionMapper {
       case QuestionType.FillInTheBlank:
         groupQuestion.data = dto.data as FillTheBlank[];
         break;
-      case QuestionType.MatchingFillInTheBlanks:
+      case QuestionType.MatchingFillInBlank:
         groupQuestion.data = dto.data as MatchingFillBlank[];
         break;
       default:

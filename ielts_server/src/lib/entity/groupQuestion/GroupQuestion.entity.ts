@@ -1,12 +1,12 @@
 import { QuestionType } from 'src/shared/constant/enum_database';
 import {
-	Dropdown,
-	Matching,
-	MatchingHeading,
-	FillTheBlank,
-	MatchingFillBlank,
-	MultipleChoice,
-	MultipleResponse,
+  Dropdown,
+  DragAndDrop,
+  MatchingHeading,
+  FillTheBlank,
+  MatchingFillBlank,
+  MultipleChoice,
+  MultipleResponse,
 } from 'src/lib/entity/groupQuestion/QuestionType';
 import { PrimaryGeneratedColumn, Column, ManyToOne, Entity } from 'typeorm';
 import { Part } from '../part/Part.entity';
@@ -23,15 +23,15 @@ export class GroupQuestion {
 	})
 	questionType: QuestionType;
 
-	@Column('json')
-	data:
-		| MultipleChoice[]
-		| MultipleResponse[]
-		| Dropdown[]
-		| Matching[]
-		| MatchingHeading[]
-		| FillTheBlank[]
-		| MatchingFillBlank[];
+  @Column('json')
+  data:
+    | MultipleChoice[]
+    | MultipleResponse[]
+    | Dropdown[]
+    | DragAndDrop[]
+    | MatchingHeading[]
+    | FillTheBlank[]
+    | MatchingFillBlank[];
 
 	@ManyToOne(() => Part, (part) => part.groupQuestions)
 	part: Part;

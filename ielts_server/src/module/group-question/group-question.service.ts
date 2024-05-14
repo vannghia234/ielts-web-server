@@ -66,52 +66,52 @@ export class GroupQuestionService {
 		}
 	}
 
-	async createMany(
-		createManyGroupQuestionsDto: CreateManyGroupQuestionDto,
-	): Promise<GroupQuestion[]> {
-		const createdGroupQuestions: GroupQuestion[] = [];
-		const part = await this.partService.findOne(
-			createManyGroupQuestionsDto.partId,
-		);
-		for (const createGroupQuestionDto of createManyGroupQuestionsDto.groupQuestions) {
-			try {
-				const groupQuestion = this.groupQuestionRepository.create(
-					GroupQuestionMapper.createGroupQuestion(createGroupQuestionDto, part),
-				);
-				const createdGroupQuestion = await this.groupQuestionRepository.save(
-					groupQuestion,
-				);
-				createdGroupQuestions.push(createdGroupQuestion);
-			} catch {
-				// Handle error
-			}
-		}
-		return createdGroupQuestions;
-	}
-	async updateMany(
-		updateManyGroupQuestionsDto: UpdateManyGroupQuestionDto,
-	): Promise<GroupQuestion[]> {
-		const part = await this.partService.findOne(
-			updateManyGroupQuestionsDto.partId,
-		);
-		this.groupQuestionRepository.delete({ part: part });
-		const updatedGroupQuestion: GroupQuestion[] = [];
-		for (const updateGroupQuestionDto of updateManyGroupQuestionsDto.groupQuestions) {
-			try {
-				const groupQuestion = this.groupQuestionRepository.create(
-					GroupQuestionMapper.createGroupQuestion(updateGroupQuestionDto, part),
-				);
-				const createdGroupQuestion = await this.groupQuestionRepository.save(
-					groupQuestion,
-				);
-				updatedGroupQuestion.push(createdGroupQuestion);
-			} catch (error) {
-				console.log(error);
-				return error;
-			}
-		}
-		return updatedGroupQuestion;
-	}
+  async createMany(
+    createManyGroupQuestionsDto: CreateManyGroupQuestionDto,
+  ): Promise<GroupQuestion[]> {
+    const createdGroupQuestions: GroupQuestion[] = [];
+    const part = await this.partService.findOne(
+      createManyGroupQuestionsDto.partId,
+    );
+    for (const createGroupQuestionDto of createManyGroupQuestionsDto.groupQuestions) {
+      try {
+        const groupQuestion = this.groupQuestionRepository.create(
+          GroupQuestionMapper.createGroupQuestion(createGroupQuestionDto, part),
+        );
+        const createdGroupQuestion = await this.groupQuestionRepository.save(
+          groupQuestion,
+        );
+        createdGroupQuestions.push(createdGroupQuestion);
+      } catch {
+        // Handle error
+      }
+    }
+    return createdGroupQuestions;
+  }
+  async updateMany(
+    updateManyGroupQuestionsDto: UpdateManyGroupQuestionDto,
+  ): Promise<GroupQuestion[]> {
+    const part = await this.partService.findOne(
+      updateManyGroupQuestionsDto.partId,
+    );
+    this.groupQuestionRepository.delete({ part: part });
+    const updatedGroupQuestion: GroupQuestion[] = [];
+    for (const updateGroupQuestionDto of updateManyGroupQuestionsDto.groupQuestions) {
+      try {
+        const groupQuestion = this.groupQuestionRepository.create(
+          GroupQuestionMapper.createGroupQuestion(updateGroupQuestionDto, part),
+        );
+        const createdGroupQuestion = await this.groupQuestionRepository.save(
+          groupQuestion,
+        );
+        updatedGroupQuestion.push(createdGroupQuestion);
+      } catch (error) {
+        console.log(error);
+        return error;
+      }
+    }
+    return updatedGroupQuestion;
+  }
 
 	async update(
 		id: string,

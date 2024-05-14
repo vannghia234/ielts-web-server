@@ -20,11 +20,10 @@ export enum QuestionType {
   MultipleChoice = 'Multiple Choice',
   MultipleResponse = 'Multiple Response',
   Dropdown = 'Dropdown',
-  Matching = 'Matching',
+  DragAndDrop = 'Drag&Drop',
   MatchingHeading = 'Matching heading',
-  FillInTheBlank = 'Fill in the Blank',
+  FillInTheBlank = 'Fill In The Blank',
   MatchingFillInBlank = 'Matching fill in the blanks',
-  MatchingFillInTheBlanks = 'Matching Fill In The Blanks',
 }
 export enum PartNumber {
   Part1 = 'Part 1',

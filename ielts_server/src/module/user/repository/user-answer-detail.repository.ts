@@ -37,7 +37,7 @@ export class UserAnswerDetailRepository {
 
   async update(
     id: string,
-    updateUserAnswerDetail: Partial<UserAnswerDetail>,
+    updateUserAnswerDetail: UserAnswerDetail,
   ): Promise<UserAnswerDetail> {
     await this.findOne(id); // Ensure user answer detail exists
     await this.userAnswerDetailRepository.update(id, updateUserAnswerDetail);

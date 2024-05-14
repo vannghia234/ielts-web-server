@@ -14,11 +14,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmPostgresConfig } from './lib/config/orm.config';
 import { PostInterceptor } from './interceptor/post.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { UploadModule } from './module/upload/upload.module';
+
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { GroupQuestionModule } from './module/group-question/group-question.module';
+import { ResourceModule } from './module/resource/resource.module';
 @Module({
   imports: [
     EventModule,
@@ -46,7 +47,7 @@ import { GroupQuestionModule } from './module/group-question/group-question.modu
     SharedModule,
     UserModule,
     ExamModule,
-    UploadModule,
+    ResourceModule,
   ],
   controllers: [AppController],
   providers: [

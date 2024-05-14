@@ -1,5 +1,15 @@
 import { Skill, PartNumber } from 'src/shared/constant/enum_database';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  Generated,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  getRepository,
+} from 'typeorm';
 import { GroupQuestion } from '../groupQuestion/GroupQuestion.entity';
 
 @Entity()
@@ -7,8 +17,18 @@ export class Part {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Generated('increment')
+  @Column({ unique: true })
+  publicId: number;
+
   @Column()
   title: string;
+
+  @Column({ nullable: true })
+  content: string;
+
+  @Column({ nullable: true })
+  resource: string;
 
   @Column({
     type: 'enum',
@@ -26,4 +46,17 @@ export class Part {
 
   @OneToMany(() => GroupQuestion, (groupQuestion) => groupQuestion.part)
   groupQuestions: GroupQuestion[];
+
+  @CreateDateColumn({
+    type: 'timestamp with time zone',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp with time zone',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 }

@@ -22,7 +22,7 @@ export type Dropdown = {
   answers: Answer[];
 };
 
-export type Matching = {
+export type DragAndDrop = {
   id?: string; // Note: Corrected to use '?' for optional property
   question?: string; // Note: Corrected to use '?' for optional property
   answer: Answer;
@@ -44,6 +44,6 @@ export type FillTheBlank = {
 export type MatchingFillBlank = {
   id?: string; // Note: Corrected to use '?' for optional property
   question?: string; // Note: Corrected to use '?' for optional property
-  correctAnswers: Answer[];
+  answers: Answer[];
   totalAnswers: Answer[];
 };

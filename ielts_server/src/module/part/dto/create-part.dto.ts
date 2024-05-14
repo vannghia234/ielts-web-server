@@ -8,6 +8,12 @@ export class CreatePartDto {
   @ApiProperty({ enum: Skill, default: Skill.LISTENING })
   skill: Skill;
 
+  @ApiProperty()
+  content: string;
+
+  @ApiProperty()
+  resource: string;
+
   @ApiProperty({ enum: PartNumber, default: PartNumber.Part1 })
   partNumber: PartNumber;
 }

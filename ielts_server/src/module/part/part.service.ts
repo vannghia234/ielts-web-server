@@ -1,14 +1,10 @@
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-  forwardRef,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Part } from 'src/lib/entity/part/Part.entity';
-import { Repository } from 'typeorm';
+import { ILike, Like, Repository } from 'typeorm';
 import { CreatePartDto } from './dto/create-part.dto';
 import { UpdatePartDto } from './dto/update-part.dto';
+import { PartNumber, Skill } from 'src/shared/constant/enum_database';
 
 @Injectable()
 export class PartService {
@@ -16,8 +12,31 @@ export class PartService {
     @InjectRepository(Part)
     private readonly partRepository: Repository<Part>,
   ) {}
-  async findAll(): Promise<Part[]> {
-    return this.partRepository.find();
+  async find(
+    search?: string,
+    limit?: number,
+    page?: number,
+    skill?: string,
+    partNumber?: string,
+  ): Promise<{ parts: Part[]; totalPage: number }> {
+    const offset = limit * (page - 1);
+
+    const part: PartNumber = PartNumber[partNumber as keyof typeof PartNumber];
+    const skillChosen: Skill = Skill[skill as keyof typeof Skill];
+
+    const [parts, totalCount] = await this.partRepository.findAndCount({
+      take: limit,
+      skip: offset,
+      where: {
+        title: ILike(`%${search}%`),
+        partNumber: part,
+        skill: skillChosen,
+      },
+    });
+
+    const totalPage = Math.ceil(totalCount / limit);
+
+    return { parts, totalPage };
   }
 
   async findOne(id: string): Promise<Part> {
@@ -32,6 +51,8 @@ export class PartService {
     part.title = partCreate.title;
     part.partNumber = partCreate.partNumber;
     part.skill = partCreate.skill;
+    part.content = partCreate.content;
+    part.resource = partCreate.resource;
     return this.partRepository.save(part);
   }
 
@@ -44,8 +65,24 @@ export class PartService {
     part.title = partUpdate.title;
     part.partNumber = partUpdate.partNumber;
     part.skill = partUpdate.skill;
+    if (
+      part.skill === Skill.LISTENING ||
+      (part.skill === Skill.SPEAKING && part.partNumber === PartNumber.Part2)
+    ) {
+      console.log('1 ', part.skill);
+      part.content = null;
+      part.resource = partUpdate.resource;
+    } else {
+      console.log('2 ', part.skill);
+
+      part.content = partUpdate.content;
+      part.resource = null;
+    }
     await this.partRepository.update(id, part);
     return this.partRepository.findOne({ where: { id } });
+  }
+  async findAll(): Promise<Part[]> {
+    return await this.partRepository.find();
   }
 
   async remove(id: string): Promise<Part[]> {
