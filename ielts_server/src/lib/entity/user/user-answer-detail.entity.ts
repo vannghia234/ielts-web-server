@@ -5,7 +5,7 @@ import {
 	MultipleChoice,
 	MultipleResponse,
 	Dropdown,
-	Matching,
+	DragAndDrop,
 	MatchingHeading,
 	FillTheBlank,
 	MatchingFillBlank,
@@ -23,7 +23,7 @@ export class UserAnswerDetail {
 		| MultipleChoice[]
 		| MultipleResponse[]
 		| Dropdown[]
-		| Matching[]
+		| DragAndDrop[]
 		| MatchingHeading[]
 		| FillTheBlank[]
 		| MatchingFillBlank[];
