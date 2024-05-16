@@ -74,12 +74,12 @@ export class UserService {
 				new ResponseBase('40005', 'Bạn không có quyền tạo tài khoản Admin'),
 			);
 		}
+		if (userDto.password.length < 8) {
+			throw new BadRequestException(
+				new ResponseBase('40002', 'Mật khẩu tối thiểu 8 kí tự').toJSON(),
+			);
+		}
 		try {
-			if (userDto.password.length < 8) {
-				throw new BadRequestException(
-					new ResponseBase('40002', 'Mật khẩu tối thiểu 8 kí tự').toJSON(),
-				);
-			}
 			const user = new User();
 			user.mail = userDto.mail;
 			user.name = userDto.name;
