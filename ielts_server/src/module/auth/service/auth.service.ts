@@ -44,7 +44,7 @@ export class AuthService {
     };
 
     const accessToken = await this.JWTService.signPayload(payload, {
-      expiresIn: '5h',
+      expiresIn: '10d',
     });
     const refreshToken = await this.JWTService.signPayload(payload, {
       expiresIn: '7d',

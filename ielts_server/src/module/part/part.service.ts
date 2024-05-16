@@ -67,14 +67,13 @@ export class PartService {
     part.skill = partUpdate.skill;
     if (
       part.skill === Skill.LISTENING ||
-      (part.skill === Skill.SPEAKING && part.partNumber === PartNumber.Part2)
+      (part.skill === Skill.SPEAKING &&
+        (part.partNumber === PartNumber.Part1 ||
+          part.partNumber === PartNumber.Part3))
     ) {
-      console.log('1 ', part.skill);
       part.content = null;
       part.resource = partUpdate.resource;
     } else {
-      console.log('2 ', part.skill);
-
       part.content = partUpdate.content;
       part.resource = null;
     }
