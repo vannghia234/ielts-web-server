@@ -11,7 +11,6 @@ import { BCryptService } from './bcrypt.service';
 import { ResponseBase } from 'src/shared/constant/response_base';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserRole } from 'src/shared/constant/enum_database';
-import e from 'express';
 @Injectable()
 export class UserService {
 	constructor(

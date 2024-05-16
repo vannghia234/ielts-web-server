@@ -1,5 +1,6 @@
 import {
 	Column,
+	CreateDateColumn,
 	Entity,
 	ManyToOne,
 	OneToMany,
@@ -30,6 +31,9 @@ export class User {
 		default: UserRole.TEMP_USER,
 	})
 	role: UserRole;
+
+	@CreateDateColumn()
+	createdAt: Date;
 
 	@OneToMany(() => UserAnswer, (type) => type.user)
 	userAnswer: UserAnswer[];
