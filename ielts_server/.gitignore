@@ -20,7 +20,6 @@ dist/*
 /.project
 /.settings 
 *.code-workspace
-
 # Vim
 [._]*.s[a-v][a-z]
 [._]*.sw[a-p]
