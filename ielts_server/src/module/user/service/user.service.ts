@@ -1,5 +1,7 @@
 import {
 	BadRequestException,
+	HttpException,
+	HttpStatus,
 	Injectable,
 	Logger,
 	UnauthorizedException,
@@ -11,6 +13,7 @@ import { BCryptService } from './bcrypt.service';
 import { ResponseBase } from 'src/shared/constant/response_base';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserRole } from 'src/shared/constant/enum_database';
+import { EmailAlreadyExistingException } from 'src/core/exception';
 @Injectable()
 export class UserService {
 	constructor(
@@ -67,28 +70,42 @@ export class UserService {
 		}
 	}
 
-	async createUser(userDto: CreateUserDto): Promise<User | undefined> {
+	async createUser(userDto: CreateUserDto): Promise<any> {
 		if (userDto.role === UserRole.ADMIN) {
 			throw new UnauthorizedException(
 				new ResponseBase('40005', 'Bạn không có quyền tạo tài khoản Admin'),
 			);
 		}
-		if (userDto.password.length < 8) {
-			throw new BadRequestException(
-				new ResponseBase('40002', 'Mật khẩu tối thiểu 8 kí tự').toJSON(),
-			);
-		}
 		try {
-			const user = new User();
-			user.mail = userDto.mail;
-			user.name = userDto.name;
-			user.password = await this.bCryptService.hashPassWord(userDto.password);
-			user.role = userDto.role;
-			return await this.usersRepository.create(user);
+			const userMail = await this.usersRepository.findByMail(userDto.mail);
+			if (userMail && !userMail.password) {
+				userMail.name = userDto.name;
+				userMail.password = await this.bCryptService.hashPassWord(
+					userDto.password,
+				);
+				userMail.role = userDto.role;
+				return this.usersRepository.update(userMail.id, userMail);
+			} else {
+				return new EmailAlreadyExistingException();
+			}
 		} catch (error) {
-			throw new BadRequestException(
-				new ResponseBase('40004', 'Email đã tồn tại'),
-			);
+			if (userDto.password.length < 8) {
+				throw new BadRequestException(
+					new ResponseBase('40002', 'Mật khẩu tối thiểu 8 kí tự').toJSON(),
+				);
+			}
+			try {
+				const user = new User();
+				user.mail = userDto.mail;
+				user.name = userDto.name;
+				user.password = await this.bCryptService.hashPassWord(userDto.password);
+				user.role = userDto.role;
+				return await this.usersRepository.create(user);
+			} catch (error) {
+				throw new BadRequestException(
+					new ResponseBase('40004', 'Email đã tồn tại'),
+				);
+			}
 		}
 	}
 }

@@ -1,6 +1,13 @@
 import { Public } from 'src/shared/constant/meta-data';
 import { AuthService } from '../service/auth.service';
-import { Body, Controller, Post, Request } from '@nestjs/common';
+import {
+	BadRequestException,
+	Body,
+	Controller,
+	Post,
+	Request,
+	Res,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { LoginDto } from '../../user/dto/login.dto';
 import {
@@ -9,6 +16,8 @@ import {
 } from 'src/module/user/dto/create-user.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { publicOperation } from 'src/module/user/controller/user-answer.controller';
+import { ResponseBase } from 'src/shared/constant/response_base';
+import { EmailAlreadyExistingException } from 'src/core/exception';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -56,7 +65,12 @@ export class AuthController {
 	@ApiOperation(publicOperation)
 	@Post('register')
 	async register(@Body() user: CreateUserDto) {
-		return this.authService.register(user);
+		const res = await this.authService.register(user);
+		if (res instanceof EmailAlreadyExistingException) {
+			throw new BadRequestException(
+				new ResponseBase('404', 'email đã tồn tại'),
+			);
+		} else return res;
 	}
 
 	@ApiOperation({
