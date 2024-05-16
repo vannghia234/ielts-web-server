@@ -5,11 +5,11 @@ import {
 	MultipleChoice,
 	MultipleResponse,
 	Dropdown,
-	Matching,
 	MatchingHeading,
 	FillTheBlank,
 	MatchingFillBlank,
 } from '../groupQuestion/QuestionType';
+import { Matching } from 'src/shared/constant/group-question_data_type';
 @Entity()
 export class UserAnswerDetail {
 	@PrimaryGeneratedColumn('uuid')

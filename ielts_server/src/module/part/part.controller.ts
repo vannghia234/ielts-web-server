@@ -1,13 +1,13 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Param,
-  Body,
-  Query,
-  BadRequestException,
+	Controller,
+	Get,
+	Post,
+	Put,
+	Delete,
+	Param,
+	Body,
+	Query,
+	BadRequestException,
 } from '@nestjs/common';
 import { PartService } from './part.service';
 import { Part } from 'src/lib/entity/part/Part.entity';
@@ -15,6 +15,8 @@ import { CreatePartDto } from './dto/create-part.dto';
 import { Public } from 'src/shared/constant/meta-data';
 import { UpdatePartDto } from './dto/update-part.dto';
 import { PartNumber, Skill } from 'src/shared/constant/enum_database';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { publicOperation } from '../user/controller/user-answer.controller';
 
 @Controller('part')
 @Controller('group-questions')
@@ -35,39 +37,38 @@ import { PartNumber, Skill } from 'src/shared/constant/enum_database';
 export class PartController {
 	constructor(private readonly partService: PartService) {}
 
-  @Get()
-  async find(
-    @Query('search') search = '',
-    @Query('limit') limit = 10,
-    @Query('page') page = 1,
-    @Query('skill') skill = '',
-    @Query('partnumber') partNumber = '',
-  ): Promise<any> {
-    try {
-      const { parts, totalPage } = await this.partService.find(
-        search,
-        limit,
-        page,
-        skill,
-        partNumber,
-      );
-      return {
-        message: 'Get Parts Successfully',
-        results: {
-          parts,
-          count: parts.length,
-          totalPage,
-        },
-      };
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
-  }
+	@Get()
+	async find(
+		@Query('search') search = '',
+		@Query('limit') limit = 10,
+		@Query('page') page = 1,
+		@Query('skill') skill = '',
+		@Query('partnumber') partNumber = '',
+	): Promise<any> {
+		try {
+			const { parts, totalPage } = await this.partService.find(
+				search,
+				limit,
+				page,
+				skill,
+				partNumber,
+			);
+			return {
+				message: 'Get Parts Successfully',
+				results: {
+					parts,
+					count: parts.length,
+					totalPage,
+				},
+			};
+		} catch (error) {
+			throw new BadRequestException(error.message);
+		}
+	}
 
 	@Get(':id')
 	@Public()
 	@ApiOperation(publicOperation)
-
 	async findOne(@Param('id') id: string): Promise<Part> {
 		return this.partService.findOne(id);
 	}

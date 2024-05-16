@@ -1,34 +1,36 @@
 import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
+	Column,
+	Entity,
+	ManyToOne,
+	OneToMany,
+	PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserAnswer } from './user-answer.entity';
 import { UserRole } from 'src/shared/constant/enum_database';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-  @Column()
-  name: string;
+	@Column()
+	name: string;
 
-  @Column()
-  mail: string;
+	@Column({
+		unique: true,
+	})
+	mail: string;
 
-  @Column()
-  password: string;
+	@Column({ nullable: true })
+	password: string;
 
-  @Column({
-    type: 'enum',
-    enum: UserRole,
-    default: UserRole.TEMP_USER,
-  })
-  role: UserRole;
+	@Column({
+		type: 'enum',
+		enum: UserRole,
+		default: UserRole.TEMP_USER,
+	})
+	role: UserRole;
 
-  @OneToMany(() => UserAnswer, (type) => type.user)
-  userAnswer: UserAnswer[];
+	@OneToMany(() => UserAnswer, (type) => type.user)
+	userAnswer: UserAnswer[];
 }

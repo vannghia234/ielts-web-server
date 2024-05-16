@@ -1,17 +1,12 @@
 import { Public } from 'src/shared/constant/meta-data';
 import { AuthService } from '../service/auth.service';
-import {
-	Body,
-	Controller,
-	HttpCode,
-	HttpStatus,
-	Post,
-	Request,
-	UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { LoginDto } from '../../user/dto/login.dto';
-import { CreateUserDto } from 'src/module/user/dto/create-user.dto';
+import {
+	CreateUserDto,
+	createTempUserDto,
+} from 'src/module/user/dto/create-user.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { publicOperation } from 'src/module/user/controller/user-answer.controller';
 
@@ -62,5 +57,24 @@ export class AuthController {
 	@Post('register')
 	async register(@Body() user: CreateUserDto) {
 		return this.authService.register(user);
+	}
+
+	@ApiOperation({
+		summary:
+			'Đăng ký tài khoản cho người dùng vãng lai, tự động cập nhật lại thông tin ghi đè dựa vào email',
+	})
+	@ApiResponse({
+		status: 400,
+		description: 'Bad Request',
+		content: {
+			ApiResponse: {
+				example: '',
+			},
+		},
+	})
+	@ApiOperation(publicOperation)
+	@Post('register/tempUser')
+	async registerTempUser(@Body() user: createTempUserDto) {
+		return this.authService.registerTempUser(user);
 	}
 }
