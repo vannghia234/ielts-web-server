@@ -1,5 +1,6 @@
 import {
 	BadRequestException,
+	HttpException,
 	HttpStatus,
 	Injectable,
 	Logger,
@@ -16,7 +17,7 @@ import {
 	CreateUserDto,
 	createTempUserDto,
 } from 'src/module/user/dto/create-user.dto';
-import { UserRole } from 'src/shared/constant/enum_database';
+import { EmailAlreadyExistingException } from 'src/core/exception';
 
 @Injectable()
 export class AuthService {
@@ -69,6 +70,11 @@ export class AuthService {
 
 	async register(createUserDto: CreateUserDto) {
 		const user = await this.usersService.createUser(createUserDto);
+		console.log(user);
+		if (user instanceof EmailAlreadyExistingException) {
+			return user;
+		}
+
 		const { password, ...value } = user;
 		return value;
 	}

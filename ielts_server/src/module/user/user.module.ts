@@ -15,16 +15,16 @@ import { ExamModule } from '../exam/exam.module';
 import { ApiResponse } from '@nestjs/swagger';
 
 @Module({
-  imports: [
-    ExamModule,
-    TypeOrmModule.forFeature([User, UserAnswer, UserAnswerDetail]),
-  ],
-  controllers: [
-    UserController,
-    UserAnswerController,
-    UserAnswerDetailController,
-  ],
-  providers: [...userServices, BCryptService, ...userRepositories],
-  exports: [...userServices, BCryptService, ...userRepositories],
+	imports: [
+		ExamModule,
+		TypeOrmModule.forFeature([User, UserAnswer, UserAnswerDetail]),
+	],
+	controllers: [
+		UserController,
+		UserAnswerController,
+		UserAnswerDetailController,
+	],
+	providers: [...userServices, BCryptService, ...userRepositories],
+	exports: [...userServices, BCryptService, ...userRepositories],
 })
 export class UserModule {}

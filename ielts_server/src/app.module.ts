@@ -20,42 +20,44 @@ import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { GroupQuestionModule } from './module/group-question/group-question.module';
 import { ResourceModule } from './module/resource/resource.module';
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
-  imports: [
-    EventModule,
-    GroupQuestionModule,
-    PartModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'static'),
-    }),
-    AuthModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [AppConfig],
-    }),
-    // how to use
-    // import ConfigModule to Feature, dj ConfigService, const dbUser = this.configService.get<string>('DATABASE_USER');
-    //// get an environment variable
-    // const dbUser = this.configService.get<string>('DATABASE_USER');
-    // get a custom configuration value
-    // const dbHost = this.configService.get<string>('database.host');
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: TypeOrmPostgresConfig,
-    }),
-    SharedModule,
-    UserModule,
-    ExamModule,
-    ResourceModule,
-  ],
-  controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: PostInterceptor,
-    },
-  ],
+	imports: [
+		ScheduleModule.forRoot(),
+		EventModule,
+		GroupQuestionModule,
+		PartModule,
+		ServeStaticModule.forRoot({
+			rootPath: join(__dirname, '..', 'static'),
+		}),
+		AuthModule,
+		ConfigModule.forRoot({
+			isGlobal: true,
+			load: [AppConfig],
+		}),
+		// how to use
+		// import ConfigModule to Feature, dj ConfigService, const dbUser = this.configService.get<string>('DATABASE_USER');
+		//// get an environment variable
+		// const dbUser = this.configService.get<string>('DATABASE_USER');
+		// get a custom configuration value
+		// const dbHost = this.configService.get<string>('database.host');
+		TypeOrmModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: TypeOrmPostgresConfig,
+		}),
+		SharedModule,
+		UserModule,
+		ExamModule,
+		ResourceModule,
+	],
+	controllers: [AppController],
+	providers: [
+		AppService,
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: PostInterceptor,
+		},
+	],
 })
 export class AppModule {}
