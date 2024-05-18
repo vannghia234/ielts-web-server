@@ -31,7 +31,6 @@ export class AuthService {
 
 	async login(username: string, pass: string) {
 		const user = await this.usersService.findByMail(username);
-		// if (user.role !== UserRole.TEMP_USER) {
 		const isEqualPassword = await this.bcryptService.comparePassword(
 			pass,
 			user.password,
@@ -42,7 +41,6 @@ export class AuthService {
 				new ResponseBase('40001', 'Incorrect Username or Password').toJSON(),
 			);
 		}
-		// }
 		const payload = {
 			userId: user.id,
 			permissionName: user.role,
@@ -82,7 +80,20 @@ export class AuthService {
 	async registerTempUser(createUserDto: createTempUserDto) {
 		const user = await this.usersService.createTempUser(createUserDto);
 		console.log(user);
-		const { password, ...value } = user;
-		return value;
+		const { password, ...userInfo } = user;
+
+		const payload = {
+			userId: user.id,
+			permissionName: user.role,
+		};
+
+		const accessToken = await this.JWTService.signPayload(payload);
+
+		return new ResponseBase('200', 'Login Successfully', {
+			userInfo,
+			...{
+				accessToken,
+			},
+		});
 	}
 }

@@ -89,6 +89,11 @@ export class AuthController {
 	@ApiOperation(publicOperation)
 	@Post('register/tempUser')
 	async registerTempUser(@Body() user: createTempUserDto) {
-		return this.authService.registerTempUser(user);
+		const res = this.authService.registerTempUser(user);
+		if (res instanceof EmailAlreadyExistingException) {
+			throw new BadRequestException(
+				new ResponseBase('404', 'email đã tồn tại'),
+			);
+		} else return res;
 	}
 }

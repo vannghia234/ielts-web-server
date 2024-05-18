@@ -22,7 +22,7 @@ import { PermissionLectureGuard } from './guard/permission.guard';
 			useFactory: async (configService: ConfigService) => ({
 				secret: configService.get<string>('JWT_PRIVATE_KEY'),
 				signOptions: {
-					expiresIn: configService.get<string>('JWT_EXPIREDTIMER'),
+					expiresIn: configService.get<string>('JWT_EXPIRED_TIMER'),
 				},
 			}),
 			inject: [ConfigService],

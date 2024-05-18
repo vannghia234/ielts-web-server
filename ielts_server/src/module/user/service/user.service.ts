@@ -57,16 +57,28 @@ export class UserService {
 	}
 	async createTempUser(userDto: createTempUserDto) {
 		try {
+			if (userDto.password.length < 8) {
+				throw new BadRequestException(
+					new ResponseBase('40002', 'Mật khẩu tối thiểu 8 kí tự').toJSON(),
+				);
+			}
+
+			if (userDto.password !== userDto.confirmPassword) {
+				throw new BadRequestException(
+					new ResponseBase('40002', 'Mật khẩu xác nhận không đúng').toJSON(),
+				);
+			}
 			const user = new User();
 			user.mail = userDto.mail;
 			user.name = userDto.name;
 			user.role = UserRole.TEMP_USER;
+			user.password = await this.bCryptService.hashPassWord(userDto.password);
 			return await this.usersRepository.create(user);
 		} catch (error) {
 			console.log('error ', error);
-			const user = await this.usersRepository.findByMail(userDto.mail);
-			user.name = userDto.name;
-			return await this.usersRepository.update(user.id, user);
+			throw new BadRequestException(
+				new ResponseBase('40004', 'Email đã tồn tại'),
+			);
 		}
 	}
 

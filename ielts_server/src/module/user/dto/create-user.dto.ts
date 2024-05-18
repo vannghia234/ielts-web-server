@@ -40,4 +40,14 @@ export class createTempUserDto {
 	@ApiProperty()
 	@IsEmail()
 	mail: string;
+
+	@IsNotEmpty()
+	@IsString()
+	@ApiProperty()
+	password: string;
+
+	@IsNotEmpty()
+	@IsString()
+	@ApiProperty()
+	confirmPassword: string;
 }
