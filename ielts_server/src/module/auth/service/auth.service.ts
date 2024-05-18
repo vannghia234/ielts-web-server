@@ -16,6 +16,7 @@ import {
 	CreateUserDto,
 	createTempUserDto,
 } from 'src/module/user/dto/create-user.dto';
+import { UserRole } from 'src/shared/constant/enum_database';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +30,7 @@ export class AuthService {
 
 	async login(username: string, pass: string) {
 		const user = await this.usersService.findByMail(username);
+		// if (user.role !== UserRole.TEMP_USER) {
 		const isEqualPassword = await this.bcryptService.comparePassword(
 			pass,
 			user.password,
@@ -39,6 +41,7 @@ export class AuthService {
 				new ResponseBase('40001', 'Incorrect Username or Password').toJSON(),
 			);
 		}
+		// }
 		const payload = {
 			userId: user.id,
 			permissionName: user.role,
