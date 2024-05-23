@@ -4,6 +4,7 @@ import {
 	BadRequestException,
 	Body,
 	Controller,
+	Get,
 	Post,
 	Request,
 	Res,
@@ -18,6 +19,8 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { publicOperation } from 'src/module/user/controller/user-answer.controller';
 import { ResponseBase } from 'src/shared/constant/response_base';
 import { EmailAlreadyExistingException } from 'src/core/exception';
+import { UserService } from 'src/module/user/service/user.service';
+import { HeaderUserDTO } from '../dto/header-user.dto';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -32,9 +35,11 @@ import { EmailAlreadyExistingException } from 'src/core/exception';
 })
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
-@Public()
 export class AuthController {
-	constructor(private authService: AuthService) {}
+	constructor(
+		private authService: AuthService,
+		private userService: UserService,
+	) {}
 	@Post('login')
 	@ApiResponse({
 		status: 400,
@@ -45,6 +50,7 @@ export class AuthController {
 			},
 		},
 	})
+	@Public()
 	@ApiOperation(publicOperation)
 	async login(@Body() user: LoginDto) {
 		return this.authService.login(user.username, user.password);
@@ -63,6 +69,7 @@ export class AuthController {
 		},
 	})
 	@ApiOperation(publicOperation)
+	@Public()
 	@Post('register')
 	async register(@Body() user: CreateUserDto) {
 		const res = await this.authService.register(user);
@@ -87,6 +94,7 @@ export class AuthController {
 		},
 	})
 	@ApiOperation(publicOperation)
+	@Public()
 	@Post('register/tempUser')
 	async registerTempUser(@Body() user: createTempUserDto) {
 		const res = this.authService.registerTempUser(user);
@@ -95,5 +103,19 @@ export class AuthController {
 				new ResponseBase('404', 'email đã tồn tại'),
 			);
 		} else return res;
+	}
+
+	@Get('verify')
+	async verifyUser(@Request() userData: HeaderUserDTO) {
+		try {
+			const { password, ...userInfo } = await this.userService.findOne(
+				userData.userId,
+			);
+			return userInfo;
+		} catch (error) {
+			throw new BadRequestException(
+				new ResponseBase('500', 'An error occurred! Please try again.'),
+			);
+		}
 	}
 }
