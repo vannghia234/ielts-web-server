@@ -1,32 +1,33 @@
 import {
 	IsEnum,
 	IsNotEmpty,
+	IsOptional,
 	IsString,
 	IsUUID,
 	ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { QuestionType } from 'src/shared/constant/enum_database';
 import {
-  MultipleChoice,
-  MultipleResponse,
-  Dropdown,
-  DragAndDrop,
-  MatchingHeading,
-  FillTheBlank,
-  MatchingFillBlank,
+	MultipleChoice,
+	MultipleResponse,
+	Dropdown,
+	DragAndDrop,
+	MatchingHeading,
+	FillTheBlank,
+	MatchingFillBlank,
 } from 'src/lib/entity/groupQuestion/QuestionType';
 import { ApiProperty } from '@nestjs/swagger';
+import { QuestionType } from 'src/shared/constant/enum_database';
 
 // Create a union type of all possible data types
 type DataUnion =
-  | MultipleChoice[]
-  | MultipleResponse[]
-  | Dropdown[]
-  | DragAndDrop[]
-  | MatchingHeading[]
-  | FillTheBlank[]
-  | MatchingFillBlank[];
+	| MultipleChoice[]
+	| MultipleResponse[]
+	| Dropdown[]
+	| DragAndDrop[]
+	| MatchingHeading[]
+	| FillTheBlank[]
+	| MatchingFillBlank[];
 
 export class CreateGroupQuestionDto {
 	@IsNotEmpty()
@@ -44,8 +45,8 @@ export class CreateGroupQuestionDto {
 	@ValidateNested({ each: true })
 	data: DataUnion; // Use the union type here
 
-	@IsNotEmpty()
 	@ApiProperty()
+	@IsOptional()
 	@IsUUID()
-	partId: string;
+	partId?: string;
 }
