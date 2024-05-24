@@ -1,26 +1,26 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 
-type matching = {
+type Matching = {
 	instruction: string;
-	questions: [];
+	questions: any[];
 	answerList: string;
 };
-type dropdown = {
+type Dropdown = {
 	instruction: string;
-	questions: [];
+	questions: any[];
 	answerList: string;
 };
-type fillInTheBlank = {
+type FillInTheBlank = {
 	instruction: string;
-	questions: [];
+	questions: any[];
 };
-type multipleResponse = {
+type MultipleResponse = {
 	instruction: string;
-	questions: [];
+	questions: any[];
 };
-type multipleChoice = {
+type MultipleChoice = {
 	instruction: string;
-	questions: [];
+	questions: any[];
 };
 export interface IImportData {
 	skill: string;
@@ -40,28 +40,6 @@ export class ParseService {
 			title: '',
 			content: '',
 			questions: [],
-			// matching: {
-			// 	instruction: '',
-			// 	questions: [],
-			// 	answerList: '',
-			// },
-			// dropdown: {
-			// 	instruction: '',
-			// 	questions: [],
-			// 	answerList: '',
-			// },
-			// fillInTheBlank: {
-			// 	instruction: '',
-			// 	questions: [],
-			// },
-			// multipleResponse: {
-			// 	instruction: '',
-			// 	questions: [],
-			// },
-			// multipleChoice: {
-			// 	instruction: '',
-			// 	questions: [],
-			// },
 		};
 
 		const readingRegex = /<reading=”([^”]+)”>/;
@@ -69,12 +47,6 @@ export class ParseService {
 
 		const titleRegex = /<title>(.*?)<\/title>/s;
 		const contentRegex = /<content>(.*?)<\/content>/s;
-		const matchingRegex = /<matching>(.*?)<\/matching>/s;
-		const dropdownRegex = /<dropdown>(.*?)<\/dropdown>/s;
-		const fillInTheBlankRegex = /<shortanswer>(.*?)<\/shortanswer>/s;
-		const multipleResponseRegex =
-			/<multiple respone>(.*?)<\/multiple respone>/s;
-		const multipleChoiceRegex = /<multiple choice>(.*?)<\/multiple choice>/s;
 
 		if (input.match(readingRegex)) {
 			data.part = this.convertPartString(
@@ -91,60 +63,7 @@ export class ParseService {
 		data.title = this.extractData(titleRegex, input, 1);
 		data.content = this.extractData(contentRegex, input, 1);
 
-		const extractMatching = this.extractMatching(
-			this.extractData(matchingRegex, input, 1),
-		);
-		if (extractMatching) {
-			data.questions.push({
-				Matching: this.extractMatching(
-					this.extractData(matchingRegex, input, 1),
-				),
-			});
-		}
-
-		const extractDropdown = this.extractDropdown(
-			this.extractData(dropdownRegex, input, 1),
-		);
-		if (extractDropdown) {
-			data.questions.push({
-				DropDown: this.extractDropdown(
-					this.extractData(dropdownRegex, input, 1),
-				),
-			});
-		}
-
-		const extractFillInTheBlank = this.extractFillInTheBlank(
-			this.extractData(fillInTheBlankRegex, input, 1),
-		);
-
-		if (extractFillInTheBlank) {
-			data.questions.push({
-				FillInTheBlank: this.extractFillInTheBlank(
-					this.extractData(fillInTheBlankRegex, input, 1),
-				),
-			});
-		}
-		const extractMultipleResponse = this.extractMultipleResponse(
-			this.extractData(multipleResponseRegex, input, 1),
-		);
-
-		if (extractMultipleResponse) {
-			data.questions.push({
-				MultipleResponse: this.extractMultipleResponse(
-					this.extractData(multipleResponseRegex, input, 1),
-				),
-			});
-		}
-		const extractMultipleChoice = this.extractMultipleChoice(
-			this.extractData(multipleChoiceRegex, input, 1),
-		);
-		if (extractMultipleChoice) {
-			data.questions.push({
-				MultipleChoice: this.extractMultipleChoice(
-					this.extractData(multipleChoiceRegex, input, 1),
-				),
-			});
-		}
+		this.extractQuestions(input, data.questions);
 
 		return data;
 	}
@@ -160,21 +79,56 @@ export class ParseService {
 
 		return newInput;
 	}
+
 	private extractData(regex: RegExp, input: string, group: number): any {
 		if (typeof input === 'string') {
 			const match = input.match(regex);
 			if (match) {
 				return match[group];
 			}
-			// throw new BadRequestException(
-			// 	'Đã xãy ra lỗi trong quá trình xử lý dữ liệu',
-			// );
 			return null;
 		}
 		return null;
 	}
 
-	private extractMatching(input: string) {
+	private extractQuestions(input: string, questions: any[]) {
+		const tagRegex = /<(\w+)(.*?)>(.*?)<\/\1>/gs;
+		let match;
+
+		while ((match = tagRegex.exec(input)) !== null) {
+			const tag = match[1];
+			const content = match[3];
+
+			switch (tag) {
+				case 'matching':
+					questions.push({ Matching: this.extractMatching(content) });
+					break;
+				case 'dropdown':
+					questions.push({ Dropdown: this.extractDropdown(content) });
+					break;
+				case 'shortanswer':
+					questions.push({
+						FillInTheBlank: this.extractFillInTheBlank(content),
+					});
+					break;
+				case 'multiple':
+					if (/respone/.test(match[2])) {
+						questions.push({
+							MultipleResponse: this.extractMultipleResponse(content),
+						});
+					} else {
+						questions.push({
+							MultipleChoice: this.extractMultipleChoice(content),
+						});
+					}
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	private extractMatching(input: string): Matching {
 		if (!input) {
 			return null;
 		}
@@ -185,12 +139,12 @@ export class ParseService {
 
 		return {
 			instruction: this.extractData(instructionRegex, input, 1),
-			questions: this.extractQuestions(questionAnswerRegex, input),
+			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
 			answerList: this.extractData(answerListRegex, input, 1),
 		};
 	}
 
-	private extractDropdown(input: string) {
+	private extractDropdown(input: string): Dropdown {
 		if (!input) {
 			return null;
 		}
@@ -201,12 +155,12 @@ export class ParseService {
 
 		return {
 			instruction: this.extractData(instructionRegex, input, 1),
-			questions: this.extractQuestions(questionAnswerRegex, input),
+			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
 			answerList: this.extractData(answerListRegex, input, 1),
 		};
 	}
 
-	private extractFillInTheBlank(input: string) {
+	private extractFillInTheBlank(input: string): FillInTheBlank {
 		if (!input) {
 			return null;
 		}
@@ -216,25 +170,11 @@ export class ParseService {
 
 		return {
 			instruction: this.extractData(instructionRegex, input, 1),
-			questions: this.extractQuestions(questionAnswerRegex, input),
+			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
 		};
 	}
 
-	private extractMultipleResponse(input: string) {
-		if (!input) {
-			return null;
-		}
-		const instructionRegex = /<instruction>(.*?)<\/instruction>/s;
-		const questionAnswerRegex =
-			/<question answer=”([^”]+)”>(.*?)<\/question>/gs;
-
-		return {
-			instruction: this.extractData(instructionRegex, input, 1),
-			questions: this.extractQuestions(questionAnswerRegex, input),
-		};
-	}
-
-	private extractMultipleChoice(input: string) {
+	private extractMultipleResponse(input: string): MultipleResponse {
 		if (!input) {
 			return null;
 		}
@@ -244,14 +184,25 @@ export class ParseService {
 
 		return {
 			instruction: this.extractData(instructionRegex, input, 1),
-			questions: this.extractQuestions(questionAnswerRegex, input),
+			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
 		};
 	}
 
-	private extractQuestions(regex: RegExp, input: string) {
+	private extractMultipleChoice(input: string): MultipleChoice {
 		if (!input) {
 			return null;
 		}
+		const instructionRegex = /<instruction>(.*?)<\/instruction>/s;
+		const questionAnswerRegex =
+			/<question answer=”([^”]*)”>(.*?)<\/question>/gs;
+
+		return {
+			instruction: this.extractData(instructionRegex, input, 1),
+			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
+		};
+	}
+
+	private extractQuestionsDetail(regex: RegExp, input: string) {
 		const questions = [];
 		let match;
 		while ((match = regex.exec(input)) !== null) {
@@ -259,12 +210,6 @@ export class ParseService {
 				answer: match[1],
 				question: match[2],
 			});
-		}
-		if (questions.length === 0) {
-			// throw new BadRequestException(
-			// 	'Đã xãy ra lỗi trong quá trình xử lý dữ liệu',
-			// );
-			return null;
 		}
 		return questions;
 	}
