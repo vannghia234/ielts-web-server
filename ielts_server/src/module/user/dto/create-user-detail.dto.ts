@@ -27,5 +27,5 @@ export class CreateUserAnswerDetailDto {
 	@IsString()
 	@ApiProperty()
 	@IsUUID()
-	userAnswerId: string;
+	userExamProcessId: string;
 }

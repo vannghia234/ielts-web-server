@@ -12,13 +12,13 @@ export class UserAnswerDetailRepository {
 
 	async findAll(): Promise<UserAnswerDetail[]> {
 		return this.userAnswerDetailRepository.find({
-			relations: ['examDetail', 'userAnswer'],
+			relations: ['examDetail', 'userExamProcess'],
 		});
 	}
 
 	async findOne(id: string): Promise<UserAnswerDetail | null> {
 		const userAnswerDetail = await this.userAnswerDetailRepository.findOne({
-			relations: ['examDetail', 'userAnswer'],
+			relations: ['examDetail', 'userExamProcess'],
 			where: { id: id },
 		});
 		if (!userAnswerDetail) {

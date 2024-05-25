@@ -20,9 +20,6 @@ export class UserAnswer {
 	@ManyToOne(() => User, (type) => type.userAnswer)
 	user: User;
 
-	@OneToMany(() => UserAnswerDetail, (type) => type.userAnswer)
-	userAnswerDetails: UserAnswerDetail[];
-
 	@OneToMany(() => UserExamProcess, (type) => type.userAnswer)
 	processes: UserExamProcess[];
 }

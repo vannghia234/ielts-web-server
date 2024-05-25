@@ -5,42 +5,45 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserAnswerRepository {
-  constructor(
-    @InjectRepository(UserAnswer)
-    private userAnswerRepository: Repository<UserAnswer>,
-  ) {}
+	constructor(
+		@InjectRepository(UserAnswer)
+		private userAnswerRepository: Repository<UserAnswer>,
+	) {}
 
-  async findAll(): Promise<UserAnswer[]> {
-    return this.userAnswerRepository.find();
-  }
+	async findAll(): Promise<UserAnswer[]> {
+		return this.userAnswerRepository.find();
+	}
 
-  async findOne(id: string): Promise<UserAnswer | null> {
-    const userAnswer = await this.userAnswerRepository.findOne({
-      where: { id: id },
-    });
-    if (!userAnswer) {
-      throw new NotFoundException('User answer not found');
-    }
-    return userAnswer;
-  }
+	async findOne(id: string): Promise<UserAnswer | null> {
+		const userAnswer = await this.userAnswerRepository.findOne({
+			relations: ['processes'],
+			where: { id: id },
+		});
+		if (!userAnswer) {
+			throw new NotFoundException('User answer not found');
+		}
+		return userAnswer;
+	}
 
-  async create(userAnswer: Partial<UserAnswer>): Promise<UserAnswer> {
-    return this.userAnswerRepository.save(userAnswer);
-  }
+	async create(userAnswer: Partial<UserAnswer>): Promise<UserAnswer> {
+		const result = await this.userAnswerRepository.save(userAnswer);
+		result.processes = [];
+		return result;
+	}
 
-  async update(
-    id: string,
-    updateUserAnswer: Partial<UserAnswer>,
-  ): Promise<UserAnswer> {
-    await this.findOne(id); // Ensure user answer exists
-    await this.userAnswerRepository.update(id, updateUserAnswer);
-    return this.findOne(id);
-  }
+	async update(
+		id: string,
+		updateUserAnswer: Partial<UserAnswer>,
+	): Promise<UserAnswer> {
+		await this.findOne(id); // Ensure user answer exists
+		await this.userAnswerRepository.update(id, updateUserAnswer);
+		return this.findOne(id);
+	}
 
-  async remove(id: string): Promise<void> {
-    const result = await this.userAnswerRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException('User answer not found');
-    }
-  }
+	async remove(id: string): Promise<void> {
+		const result = await this.userAnswerRepository.delete(id);
+		if (result.affected === 0) {
+			throw new NotFoundException('User answer not found');
+		}
+	}
 }

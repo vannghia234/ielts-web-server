@@ -5,43 +5,43 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class SkillExamRepository {
-  constructor(
-    @InjectRepository(SkillExam)
-    private skillExamRepository: Repository<SkillExam>,
-  ) {}
+	constructor(
+		@InjectRepository(SkillExam)
+		private skillExamRepository: Repository<SkillExam>,
+	) {}
 
-  async findAll(): Promise<SkillExam[]> {
-    return this.skillExamRepository.find();
-  }
+	async findAll(): Promise<SkillExam[]> {
+		return this.skillExamRepository.find();
+	}
 
-  async findOne(id: string): Promise<SkillExam | null> {
-    const skillExam = await this.skillExamRepository.findOne({
-      where: { id: id },
-    });
-    if (!skillExam) {
-      throw new NotFoundException('Skill exam not found');
-    }
-    return skillExam;
-  }
+	async findOne(id: string): Promise<SkillExam | null> {
+		const skillExam = await this.skillExamRepository.findOne({
+			where: { id: id },
+		});
+		if (!skillExam) {
+			throw new NotFoundException('Skill exam not found');
+		}
+		return skillExam;
+	}
 
-  async create(skillExam: Partial<SkillExam>): Promise<SkillExam> {
-    const newSkillExam = this.skillExamRepository.create(skillExam);
-    return this.skillExamRepository.save(newSkillExam);
-  }
+	async create(skillExam: Partial<SkillExam>): Promise<SkillExam> {
+		const newSkillExam = this.skillExamRepository.create(skillExam);
+		return this.skillExamRepository.save(newSkillExam);
+	}
 
-  async update(
-    id: string,
-    updateSkillExam: Partial<SkillExam>,
-  ): Promise<SkillExam> {
-    await this.findOne(id); // Ensure skill exam exists
-    await this.skillExamRepository.update(id, updateSkillExam);
-    return this.findOne(id);
-  }
+	async update(
+		id: string,
+		updateSkillExam: Partial<SkillExam>,
+	): Promise<SkillExam> {
+		await this.findOne(id); // Ensure skill exam exists
+		await this.skillExamRepository.update(id, updateSkillExam);
+		return this.findOne(id);
+	}
 
-  async remove(id: string): Promise<void> {
-    const result = await this.skillExamRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException('Skill exam not found');
-    }
-  }
+	async remove(id: string): Promise<void> {
+		const result = await this.skillExamRepository.delete(id);
+		if (result.affected === 0) {
+			throw new NotFoundException('Skill exam not found');
+		}
+	}
 }

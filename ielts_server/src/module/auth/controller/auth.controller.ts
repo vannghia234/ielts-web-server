@@ -108,6 +108,7 @@ export class AuthController {
 	@Get('verify')
 	async verifyUser(@Request() userData: HeaderUserDTO) {
 		try {
+			console.log('[CONTROLLER] Verify');
 			const { password, ...userInfo } = await this.userService.findOne(
 				userData.userId,
 			);

@@ -1,3 +1,4 @@
+import { UserExamProcessService } from './../service/user-exam-process.service';
 import {
 	Controller,
 	Get,
@@ -6,6 +7,7 @@ import {
 	Body,
 	Put,
 	Delete,
+	InternalServerErrorException,
 } from '@nestjs/common';
 import { UserAnswerService } from '../service/user-answer.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -13,6 +15,8 @@ import { CreateUserAnswerDto } from '../dto/create-user-answer.dto';
 import { UpdateUserAnswerDto } from '../dto/update-user-ansert.dto';
 import { Public } from 'src/shared/constant/meta-data';
 import { UserAnswer } from 'src/lib/entity/user/user-answer.entity';
+import { ReqCreateUserAnswerDto } from '../dto/req-create-user-answer.dto';
+import { ResponseBase } from 'src/shared/constant/response_base';
 
 export const adminOperation = {
 	description: `
@@ -42,7 +46,10 @@ export const publicOperation = {
 @Controller('user-answer')
 @Public()
 export class UserAnswerController {
-	constructor(private readonly userAnswerService: UserAnswerService) {}
+	constructor(
+		private readonly userAnswerService: UserAnswerService,
+		private readonly userExamProcessService: UserExamProcessService,
+	) {}
 
 	@Get()
 	@ApiOperation(publicOperation)
@@ -58,8 +65,24 @@ export class UserAnswerController {
 
 	@Post()
 	@ApiOperation(publicOperation)
-	async create(@Body() userAnswer: CreateUserAnswerDto): Promise<UserAnswer> {
-		return this.userAnswerService.create(userAnswer);
+	async create(@Body() userAnswer: ReqCreateUserAnswerDto) {
+		try {
+			const userAnswerData = await this.userAnswerService.create(userAnswer);
+			for (let index = 0; index < userAnswer.examSkills.length; index++) {
+				const skillId = userAnswer.examSkills[index].id;
+				const userExamProcess = await this.userExamProcessService.create({
+					userAnswerId: userAnswerData.id,
+					skillExamId: skillId,
+				});
+				userAnswerData.processes.push(userExamProcess);
+			}
+			return userAnswerData;
+		} catch (error) {
+			console.log(error);
+			return new InternalServerErrorException(
+				new ResponseBase('500', 'Internal Server Error.').toJSON(),
+			);
+		}
 	}
 
 	@Put(':id')

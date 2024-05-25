@@ -1,10 +1,7 @@
-import {
-	Entity,
-	ManyToOne,
-	PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserAnswer } from './user-answer.entity';
 import { SkillExam } from '../exam/skill-exam.entity';
+import { UserAnswerDetail } from './user-answer-detail.entity';
 
 @Entity()
 export class UserExamProcess {
@@ -13,6 +10,12 @@ export class UserExamProcess {
 
 	@ManyToOne(() => UserAnswer, (type) => type.id)
 	userAnswer: UserAnswer;
+
+	@OneToMany(
+		() => UserAnswerDetail,
+		(userAnswerDetail) => userAnswerDetail.userExamProcess,
+	)
+	userAnswerDetails: UserAnswerDetail[];
 
 	@ManyToOne(() => SkillExam, (type) => type.id)
 	skillExam: SkillExam;
