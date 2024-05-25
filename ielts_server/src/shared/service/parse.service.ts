@@ -4,23 +4,28 @@ type Matching = {
 	instruction: string;
 	questions: any[];
 	answerList: string;
+	type: string;
 };
 type Dropdown = {
 	instruction: string;
 	questions: any[];
 	answerList: string;
+	type: string;
 };
 type FillInTheBlank = {
 	instruction: string;
 	questions: any[];
+	type: string;
 };
 type MultipleResponse = {
 	instruction: string;
 	questions: any[];
+	type: string;
 };
 type MultipleChoice = {
 	instruction: string;
 	questions: any[];
+	type: string;
 };
 export interface IImportData {
 	skill: string;
@@ -98,31 +103,26 @@ export class ParseService {
 		while ((match = tagRegex.exec(input)) !== null) {
 			const tag = match[1];
 			const content = match[3];
-
 			switch (tag) {
 				case 'matching':
-					questions.push({ Matching: this.extractMatching(content) });
+					questions.push(this.extractMatching(content));
 					break;
 				case 'dropdown':
-					questions.push({ Dropdown: this.extractDropdown(content) });
+					questions.push(this.extractDropdown(content));
 					break;
 				case 'shortanswer':
-					questions.push({
-						FillInTheBlank: this.extractFillInTheBlank(content),
-					});
+					questions.push(this.extractFillInTheBlank(content));
 					break;
-				case 'multiple':
-					if (/respone/.test(match[2])) {
-						questions.push({
-							MultipleResponse: this.extractMultipleResponse(content),
-						});
-					} else {
-						questions.push({
-							MultipleChoice: this.extractMultipleChoice(content),
-						});
-					}
+				case 'multipleresponse':
+					questions.push(this.extractMultipleResponse(content));
+
+					break;
+				case 'multiplechoice':
+					questions.push(this.extractMultipleChoice(content));
 					break;
 				default:
+					// Nếu thẻ không khớp với bất kỳ loại nào, tiếp tục xử lý các thẻ con bên trong
+					this.extractQuestions(content, questions);
 					break;
 			}
 		}
@@ -138,6 +138,7 @@ export class ParseService {
 		const answerListRegex = /<answer list>(.*?)<\/answer list>/s;
 
 		return {
+			type: 'Matching',
 			instruction: this.extractData(instructionRegex, input, 1),
 			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
 			answerList: this.extractData(answerListRegex, input, 1),
@@ -154,6 +155,7 @@ export class ParseService {
 		const answerListRegex = /<answer list>(.*?)<\/answer list>/s;
 
 		return {
+			type: 'DropDown',
 			instruction: this.extractData(instructionRegex, input, 1),
 			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
 			answerList: this.extractData(answerListRegex, input, 1),
@@ -169,6 +171,7 @@ export class ParseService {
 			/<question answer=”([^”]*)”>(.*?)<\/question>/gs;
 
 		return {
+			type: 'FillInTheBlank',
 			instruction: this.extractData(instructionRegex, input, 1),
 			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
 		};
@@ -183,6 +186,7 @@ export class ParseService {
 			/<question answer=”([^”]*)”>(.*?)<\/question>/gs;
 
 		return {
+			type: 'MultipleResponse',
 			instruction: this.extractData(instructionRegex, input, 1),
 			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
 		};
@@ -197,6 +201,7 @@ export class ParseService {
 			/<question answer=”([^”]*)”>(.*?)<\/question>/gs;
 
 		return {
+			type: 'MultipleChoice',
 			instruction: this.extractData(instructionRegex, input, 1),
 			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
 		};

@@ -1,6 +1,7 @@
 // group-question.service.ts
 
 import {
+	BadRequestException,
 	Inject,
 	Injectable,
 	NotFoundException,
@@ -60,21 +61,35 @@ export class GroupQuestionService {
 		}
 	}
 	async createQuestionFromDocxString(content: string): Promise<any> {
-		const parseValue = this.parseService.parse(content);
-		const partObj = new CreatePartDto();
-		partObj.content = parseValue.content;
-		partObj.partNumber = parseValue.part as PartNumber;
-		partObj.title = parseValue.title;
-		partObj.skill = parseValue.skill;
-		// const part = await this.partService.create(partObj);
-		// const manyQuestion = new  CreateManyGroupQuestionDto();
-		// manyQuestion.partId = part.id;
-		// const groupQuestion = new CreateGroupQuestionDto();
-		// groupQuestion.questionType
+		try {
+			const parseValue = this.parseService.parse(content);
+			const partObj = new CreatePartDto();
+			partObj.content = parseValue.content;
+			partObj.partNumber = parseValue.part as PartNumber;
+			partObj.title = parseValue.title;
+			partObj.skill = parseValue.skill;
+			const part = await this.partService.create(partObj);
+			const questionsList = parseValue.questions;
+			console.log('parse value ', questionsList.length);
+			const createManyQuestion = new CreateManyGroupQuestionDto();
+			const listQuestionDto: CreateGroupQuestionDto[] = [];
 
-		// manyQuestion.groupQuestions = [];
+			for (let index = 0; index < questionsList.length; index++) {
+				const element = questionsList[index];
+				const obj = new CreateGroupQuestionDto();
+				obj.instruction = element.instruction;
+				obj.questionType = element.type;
+				obj.data = element.questions;
+				listQuestionDto.push(obj);
+			}
+			console.log(listQuestionDto);
+			createManyQuestion.groupQuestions = listQuestionDto;
+			createManyQuestion.partId = part.id;
 
-		return parseValue;
+			return this.createMany(createManyQuestion);
+		} catch (error) {
+			throw new BadRequestException(`${error}`);
+		}
 	}
 
 	async createMany(
