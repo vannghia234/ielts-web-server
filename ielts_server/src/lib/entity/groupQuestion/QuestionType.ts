@@ -19,6 +19,12 @@ export type MultipleResponse = {
 export type Dropdown = {
 	id?: string; // Note: Corrected to use '?' for optional property
 	question?: string; // Note: Corrected to use '?' for optional property
+	answers: Answer;
+};
+
+export type FillTheBlank = {
+	id?: string; // Note: Corrected to use '?' for optional property
+	question?: string; // Note: Corrected to use '?' for optional property
 	answers: Answer[];
 };
 
@@ -28,22 +34,16 @@ export type DragAndDrop = {
 	answer: Answer;
 };
 
-export type FillTheBlank = {
-	id?: string; // Note: Corrected to use '?' for optional property
-	question?: string; // Note: Corrected to use '?' for optional property
-	answers: Answer[];
-};
-
 export type MatchingHeading = {
 	id?: string; // Note: Corrected to use '?' for optional property
 	question?: string; // Note: Corrected to use '?' for optional property
-	correctAnswers: Answer[];
+	answers: Answer;
 	totalAnswers: Answer[];
 };
 
 export type MatchingFillBlank = {
 	id?: string; // Note: Corrected to use '?' for optional property
 	question?: string; // Note: Corrected to use '?' for optional property
-	answers: Answer[];
+	answers: Answer;
 	totalAnswers: Answer[];
 };
