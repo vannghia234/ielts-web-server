@@ -31,19 +31,19 @@ export type FillTheBlank = {
 export type DragAndDrop = {
 	id?: string; // Note: Corrected to use '?' for optional property
 	question?: string; // Note: Corrected to use '?' for optional property
-	answer: Answer;
+	answers: Answer[]; // array with one answer
 };
 
 export type MatchingHeading = {
 	id?: string; // Note: Corrected to use '?' for optional property
 	question?: string; // Note: Corrected to use '?' for optional property
-	answers: Answer;
+	answers: Answer[]; // array with one answer
 	totalAnswers: Answer[];
 };
 
 export type MatchingFillBlank = {
 	id?: string; // Note: Corrected to use '?' for optional property
 	question?: string; // Note: Corrected to use '?' for optional property
-	answers: Answer;
+	answers: Answer[]; // array with one answer
 	totalAnswers: Answer[];
 };
