@@ -16,6 +16,7 @@ export class SkillExamRepository {
 
 	async findOne(id: string): Promise<SkillExam | null> {
 		const skillExam = await this.skillExamRepository.findOne({
+			relations: ['details.part.groupQuestions'],
 			where: { id: id },
 		});
 		if (!skillExam) {

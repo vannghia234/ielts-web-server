@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Exam } from './exam.entity';
 import { Skill } from 'src/shared/constant/enum_database';
+import { ExamSkillDetail } from './exam-skill-detail.entity';
 
 @Entity()
 export class SkillExam {
@@ -18,4 +19,10 @@ export class SkillExam {
 
 	@ManyToOne(() => Exam, (type) => type.skillExam)
 	exam: Exam;
+
+	@OneToMany(
+		() => ExamSkillDetail,
+		(examSkillDetail) => examSkillDetail.skillExam,
+	)
+	details: ExamSkillDetail[];
 }
