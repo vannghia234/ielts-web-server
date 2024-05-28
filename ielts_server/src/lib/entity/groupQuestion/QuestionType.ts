@@ -4,46 +4,36 @@ export type Answer = {
 	isCorrect?: boolean; // Note: Corrected to use '?' for optional property
 };
 
-export type MultipleChoice = {
+export interface IQuestion {
 	id?: string; // Note: Corrected to use '?' for optional property
 	question?: string; // Note: Corrected to use '?' for optional property
-	answers: Answer[];
-};
+	answers: Answer[] | Answer;
+}
 
-export type MultipleResponse = {
-	id?: string; // Note: Corrected to use '?' for optional property
-	question?: string; // Note: Corrected to use '?' for optional property
+export interface MultipleChoice extends IQuestion {
 	answers: Answer[];
-};
+}
 
-export type Dropdown = {
-	id?: string; // Note: Corrected to use '?' for optional property
-	question?: string; // Note: Corrected to use '?' for optional property
+export interface MultipleResponse extends IQuestion {
+	answers: Answer[];
+}
+
+export interface Dropdown extends IQuestion {
 	answers: Answer;
-};
+}
 
-export type FillTheBlank = {
-	id?: string; // Note: Corrected to use '?' for optional property
-	question?: string; // Note: Corrected to use '?' for optional property
+export interface FillTheBlank extends IQuestion {
 	answers: Answer[];
-};
+}
 
-export type DragAndDrop = {
-	id?: string; // Note: Corrected to use '?' for optional property
-	question?: string; // Note: Corrected to use '?' for optional property
+export interface DragAndDrop extends IQuestion {
 	answers: Answer[]; // array with one answer
-};
+}
 
-export type MatchingHeading = {
-	id?: string; // Note: Corrected to use '?' for optional property
-	question?: string; // Note: Corrected to use '?' for optional property
+export interface MatchingHeading extends IQuestion {
 	answers: Answer[]; // array with one answer
-	totalAnswers: Answer[];
-};
+}
 
-export type MatchingFillBlank = {
-	id?: string; // Note: Corrected to use '?' for optional property
-	question?: string; // Note: Corrected to use '?' for optional property
+export interface MatchingFillBlank extends IQuestion {
 	answers: Answer[]; // array with one answer
-	totalAnswers: Answer[];
-};
+}

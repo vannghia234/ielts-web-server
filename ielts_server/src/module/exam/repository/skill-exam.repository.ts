@@ -25,6 +25,31 @@ export class SkillExamRepository {
 		return skillExam;
 	}
 
+	async findOneToSend(id: string): Promise<SkillExam | null> {
+		const skillExam = await this.skillExamRepository.findOne({
+			relations: {
+				exam: true,
+				details: {
+					part: {
+						groupQuestions: true,
+					},
+				},
+			},
+			where: { id: id },
+			order: {
+				details: {
+					part: {
+						partNumber: 'ASC',
+					},
+				},
+			},
+		});
+		if (!skillExam) {
+			throw new NotFoundException('Skill exam not found');
+		}
+		return skillExam;
+	}
+
 	async create(skillExam: Partial<SkillExam>): Promise<SkillExam> {
 		const newSkillExam = this.skillExamRepository.create(skillExam);
 		return this.skillExamRepository.save(newSkillExam);

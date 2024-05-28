@@ -5,6 +5,7 @@ import { CreateSkillExamDto } from '../dto/create-skill-exam.dto';
 import { ExamService } from './exam.service';
 import { PartialGraphHost } from '@nestjs/core';
 import { UpdateSkillExamDto } from '../dto/update-skill-exam.dto';
+import { ResExamSkill } from '../dto/res-exam-skill.dto';
 
 @Injectable()
 export class SkillExamService {
@@ -19,6 +20,12 @@ export class SkillExamService {
 
 	async findOne(id: string): Promise<SkillExam> {
 		return this.skillExamRepository.findOne(id);
+	}
+
+	async findOneToSend(id: string): Promise<ResExamSkill> {
+		const skillExam = await this.skillExamRepository.findOneToSend(id);
+		// return new ResExamSkill(skillExam);
+		return new ResExamSkill(skillExam);
 	}
 
 	async create(skillExam: CreateSkillExamDto): Promise<SkillExam> {
