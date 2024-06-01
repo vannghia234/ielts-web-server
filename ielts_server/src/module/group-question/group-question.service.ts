@@ -20,6 +20,14 @@ import { ParseService } from 'src/shared/service/parse.service';
 import { Part } from 'src/lib/entity/part/Part.entity';
 import { PartNumber } from 'src/shared/constant/enum_database';
 import { CreatePartDto } from '../part/dto/create-part.dto';
+import {
+	DragAndDrop,
+	Dropdown,
+	FillTheBlank,
+	MultipleChoice,
+	MultipleResponse,
+} from 'src/lib/entity/groupQuestion/QuestionType';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class GroupQuestionService {
@@ -63,31 +71,129 @@ export class GroupQuestionService {
 	async createQuestionFromDocxString(content: string): Promise<any> {
 		try {
 			const parseValue = this.parseService.parse(content);
-			// const partObj = new CreatePartDto();
-			// partObj.content = parseValue.content;
-			// partObj.partNumber = parseValue.part as PartNumber;
-			// partObj.title = parseValue.title;
-			// partObj.skill = parseValue.skill;
-			// const part = await this.partService.create(partObj);
-			// const questionsList = parseValue.questions;
-			// console.log('parse value ', questionsList.length);
-			// const createManyQuestion = new CreateManyGroupQuestionDto();
-			// const listQuestionDto: CreateGroupQuestionDto[] = [];
+			const partObj = new CreatePartDto();
+			partObj.content = parseValue.content;
+			partObj.partNumber = parseValue.part as PartNumber;
+			partObj.title = parseValue.title;
+			partObj.skill = parseValue.skill;
+			const part = await this.partService.create(partObj);
+			const questionsList = parseValue.questions;
+			console.log('parse length value ', questionsList.length);
+			const createManyQuestion = new CreateManyGroupQuestionDto();
+			const listQuestionDto: CreateGroupQuestionDto[] = [];
 
-			// for (let index = 0; index < questionsList.length; index++) {
-			// 	const element = questionsList[index];
-			// 	const obj = new CreateGroupQuestionDto();
-			// 	obj.instruction = element.instruction;
-			// 	obj.questionType = element.type;
-			// 	//TODO:
-			// 	obj.data = element.questions;
-			// 	listQuestionDto.push(obj);
-			// }
-			// createManyQuestion.groupQuestions = listQuestionDto;
-			// createManyQuestion.partId = part.id;
-			return parseValue;
+			for (let index = 0; index < questionsList.length; index++) {
+				const element = questionsList[index];
+				const obj = new CreateGroupQuestionDto();
+				obj.instruction = element.instruction;
+				obj.questionType = element.type;
+				switch (element.type) {
+					case 'MultipleChoice':
+						const dataMultipleChoice: MultipleChoice[] = [];
+						for (const e of element.questions) {
+							const multipleChoice: MultipleChoice = {
+								id: uuidv4(),
+								question: e.question,
+								answers: [
+									{
+										id: uuidv4(),
+										content: e.question,
+										isCorrect: e.answer,
+									},
+								],
+							};
+							dataMultipleChoice.push(multipleChoice);
+						}
 
-			// return this.createMany(createManyQuestion);
+						obj.data = dataMultipleChoice;
+						console.log(obj.data);
+
+						break;
+
+					case 'DragAndDrop':
+						const dataDragAndDrop: DragAndDrop[] = [];
+						for (const e of element.questions) {
+							const dragdropObj: DragAndDrop = {
+								id: uuidv4(),
+								question: e.question,
+								answer: {
+									id: uuidv4(),
+									content: e.question,
+									isCorrect: e.answer,
+								},
+							};
+							dataDragAndDrop.push(dragdropObj);
+						}
+
+						obj.data = dataDragAndDrop;
+						break;
+					case 'DropDown':
+						const dataDropDown: Dropdown[] = [];
+						for (const e of element.questions) {
+							const dropDownObj: Dropdown = {
+								id: uuidv4(),
+								question: e.question,
+								answers: [
+									{
+										id: uuidv4(),
+										content: e.question,
+										isCorrect: e.answer,
+									},
+								],
+							};
+							dataDropDown.push(dropDownObj);
+						}
+
+						obj.data = dataDropDown;
+						break;
+					case 'FillInTheBlank':
+						const dataFillInTheBlank: FillTheBlank[] = [];
+						for (const e of element.questions) {
+							const fillTheBlankObj: FillTheBlank = {
+								id: uuidv4(),
+								question: e.question,
+								answers: [
+									{
+										id: uuidv4(),
+										content: e.question,
+										isCorrect: e.answer,
+									},
+								],
+							};
+							dataFillInTheBlank.push(fillTheBlankObj);
+						}
+
+						obj.data = dataFillInTheBlank;
+						break;
+					case 'MultipleResponse':
+						const dataMultiRes: MultipleResponse[] = [];
+						for (const e of element.questions) {
+							const multiResObj: MultipleResponse = {
+								id: uuidv4(),
+								question: e.question,
+								answers: [
+									{
+										id: uuidv4(),
+										content: e.question,
+										isCorrect: e.answer,
+									},
+								],
+							};
+							dataMultiRes.push(multiResObj);
+						}
+
+						obj.data = dataMultiRes;
+						break;
+
+					default:
+						throw new BadRequestException('Lỗi Question type');
+				}
+				listQuestionDto.push(obj);
+			}
+			createManyQuestion.groupQuestions = listQuestionDto;
+			createManyQuestion.partId = part.id;
+
+			return this.createMany(createManyQuestion);
 		} catch (error) {
 			throw new BadRequestException(`${error}`);
 		}
