@@ -32,6 +32,7 @@ import { publicOperation } from '../user/controller/user-answer.controller';
 })
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
+@Public()
 export class GroupQuestionController {
 	constructor(private readonly groupQuestionService: GroupQuestionService) {}
 

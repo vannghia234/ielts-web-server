@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 
-type Matching = {
+type DragAndDrop = {
 	instruction: string;
 	questions: any[];
 	answerList: string;
@@ -47,11 +47,11 @@ export class ParseService {
 			questions: [],
 		};
 
-		const readingRegex = /<reading=”([^”]+)”>/;
-		const listeningRegex = /<listening=”([^”]+)”>/;
+		const readingRegex = /&lt;reading=”([^”]+)”&gt;/;
+		const listeningRegex = /&lt;listening=”([^”]+)”&gt;/;
 
-		const titleRegex = /<title>(.*?)<\/title>/s;
-		const contentRegex = /<content>(.*?)<\/content>/s;
+		const titleRegex = /&lt;title&gt;(.*?)&lt;\/title&gt;/s;
+		const contentRegex = /&lt;content&gt;(.*?)&lt;\/content&gt;/s;
 
 		if (input.match(readingRegex)) {
 			data.part = this.convertPartString(
@@ -88,6 +88,7 @@ export class ParseService {
 	private extractData(regex: RegExp, input: string, group: number): any {
 		if (typeof input === 'string') {
 			const match = input.match(regex);
+
 			if (match) {
 				return match[group];
 			}
@@ -97,20 +98,21 @@ export class ParseService {
 	}
 
 	private extractQuestions(input: string, questions: any[]) {
-		const tagRegex = /<(\w+)(.*?)>(.*?)<\/\1>/gs;
+		const tagRegex = /&lt;(\w+)(.*?)&gt;(.*?)&lt;\/\1&gt;/gs;
 		let match;
 
 		while ((match = tagRegex.exec(input)) !== null) {
 			const tag = match[1];
+
 			const content = match[3];
 			switch (tag) {
-				case 'matching':
-					questions.push(this.extractMatching(content));
+				case 'dragdrop':
+					questions.push(this.extractDragAndDrop(content));
 					break;
 				case 'dropdown':
 					questions.push(this.extractDropdown(content));
 					break;
-				case 'shortanswer':
+				case 'fillintheblank':
 					questions.push(this.extractFillInTheBlank(content));
 					break;
 				case 'multipleresponse':
@@ -128,17 +130,17 @@ export class ParseService {
 		}
 	}
 
-	private extractMatching(input: string): Matching {
+	private extractDragAndDrop(input: string): DragAndDrop {
 		if (!input) {
 			return null;
 		}
-		const instructionRegex = /<instruction>(.*?)<\/instruction>/s;
+		const instructionRegex = /&lt;instruction&gt;(.*?)&lt;\/instruction&gt;/s;
 		const questionAnswerRegex =
-			/<question answer=”([^”]*)”>(.*?)<\/question>/gs;
-		const answerListRegex = /<answer list>(.*?)<\/answer list>/s;
+			/&lt;question answer=”([^”]*)”&gt;(.*?)&lt;\/question&gt;/gs;
+		const answerListRegex = /&lt;answer list&gt;(.*?)&lt;\/answer list&gt;/s;
 
 		return {
-			type: 'Matching',
+			type: 'DragAndDrop',
 			instruction: this.extractData(instructionRegex, input, 1),
 			questions: this.extractQuestionsDetail(questionAnswerRegex, input),
 			answerList: this.extractData(answerListRegex, input, 1),
@@ -149,10 +151,10 @@ export class ParseService {
 		if (!input) {
 			return null;
 		}
-		const instructionRegex = /<instruction>(.*?)<\/instruction>/s;
+		const instructionRegex = /&lt;instruction&gt;(.*?)&lt;\/instruction&gt;/s;
 		const questionAnswerRegex =
-			/<question answer=”([^”]*)”>(.*?)<\/question>/gs;
-		const answerListRegex = /<answer list>(.*?)<\/answer list>/s;
+			/&lt;question answer=”([^”]*)”&gt;(.*?)&lt;\/question&gt;/gs;
+		const answerListRegex = /&lt;answer list&gt;(.*?)&lt;\/answer list&gt;/s;
 
 		return {
 			type: 'DropDown',
@@ -166,9 +168,9 @@ export class ParseService {
 		if (!input) {
 			return null;
 		}
-		const instructionRegex = /<instruction>(.*?)<\/instruction>/s;
+		const instructionRegex = /&lt;instruction&gt;(.*?)&lt;\/instruction&gt;/s;
 		const questionAnswerRegex =
-			/<question answer=”([^”]*)”>(.*?)<\/question>/gs;
+			/&lt;question answer=”([^”]*)”&gt;(.*?)&lt;\/question&gt;/gs;
 
 		return {
 			type: 'FillInTheBlank',
@@ -181,9 +183,9 @@ export class ParseService {
 		if (!input) {
 			return null;
 		}
-		const instructionRegex = /<instruction>(.*?)<\/instruction>/s;
+		const instructionRegex = /&lt;instruction&gt;(.*?)&lt;\/instruction&gt;/s;
 		const questionAnswerRegex =
-			/<question answer=”([^”]*)”>(.*?)<\/question>/gs;
+			/&lt;question answer=”([^”]*)”&gt;(.*?)&lt;\/question&gt;/gs;
 
 		return {
 			type: 'MultipleResponse',
@@ -196,9 +198,9 @@ export class ParseService {
 		if (!input) {
 			return null;
 		}
-		const instructionRegex = /<instruction>(.*?)<\/instruction>/s;
+		const instructionRegex = /&lt;instruction&gt;(.*?)&lt;\/instruction&gt;/s;
 		const questionAnswerRegex =
-			/<question answer=”([^”]*)”>(.*?)<\/question>/gs;
+			/&lt;question answer=”([^”]*)”&gt;(.*?)&lt;\/question&gt;/gs;
 
 		return {
 			type: 'MultipleChoice',

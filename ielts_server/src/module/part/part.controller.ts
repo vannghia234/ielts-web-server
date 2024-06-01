@@ -18,7 +18,6 @@ import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { publicOperation } from '../user/controller/user-answer.controller';
 
 @Controller('parts')
-@Controller('auth')
 @ApiTags('parts')
 @ApiResponse({
 	status: 200,
@@ -31,6 +30,7 @@ import { publicOperation } from '../user/controller/user-answer.controller';
 })
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
+@Public()
 export class PartController {
 	constructor(private readonly partService: PartService) {}
 

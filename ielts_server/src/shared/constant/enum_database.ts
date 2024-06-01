@@ -20,10 +20,8 @@ export enum QuestionType {
 	MultipleChoice = 'MultipleChoice',
 	MultipleResponse = 'MultipleResponse',
 	Dropdown = 'DropDown',
-	DragAndDrop = 'Drag&Drop',
-	MatchingHeading = 'Matching heading',
+	DragAndDrop = 'DragAndDrop',
 	FillInTheBlank = 'FillInTheBlank',
-	MatchingFillInBlank = 'MatchingFillInTheBlanks',
 }
 
 export enum PartNumber {
