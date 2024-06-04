@@ -2,12 +2,14 @@ export type Answer = {
 	id: string;
 	content: string;
 	isCorrect?: boolean; // Note: Corrected to use '?' for optional property
+	subAnswer?: string[];
+	numberOrder?: number;
 };
 
 export interface IQuestion {
 	id?: string; // Note: Corrected to use '?' for optional property
 	question?: string; // Note: Corrected to use '?' for optional property
-	answers: Answer[] | Answer;
+	answers: Answer[];
 }
 
 export interface MultipleChoice extends IQuestion {
@@ -19,7 +21,7 @@ export interface MultipleResponse extends IQuestion {
 }
 
 export interface Dropdown extends IQuestion {
-	answers: Answer;
+	answers: Answer[];
 }
 
 export interface FillTheBlank extends IQuestion {
