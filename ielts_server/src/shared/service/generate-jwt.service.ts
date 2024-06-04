@@ -1,9 +1,6 @@
 /*
 https://docs.nestjs.com/providers#services
 */
-import * as fs from 'fs';
-import * as path from 'path';
-import * as jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -24,13 +21,8 @@ export class GenerateJwtService {
 				type: 'pkcs1', // or 'pkcs8' depending on your use case
 				format: 'pem',
 				cipher: 'aes-256-cbc', // optional
-				passphrase: 'your-passphrase', // optional
 			},
 		});
-		console.log(publicKey);
-		console.log('-----++++');
-		console.log(privateKey);
-
 		if (!process.env.JWT_PRIVATE_KEY) {
 			process.env.JWT_PUBLIC_KEY = publicKey;
 			process.env.JWT_PRIVATE_KEY = privateKey;

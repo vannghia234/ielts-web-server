@@ -9,7 +9,6 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { JWTService } from './service/jwt.service';
-import { BCryptService } from '../user/service/bcrypt.service';
 import { PermissionLectureGuard } from './guard/permission.guard';
 
 @Module({

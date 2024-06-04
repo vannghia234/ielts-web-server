@@ -5,23 +5,23 @@ import { SendMailDto } from '../dto/send-mail.dto';
 import { ResponseBase } from '../constant/response_base';
 @Injectable()
 export class MailService {
-  private transporter: nodemailer.Transporter;
+	private transporter: nodemailer.Transporter;
 
-  constructor(private readonly configService: ConfigService) {
-    // Tạo một transporter cho nodemailer
-    this.transporter = nodemailer.createTransport({
-      host: this.configService.get('SMTP_HOST'),
-      port: this.configService.get('SMTP_PORT'),
-      secure: this.configService.get('SMTP_SECURE'),
-      auth: {
-        user: this.configService.get('SMTP_USERNAME'),
-        pass: this.configService.get('SMTP_PASSWORD'),
-      },
-    });
-  }
+	constructor(private readonly configService: ConfigService) {
+		// Tạo một transporter cho nodemailer
+		this.transporter = nodemailer.createTransport({
+			host: this.configService.get('SMTP_HOST'),
+			port: this.configService.get('SMTP_PORT'),
+			secure: this.configService.get('SMTP_SECURE'),
+			auth: {
+				user: this.configService.get('SMTP_USERNAME'),
+				pass: this.configService.get('SMTP_PASSWORD'),
+			},
+		});
+	}
 
-  async sendEmail(sendMailDto: SendMailDto): Promise<any> {
-    const body = `
+	async sendEmail(sendMailDto: SendMailDto): Promise<any> {
+		const body = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -43,26 +43,26 @@ export class MailService {
                     <tr style="background-color: #dddddd;">
                         <td style="padding: 10px; text-align: left;">Listening</td>
                         <td style="padding: 10px; text-align: left;">${sendMailDto.listening_score.toFixed(
-                          1,
-                        )}</td>
+													1,
+												)}</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; text-align: left;">Reading</td>
                         <td style="padding: 10px; text-align: left;">${sendMailDto.reading_score.toFixed(
-                          1,
-                        )}</td>
+													1,
+												)}</td>
                     </tr>
                     <tr style="background-color: #dddddd;">
                         <td style="padding: 10px; text-align: left;">Writing</td>
                         <td style="padding: 10px; text-align: left;">${sendMailDto.writing_score.toFixed(
-                          1,
-                        )}</td>
+													1,
+												)}</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; text-align: left;">Speaking</td>
                         <td style="padding: 10px; text-align: left;">${sendMailDto.speaking_score.toFixed(
-                          1,
-                        )}</td>
+													1,
+												)}</td>
                     </tr>
                 </tbody>
             </table>
@@ -72,30 +72,30 @@ export class MailService {
             <p style="margin: 20px 0;">Thank you for your attention.</p>
             
             <p style="margin: 20px 0;">Best regards,</p>
-            <p style="margin: 20px 0;">Ngu Lao Tinh</p>
+            <p style="margin: 20px 0;">Preps IELTS</p>
 
             <p style="margin: 20px 0;">Admin</p>
 
-            <p style="margin: 20px 0;">+84339549751</p>
+            <p style="margin: 20px 0;">0931 42 8899</p>
 
-            <p style="margin: 0;">Company website</p>
+            <p style="margin: 0;">https://prepedu.com/vi</p>
 
         </div>
     </body>
     </html>`;
-    const mailOptions = {
-      from: this.configService.get('SMTP_FROM_EMAIL'),
-      to: sendMailDto.to,
-      subject: sendMailDto.subject,
-      html: body,
-    };
-    try {
-      await this.transporter.sendMail(mailOptions);
-      return new ResponseBase('200', 'Successfully sent mail!');
-    } catch (error) {
-      throw new BadRequestException(
-        'Đã xảy ra lỗi trong quá trình truyền tải dữ liệu',
-      );
-    }
-  }
+		const mailOptions = {
+			from: this.configService.get('SMTP_FROM_EMAIL'),
+			to: sendMailDto.to,
+			subject: sendMailDto.subject,
+			html: body,
+		};
+		try {
+			await this.transporter.sendMail(mailOptions);
+			return new ResponseBase('200', 'Successfully sent mail!');
+		} catch (error) {
+			throw new BadRequestException(
+				'Đã xảy ra lỗi trong quá trình truyền tải dữ liệu',
+			);
+		}
+	}
 }

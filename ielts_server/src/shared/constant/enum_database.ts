@@ -17,12 +17,12 @@ export enum UserRole {
 }
 
 export enum QuestionType {
-	MultipleChoice = 'Multiple Choice',
-	MultipleResponse = 'Multiple Response',
-	Dropdown = 'Dropdown',
-	DragAndDrop = 'Drag&Drop',
+	MultipleChoice = 'MultipleChoice',
+	MultipleResponse = 'MultipleResponse',
+	Dropdown = 'DropDown',
+	DragAndDrop = 'DragAndDrop',
+	FillInTheBlank = 'FillInTheBlank',
 	MatchingHeading = 'Matching heading',
-	FillInTheBlank = 'Fill In The Blank',
 	MatchingFillInBlank = 'Matching fill in the blanks',
 }
 export enum PartNumber {

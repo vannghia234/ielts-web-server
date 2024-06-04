@@ -20,7 +20,6 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { publicOperation } from '../user/controller/user-answer.controller';
 
 @Controller('group-questions')
-@Controller('auth')
 @ApiTags('group-question')
 @ApiResponse({
 	status: 200,
@@ -33,6 +32,7 @@ import { publicOperation } from '../user/controller/user-answer.controller';
 })
 @ApiResponse({ status: 404, description: 'Not Found' })
 @ApiResponse({ status: 500, description: 'Server Error' })
+@Public()
 export class GroupQuestionController {
 	constructor(private readonly groupQuestionService: GroupQuestionService) {}
 
@@ -56,6 +56,7 @@ export class GroupQuestionController {
 	): Promise<GroupQuestion> {
 		return this.groupQuestionService.create(createGroupQuestionDto);
 	}
+
 	@Post('bulk')
 	async createMany(
 		@Body() createManyGroupQuestionsDto: CreateManyGroupQuestionDto,
@@ -63,12 +64,21 @@ export class GroupQuestionController {
 		console.log(createManyGroupQuestionsDto);
 		return this.groupQuestionService.createMany(createManyGroupQuestionsDto);
 	}
+
+	@Post('autoImport')
+	async autoImportQuestion(
+		@Body('content') content: string,
+	): Promise<GroupQuestion[]> {
+		return this.groupQuestionService.createQuestionFromDocxString(content);
+	}
+
 	@Put('bulk')
 	async updateMany(
 		@Body() updateManyGroupQuestionDto: UpdateManyGroupQuestionDto,
 	): Promise<GroupQuestion[]> {
 		return this.groupQuestionService.updateMany(updateManyGroupQuestionDto);
 	}
+
 	@Put(':id')
 	async update(
 		@Param('id') id: string,
