@@ -1,0 +1,44 @@
+# "name" is short hand of "COMPOSE_PROJECT_NAME" when defined. But you must use correct name, is "COMPOSE_PROJECT_NAME"
+name: ielts_server
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 15432:5432
+    environment:
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=postgres
+      # - POSTGRES_PASSWORD=${DATABASE_PASSWORD} -> error password
+    volumes:
+      - ielts_server:/data/db
+      # - ./db-init-scripts:/docker-entrypoint-initdb.d:ro
+    networks:
+      ielts_server:
+  server:
+    image: tchoa1102/${COMPOSE_PROJECT_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}_server
+    ports:
+      - 3001:3001
+    build:
+      dockerfile: dockerfile
+    env_file:
+      - .env.example
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      # - DATABASE_HOST=postgres_${COMPOSE_PROJECT_NAME}
+      # DATABASE_HOST: postgres_${COMPOSE_PROJECT_NAME}
+    #   - DATABASE_PORT=5433
+    networks:
+      ielts_server:
+
+volumes:
+  ielts_server:
+    name: ${COMPOSE_PROJECT_NAME}
+
+networks:
+  ielts_server:
+    name: ${COMPOSE_PROJECT_NAME}
+    driver: bridge
