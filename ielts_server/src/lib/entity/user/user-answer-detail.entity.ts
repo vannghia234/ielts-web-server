@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ExamSkillDetail } from '../exam/exam-skill-detail.entity';
 import { UserExamProcess } from './user-exam-process.entity';
-import { IUserAnswerDetailAnswer } from './user-answer-detail-answer.interface';
+import { IUserAnswerDetailItem } from './user-answer-detail-answer.interface';
 @Entity()
 export class UserAnswerDetail {
 	@PrimaryGeneratedColumn('uuid')
@@ -11,7 +11,7 @@ export class UserAnswerDetail {
 	score: number;
 
 	@Column({ type: 'jsonb' })
-	answer: IUserAnswerDetailAnswer[];
+	answer: IUserAnswerDetailItem[];
 
 	@Column({ type: 'text' })
 	feedback: string;

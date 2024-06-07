@@ -10,12 +10,7 @@ import {
 	CreateUserAnswerDetailDtoBase,
 	IReqCreateUserAnswerDetail,
 } from '../dto/create-user-detail-base.dto';
-import {
-	IUserAnswerDetailAnswer,
-	UserAnswerDetailAnswer,
-} from 'src/lib/entity/user/user-answer-detail-answer.interface';
 import { UUID } from 'typeorm/driver/mongodb/bson.typings';
-import { IUserAnswerDetailForExamSkillDetail } from '../dto/group-part-user-answer-detail';
 import { Part } from 'src/lib/entity/part/Part.entity';
 import { ExamSkillDetail } from 'src/lib/entity/exam/exam-skill-detail.entity';
 import { Skill } from 'src/shared/constant/enum_database';
@@ -66,57 +61,44 @@ export class UserAnswerDetailService {
 		// createInfo.examDetail = await this.examSkillService.findOne(
 		// 	userAnswerDetail.examSkillDetailId,
 		// );
-		// createInfo.userExamProcess = await this.userExamProcessService.findOne(
-		// 	userAnswerDetail.processId,
-		// );
-		const parts: IUserAnswerDetailForExamSkillDetail[] =
-			handleGroupAnswersByExamSkillDetailId(userAnswerDetail.answers);
+		const process = await this.userExamProcessService.findOne(
+			userAnswerDetail.processId,
+		);
+		const partDetails: ExamSkillDetail[] = [];
+		const parts = userAnswerDetail.answersOfParts;
 
-		const userAnswersDetails: UserAnswerDetail[] = [];
+		const userAnswersDetails: UserAnswerDetail[] = []; // <=> every parts
 		for (const part of parts) {
 			const partDetail = await this.examSkillService.findOneWithRelation(
 				part.examSkillDetailId,
 			);
+			partDetails.push(partDetail);
 			const skillName = partDetail.skillExam.name;
 			const userAnswersDetail = new HandleCreateUserAnswersDetail(
 				skillName,
-				part.answers,
+				part.groups,
 				partDetail,
 			)
 				.instance()
 				.execute();
+			userAnswersDetail.feedback = '';
+			userAnswersDetail.examDetail = partDetail;
+			userAnswersDetail.userExamProcess = process;
 
 			userAnswersDetails.push(userAnswersDetail);
 		}
+		console.log('result score: ', userAnswersDetails);
 
 		const data: UserAnswerDetail[] = [];
-		for (const userAnswersDetail of userAnswersDetails) {
-			const d = await this.userAnswerDetailRepository.create(userAnswersDetail);
+		for (const userAnswersDetailItem of userAnswersDetails) {
+			const d = await this.userAnswerDetailRepository.create(
+				userAnswersDetailItem,
+			);
 			data.push(d);
 		}
 
 		return data;
-
-		function handleGroupAnswersByExamSkillDetailId(
-			answers: IReqCreateUserAnswerDetail[],
-		): IUserAnswerDetailForExamSkillDetail[] {
-			const data: IUserAnswerDetailForExamSkillDetail[] = [];
-			answers.forEach((answer) => {
-				const ans: IUserAnswerDetailAnswer = new UserAnswerDetailAnswer(answer);
-				let part: IUserAnswerDetailForExamSkillDetail = parts.find(
-					(part) => part.examSkillDetailId === answer.examSkillDetailId,
-				);
-				if (!part) {
-					part = {
-						examSkillDetailId: answer.examSkillDetailId,
-						answers: [],
-					};
-				}
-
-				part.answers.push(ans);
-			});
-			return data;
-		}
+		// return [];
 	}
 
 	async update(

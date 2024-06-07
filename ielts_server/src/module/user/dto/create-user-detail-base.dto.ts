@@ -1,16 +1,11 @@
 import { IsNumber, IsString, IsUUID, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserAnswerDetailItem } from 'src/lib/entity/user/user-answer-detail-answer.interface';
 
 export class CreateUserAnswerDetailDtoBase {
 	@IsNotEmpty()
 	@ApiProperty({ type: 'jsonb' })
-	answers: IReqCreateUserAnswerDetail[];
-
-	@IsNotEmpty()
-	@IsString()
-	@ApiProperty()
-	@IsUUID()
-	examSkillDetailId: string;
+	answersOfParts: IReqGroupExamSkillDetail[];
 
 	@IsNotEmpty()
 	@IsString()
@@ -19,10 +14,16 @@ export class CreateUserAnswerDetailDtoBase {
 	processId: string;
 }
 
-export interface IReqCreateUserAnswerDetail {
+export interface IReqGroupExamSkillDetail {
 	examSkillDetailId: string;
-	groupQuestionId: string;
+	groups: IReqGroupAnswer[];
+}
+
+export interface IReqGroupAnswer {
 	id: string;
-	value: string[];
+	answers: IReqCreateUserAnswerDetail[];
+}
+
+export interface IReqCreateUserAnswerDetail extends UserAnswerDetailItem {
 	updateAt: number; // milliseconds
 }

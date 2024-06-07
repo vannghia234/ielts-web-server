@@ -1,21 +1,18 @@
-import { IReqCreateUserAnswerDetail } from 'src/module/user/dto/create-user-detail-base.dto';
-
-export interface IUserAnswerDetailAnswer {
+export interface IUserAnswerDetailItem {
 	groupQuestionId: string;
-	answerId: string;
-	value: string[];
+	questionId: string;
+	answer: string;
 	isCorrect: boolean;
 }
 
-export class UserAnswerDetailAnswer implements IUserAnswerDetailAnswer {
+export class UserAnswerDetailItem implements IUserAnswerDetailItem {
 	groupQuestionId: string;
-	answerId: string;
-	value: string[];
-	isCorrect: boolean;
-	constructor(data: IReqCreateUserAnswerDetail) {
+	questionId: string;
+	answer: string;
+	isCorrect: boolean = false;
+	constructor(data: IUserAnswerDetailItem) {
 		this.groupQuestionId = data.groupQuestionId;
-		this.answerId = data.id;
-		this.value = data.value;
-		this.isCorrect = false;
+		this.questionId = data.questionId;
+		this.answer = data.answer;
 	}
 }
