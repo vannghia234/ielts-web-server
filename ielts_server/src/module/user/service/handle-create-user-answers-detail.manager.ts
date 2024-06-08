@@ -36,6 +36,7 @@ export class HandleCreateUserAnswersDetail {
 		userAnswersDetails.score = 0;
 		userAnswersDetails.answer = [];
 		// let totalQuestion = 0;
+		console.log('group questions: ', this.partDetail.part.groupQuestions);
 		for (const group of this.partDetail.part.groupQuestions) {
 			const groupAnswer = this.groupsAnswer.find(
 				(groupItem) => groupItem.id === group.id,
@@ -44,6 +45,7 @@ export class HandleCreateUserAnswersDetail {
 			const data: IUserAnswerDetailItem[] = new GroupChecker(group, groupAnswer)
 				.instance()
 				.execute();
+			console.log('data: ', data);
 			if (data.length === 0) continue;
 			userAnswersDetails.answer.push(...data);
 			// is correct? increase score.
@@ -127,8 +129,9 @@ class GroupChecker {
 				const questionAnswer = question.answers.find(
 					(questionAnswer) => questionAnswer.id === userAnswer.answer,
 				);
-				if (!questionAnswer) continue;
-				userAnswer.isCorrect = questionAnswer.isCorrect;
+				if (questionAnswer) {
+					userAnswer.isCorrect = questionAnswer.isCorrect;
+				}
 
 				answers.push(userAnswer);
 			}

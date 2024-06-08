@@ -56,15 +56,9 @@ export class UserAnswerDetailService {
 	async createBaseAnswer(
 		userAnswerDetail: CreateUserAnswerDetailDtoBase,
 	): Promise<UserAnswerDetail[]> {
-		// const createInfo = new UserAnswerDetail();
-		// createInfo.answer = userAnswerDetail.answer;
-		// createInfo.examDetail = await this.examSkillService.findOne(
-		// 	userAnswerDetail.examSkillDetailId,
-		// );
 		const process = await this.userExamProcessService.findOne(
 			userAnswerDetail.processId,
 		);
-		const partDetails: ExamSkillDetail[] = [];
 		const parts = userAnswerDetail.answersOfParts;
 
 		const userAnswersDetails: UserAnswerDetail[] = []; // <=> every parts
@@ -72,7 +66,6 @@ export class UserAnswerDetailService {
 			const partDetail = await this.examSkillService.findOneWithRelation(
 				part.examSkillDetailId,
 			);
-			partDetails.push(partDetail);
 			const skillName = partDetail.skillExam.name;
 			const userAnswersDetail = new HandleCreateUserAnswersDetail(
 				skillName,
@@ -98,7 +91,6 @@ export class UserAnswerDetailService {
 		}
 
 		return data;
-		// return [];
 	}
 
 	async update(
