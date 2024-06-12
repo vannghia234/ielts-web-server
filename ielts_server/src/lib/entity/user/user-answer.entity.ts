@@ -17,6 +17,12 @@ export class UserAnswer {
 	@Column({ type: 'timestamp' })
 	timeStart: Date;
 
+	@Column({ type: 'timestamp' })
+	submittedAt: Date;
+
+	@Column({ type: 'boolean' })
+	isSendByMail: boolean;
+
 	@ManyToOne(() => User, (type) => type.userAnswer)
 	user: User;
 
