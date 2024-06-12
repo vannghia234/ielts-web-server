@@ -25,4 +25,4 @@ COPY --from=build --chown=node:node /app/static ./dist/static
 COPY --from=build --chown=node:node /app/static ./static
 
 CMD ["npm", "run", "start:prod"]
-EXPOSE 3001
+EXPOSE 4000
