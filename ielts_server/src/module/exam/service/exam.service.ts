@@ -18,12 +18,12 @@ export class ExamService {
 	}
 
 	async findAllBase(): Promise<ResBaseExam[]> {
-		const exams = await this.examRepository.findAll();
+		const exams = await this.examRepository.findAllWithRelation();
 		return exams.map((exam) => new ResBaseExam(exam));
 	}
 
-	async findOneBase(id: string): Promise<ResBaseExam> {
-		const exam = await this.examRepository.findOne(id);
+	async findOneBase(code: string): Promise<ResBaseExam> {
+		const exam = await this.examRepository.findOneWithRelation(code);
 		return new ResBaseExam(exam);
 	}
 

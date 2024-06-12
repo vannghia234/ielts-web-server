@@ -4,12 +4,14 @@ import { UserAnswerRepository } from '../repository/user-answer.repository';
 import { CreateUserAnswerDto } from '../dto/create-user-answer.dto';
 import { UserService } from './user.service';
 import { UpdateUserAnswerDto } from '../dto/update-user-ansert.dto';
+import { ExamService } from 'src/module/exam/service/exam.service';
 
 @Injectable()
 export class UserAnswerService {
 	constructor(
 		private readonly userAnswerRepository: UserAnswerRepository,
 		private readonly userService: UserService,
+		private readonly examService: ExamService,
 	) {}
 
 	async findAll(): Promise<UserAnswer[]> {
@@ -22,6 +24,14 @@ export class UserAnswerService {
 			throw new NotFoundException('User answer not found');
 		}
 		return userAnswer;
+	}
+
+	async findOneRecent(codeExam: string) {
+		const exam = await this.examService.findOneBase(codeExam);
+		const skillExamIds = exam.skillsExam.map((skillExam) => skillExam.id);
+		const processes =
+			await this.userAnswerRepository.findOneRecentBySkillExamId(skillExamIds);
+		return processes;
 	}
 
 	async create(userAnswer: CreateUserAnswerDto): Promise<UserAnswer> {

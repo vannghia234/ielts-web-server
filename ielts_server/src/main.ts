@@ -11,7 +11,9 @@ async function bootstrap() {
 	//TODO: mở comment khi không muốn set cứng key pair
 	// GenerateJwtService.generateToken();
 	const app = await NestFactory.create(AppModule);
-	app.enableCors();
+	app.enableCors({
+		origin: '*',
+	});
 	app.setGlobalPrefix('/api');
 	app.useGlobalPipes(new ValidationPipe());
 
@@ -25,6 +27,8 @@ async function bootstrap() {
 	new Logger('main').debug(
 		`Go to swagger http://localhost:${process.env.APP_PORT}/api/`,
 	);
-	new Logger('main').debug(`SOCKET ON PORT http://localhost:${8001}/`);
+	new Logger('main').debug(
+		`SOCKET ON PORT http://localhost:${process.env.SOCKET_PORT}/`,
+	);
 }
 bootstrap();

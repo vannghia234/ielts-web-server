@@ -80,7 +80,7 @@ export class UserAnswerDetailService {
 
 			userAnswersDetails.push(userAnswersDetail);
 		}
-		console.log('result score: ', userAnswersDetails);
+		// console.log('result score: ', userAnswersDetails);
 
 		const data: UserAnswerDetail[] = [];
 		for (const userAnswersDetailItem of userAnswersDetails) {

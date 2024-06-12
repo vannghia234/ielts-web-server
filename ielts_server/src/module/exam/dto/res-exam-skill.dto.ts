@@ -8,7 +8,7 @@ export class ResExamSkill {
 	details: IExamSkillDetail[] = [];
 
 	constructor(data: SkillExam) {
-		console.log('data: ', data);
+		// console.log('data: ', data);
 		this.id = data.id;
 		this.examId = data.exam.id;
 		this.name = data.name;

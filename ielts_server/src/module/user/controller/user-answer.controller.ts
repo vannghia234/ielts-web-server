@@ -63,6 +63,12 @@ export class UserAnswerController {
 		return this.userAnswerService.findOne(id);
 	}
 
+	@Get(':code/recent')
+	@ApiOperation(publicOperation)
+	async findOneRecent(@Param('code') codeExam: string): Promise<UserAnswer> {
+		return this.userAnswerService.findOneRecent(codeExam);
+	}
+
 	@Post()
 	@ApiOperation(publicOperation)
 	async create(@Body() userAnswer: ReqCreateUserAnswerDto) {

@@ -1,7 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAnswer } from 'src/lib/entity/user/user-answer.entity';
-import { Repository } from 'typeorm';
+import {
+	FindOperator,
+	FindOperators,
+	FindOptionsUtils,
+	In,
+	Repository,
+} from 'typeorm';
 
 @Injectable()
 export class UserAnswerRepository {
@@ -23,6 +29,33 @@ export class UserAnswerRepository {
 			throw new NotFoundException('User answer not found');
 		}
 		return userAnswer;
+	}
+
+	async findOneRecentBySkillExamId(
+		skillExamIds: string[],
+	): Promise<UserAnswer> | null {
+		const data = await this.userAnswerRepository.find({
+			relations: {
+				processes: {
+					userAnswerDetails: true,
+					skillExam: true,
+				},
+			},
+			where: {
+				processes: {
+					skillExam: {
+						id: In(skillExamIds),
+					},
+				},
+			},
+			order: {
+				timeStart: 'DESC',
+			},
+		});
+		// console.log(data);
+
+		if (data.length > 0) return data[0];
+		return null;
 	}
 
 	async create(userAnswer: Partial<UserAnswer>): Promise<UserAnswer> {
