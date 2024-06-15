@@ -2,12 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserAnswer } from 'src/lib/entity/user/user-answer.entity';
 import {
+	And,
+	Between,
 	FindOperator,
-	FindOperators,
-	FindOptionsUtils,
 	In,
+	LessThan,
+	LessThanOrEqual,
+	MoreThanOrEqual,
 	Repository,
 } from 'typeorm';
+import { ConvertUser } from '../dto/user.convert';
 
 @Injectable()
 export class UserAnswerRepository {
@@ -20,9 +24,106 @@ export class UserAnswerRepository {
 		return this.userAnswerRepository.find();
 	}
 
+	async findAllWithRelation(): Promise<UserAnswer[]> {
+		return await this.userAnswerRepository.find({
+			relations: {
+				processes: {
+					userAnswerDetails: {
+						examDetail: {
+							skillExam: {
+								exam: true,
+							},
+							part: {
+								groupQuestions: true,
+							},
+						},
+					},
+				},
+				user: true,
+			},
+			order: {
+				submittedAt: 'desc',
+			},
+			select: {
+				user: {
+					id: true,
+					name: true,
+					mail: true,
+					role: true,
+					createdAt: true,
+				},
+			},
+			take: 50,
+		});
+	}
+
+	async findAllWithRelationByExam(code: string): Promise<UserAnswer[]> {
+		return this.userAnswerRepository.find({
+			relations: {
+				processes: {
+					userAnswerDetails: {
+						examDetail: {
+							skillExam: {
+								exam: true,
+							},
+							part: {
+								groupQuestions: true,
+							},
+						},
+					},
+				},
+			},
+			where: {
+				processes: {
+					userAnswerDetails: {
+						examDetail: {
+							skillExam: {
+								exam: {
+									code: code,
+								},
+							},
+							part: {
+								groupQuestions: true,
+							},
+						},
+					},
+				},
+			},
+			order: {
+				submittedAt: 'desc',
+			},
+		});
+	}
+
+	async findAllByExam(code: string): Promise<UserAnswer[]> {
+		return await this.userAnswerRepository.find({
+			relations: {
+				processes: {
+					skillExam: {
+						exam: true,
+					},
+				},
+			},
+			where: {
+				processes: {
+					skillExam: {
+						exam: {
+							code: code,
+						},
+					},
+				},
+			},
+		});
+	}
+
 	async findOne(id: string): Promise<UserAnswer | null> {
 		const userAnswer = await this.userAnswerRepository.findOne({
-			relations: ['processes'],
+			relations: {
+				processes: {
+					userAnswerDetails: true,
+					skillExam: true,
+				},
+			},
 			where: { id: id },
 		});
 		if (!userAnswer) {
@@ -78,5 +179,25 @@ export class UserAnswerRepository {
 		if (result.affected === 0) {
 			throw new NotFoundException('User answer not found');
 		}
+	}
+
+	async statisticExam() {
+		const date = new Date();
+		const currentMonth = date.toLocaleString('default', { month: 'numeric' });
+		const currentYear = date.toLocaleString('default', { year: 'numeric' });
+		const startDate = new Date(
+			Number.parseInt(currentYear),
+			Number.parseInt(currentMonth) - 1,
+			1,
+		);
+		const endDate = new Date(
+			Number.parseInt(currentYear),
+			Number.parseInt(currentMonth),
+			1,
+		);
+		const data = await this.userAnswerRepository.findAndCountBy({
+			timeStart: Between(startDate, endDate),
+		});
+		return data;
 	}
 }

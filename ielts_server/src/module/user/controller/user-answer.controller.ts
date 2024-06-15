@@ -57,6 +57,16 @@ export class UserAnswerController {
 		return this.userAnswerService.findAll();
 	}
 
+	@Get('/all')
+	async findAllWithRelation(): Promise<UserAnswer[]> {
+		return this.userAnswerService.findAllWithRelation();
+	}
+
+	@Get('/all/by-exam')
+	async findAllWithRelationByExam(code: string): Promise<UserAnswer[]> {
+		return this.userAnswerService.findAllWithRelationByExam(code);
+	}
+
 	@Get(':id')
 	@ApiOperation(publicOperation)
 	async findOne(@Param('id') id: string): Promise<UserAnswer> {
@@ -67,6 +77,11 @@ export class UserAnswerController {
 	@ApiOperation(publicOperation)
 	async findOneRecent(@Param('code') codeExam: string): Promise<UserAnswer> {
 		return this.userAnswerService.findOneRecent(codeExam);
+	}
+
+	@Get('/statistic/exam')
+	async statisticExam() {
+		return this.userAnswerService.statisticExam();
 	}
 
 	@Post()

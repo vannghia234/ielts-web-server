@@ -17,10 +17,10 @@ export class UserAnswer {
 	@Column({ type: 'timestamp' })
 	timeStart: Date;
 
-	@Column({ type: 'timestamp' })
-	submittedAt: Date;
+	@Column({ type: 'timestamp', nullable: true })
+	submittedAt: Date | null;
 
-	@Column({ type: 'boolean' })
+	@Column({ type: 'boolean', default: false })
 	isSendByMail: boolean;
 
 	@ManyToOne(() => User, (type) => type.userAnswer)

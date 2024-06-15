@@ -1,6 +1,6 @@
 import { IsNumber, IsString, IsUUID, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { UserAnswerDetailItem } from 'src/lib/entity/user/user-answer-detail-answer.interface';
+import { UserAnswerDetailItem } from 'src/lib/entity/user/i-user-answer-detail-answer.interface';
 
 export class CreateUserAnswerDetailDtoBase {
 	@IsNotEmpty()

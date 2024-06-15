@@ -14,8 +14,8 @@ export class UserExamProcess {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
-	@Column({ type: 'float4' })
-	totalScore: number;
+	@Column({ type: 'float4', nullable: true })
+	totalScore: number | null;
 
 	@ManyToOne(() => UserAnswer, (type) => type.id)
 	userAnswer: UserAnswer;

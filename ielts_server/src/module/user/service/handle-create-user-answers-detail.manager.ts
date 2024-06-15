@@ -3,7 +3,7 @@ import { GroupQuestion } from 'src/lib/entity/groupQuestion/GroupQuestion.entity
 import { UserAnswerDetail } from 'src/lib/entity/user/user-answer-detail.entity';
 import { QuestionType, Skill } from 'src/shared/constant/enum_database';
 import { IReqGroupAnswer } from '../dto/create-user-detail-base.dto';
-import { IUserAnswerDetailItem } from 'src/lib/entity/user/user-answer-detail-answer.interface';
+import { IUserAnswerDetailItem } from 'src/lib/entity/user/i-user-answer-detail-answer.interface';
 
 export class HandleCreateUserAnswersDetail {
 	constructor(
