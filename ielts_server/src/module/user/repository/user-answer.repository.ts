@@ -28,6 +28,9 @@ export class UserAnswerRepository {
 		return await this.userAnswerRepository.find({
 			relations: {
 				processes: {
+					skillExam: {
+						exam: true,
+					},
 					userAnswerDetails: {
 						examDetail: {
 							skillExam: {
@@ -60,7 +63,11 @@ export class UserAnswerRepository {
 	async findAllWithRelationByExam(code: string): Promise<UserAnswer[]> {
 		return this.userAnswerRepository.find({
 			relations: {
+				user: true,
 				processes: {
+					skillExam: {
+						exam: true,
+					},
 					userAnswerDetails: {
 						examDetail: {
 							skillExam: {
@@ -195,8 +202,25 @@ export class UserAnswerRepository {
 			Number.parseInt(currentMonth),
 			1,
 		);
-		const data = await this.userAnswerRepository.findAndCountBy({
-			timeStart: Between(startDate, endDate),
+		const data = await this.userAnswerRepository.find({
+			relations: {
+				user: true,
+				processes: {
+					skillExam: {
+						exam: true,
+					},
+				},
+			},
+			where: {
+				timeStart: Between(startDate, endDate),
+			},
+			select: {
+				user: {
+					id: true,
+					mail: true,
+					name: true,
+				},
+			},
 		});
 		return data;
 	}

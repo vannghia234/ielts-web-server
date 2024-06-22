@@ -60,7 +60,12 @@ export class UserAnswerDetailController {
 	@Post('/submitExam')
 	@Public()
 	async submitExam(@Body() userAnswerDetail: CreateUserAnswerDetailDtoBase) {
-		return this.userAnswerDetailService.createBaseAnswer(userAnswerDetail);
+		try {
+			return this.userAnswerDetailService.createBaseAnswer(userAnswerDetail);
+		} catch (error) {
+			console.log(error);
+			return [];
+		}
 	}
 
 	@Put(':id')

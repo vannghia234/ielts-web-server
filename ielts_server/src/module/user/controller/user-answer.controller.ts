@@ -62,8 +62,10 @@ export class UserAnswerController {
 		return this.userAnswerService.findAllWithRelation();
 	}
 
-	@Get('/all/by-exam')
-	async findAllWithRelationByExam(code: string): Promise<UserAnswer[]> {
+	@Get('/all/by-exam/:code')
+	async findAllWithRelationByExam(
+		@Param('code') code: string,
+	): Promise<UserAnswer[]> {
 		return this.userAnswerService.findAllWithRelationByExam(code);
 	}
 
@@ -80,6 +82,7 @@ export class UserAnswerController {
 	}
 
 	@Get('/statistic/exam')
+	@ApiOperation(publicOperation)
 	async statisticExam() {
 		return this.userAnswerService.statisticExam();
 	}

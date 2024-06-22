@@ -23,6 +23,9 @@ export class UserAnswer {
 	@Column({ type: 'boolean', default: false })
 	isSendByMail: boolean;
 
+	@Column({ type: 'float4', nullable: true })
+	avgScore: number;
+
 	@ManyToOne(() => User, (type) => type.userAnswer)
 	user: User;
 

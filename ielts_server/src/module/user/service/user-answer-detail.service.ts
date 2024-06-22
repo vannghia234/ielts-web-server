@@ -56,41 +56,46 @@ export class UserAnswerDetailService {
 	async createBaseAnswer(
 		userAnswerDetail: CreateUserAnswerDetailDtoBase,
 	): Promise<UserAnswerDetail[]> {
-		const process = await this.userExamProcessService.findOne(
-			userAnswerDetail.processId,
-		);
-		const parts = userAnswerDetail.answersOfParts;
-
-		const userAnswersDetails: UserAnswerDetail[] = []; // <=> every parts
-		for (const part of parts) {
-			const partDetail = await this.examSkillService.findOneWithRelation(
-				part.examSkillDetailId,
+		try {
+			const process = await this.userExamProcessService.findOne(
+				userAnswerDetail.processId,
 			);
-			const skillName = partDetail.skillExam.name;
-			const userAnswersDetail = new HandleCreateUserAnswersDetail(
-				skillName,
-				part.groups,
-				partDetail,
-			)
-				.instance()
-				.execute();
-			userAnswersDetail.feedback = '';
-			userAnswersDetail.examDetail = partDetail;
-			userAnswersDetail.userExamProcess = process;
+			const parts = userAnswerDetail.answersOfParts;
 
-			userAnswersDetails.push(userAnswersDetail);
+			const listUserAnswersDetails: UserAnswerDetail[] = []; // <=> every parts
+			for (const part of parts) {
+				const partDetail = await this.examSkillService.findOneWithRelation(
+					part.examSkillDetailId,
+				);
+				const skillName = partDetail.skillExam.name;
+				const userAnswersDetail = new HandleCreateUserAnswersDetail(
+					skillName,
+					part.groups,
+					partDetail,
+				)
+					.instance()
+					.execute();
+				userAnswersDetail.feedback = '';
+				userAnswersDetail.examDetail = partDetail;
+				userAnswersDetail.userExamProcess = process;
+
+				listUserAnswersDetails.push(userAnswersDetail);
+			}
+			// console.log('result score: ', listUserAnswersDetails);
+
+			const data: UserAnswerDetail[] = [];
+			for (const userAnswersDetailItem of listUserAnswersDetails) {
+				const d = await this.userAnswerDetailRepository.create(
+					userAnswersDetailItem,
+				);
+				data.push(d);
+			}
+
+			return data;
+		} catch (error) {
+			console.log(error);
+			return error;
 		}
-		// console.log('result score: ', userAnswersDetails);
-
-		const data: UserAnswerDetail[] = [];
-		for (const userAnswersDetailItem of userAnswersDetails) {
-			const d = await this.userAnswerDetailRepository.create(
-				userAnswersDetailItem,
-			);
-			data.push(d);
-		}
-
-		return data;
 	}
 
 	async update(

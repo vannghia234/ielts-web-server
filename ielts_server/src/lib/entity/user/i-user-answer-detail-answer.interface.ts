@@ -1,18 +1,24 @@
-export interface IUserAnswerDetailItem {
-	groupQuestionId: string;
+export interface IAnswerData {
 	questionId: string;
 	answer: string;
 	isCorrect: boolean;
 }
 
-export class UserAnswerDetailItem implements IUserAnswerDetailItem {
-	groupQuestionId: string;
-	questionId: string;
-	answer: string;
-	isCorrect: boolean = false;
-	constructor(data: IUserAnswerDetailItem) {
-		this.groupQuestionId = data.groupQuestionId;
-		this.questionId = data.questionId;
-		this.answer = data.answer;
+export interface IGroupAnswer {
+	id: string;
+	answers: IAnswerData[];
+}
+
+export class GroupAnswer implements IGroupAnswer {
+	id: string;
+	answers: IAnswerData[];
+	constructor(data: IGroupAnswer) {
+		this.id = data.id;
+		this.answers = [];
+	}
+
+	add(data: IAnswerData) {
+		const d = JSON.parse(JSON.stringify(data));
+		this.answers.push(d);
 	}
 }

@@ -3,7 +3,11 @@ import { GroupQuestion } from 'src/lib/entity/groupQuestion/GroupQuestion.entity
 import { UserAnswerDetail } from 'src/lib/entity/user/user-answer-detail.entity';
 import { QuestionType, Skill } from 'src/shared/constant/enum_database';
 import { IReqGroupAnswer } from '../dto/create-user-detail-base.dto';
-import { IUserAnswerDetailItem } from 'src/lib/entity/user/i-user-answer-detail-answer.interface';
+import {
+	GroupAnswer,
+	IGroupAnswer,
+} from 'src/lib/entity/user/i-user-answer-detail-answer.interface';
+import { GroupChecker } from './group-checker';
 
 export class HandleCreateUserAnswersDetail {
 	constructor(
@@ -32,32 +36,37 @@ export class HandleCreateUserAnswersDetail {
 	}
 
 	execute(): UserAnswerDetail {
-		const userAnswersDetails: UserAnswerDetail = new UserAnswerDetail();
-		userAnswersDetails.score = 0;
-		userAnswersDetails.answer = [];
-		// let totalQuestion = 0;
-		console.log('group questions: ', this.partDetail.part.groupQuestions);
-		for (const group of this.partDetail.part.groupQuestions) {
-			const groupAnswer = this.groupsAnswer.find(
-				(groupItem) => groupItem.id === group.id,
-			);
-			if (!groupAnswer) continue;
-			const data: IUserAnswerDetailItem[] = new GroupChecker(group, groupAnswer)
-				.instance()
-				.execute();
-			console.log('data: ', data);
-			if (data.length === 0) continue;
-			userAnswersDetails.answer.push(...data);
-			// is correct? increase score.
-			userAnswersDetails.score += data.reduce((sum, answer) => {
-				if (answer.isCorrect) sum += 1;
-				// totalQuestion += 1;
-				return sum;
-			}, 0);
-		}
-		userAnswersDetails.score;
+		try {
+			const userAnswersDetails: UserAnswerDetail = new UserAnswerDetail();
+			userAnswersDetails.score = 0;
+			userAnswersDetails.answer = [];
+			// let totalQuestion = 0;
+			// console.log('group questions: ', this.partDetail.part.groupQuestions);
+			for (const group of this.partDetail.part.groupQuestions) {
+				const groupAnswer = this.groupsAnswer.find(
+					(groupItem) => groupItem.id === group.id,
+				);
+				if (!groupAnswer) continue;
+				const groupData: IGroupAnswer = new GroupChecker(group, groupAnswer)
+					.instance()
+					.execute();
+				console.log('new group: ', groupData);
+				if (groupData.answers.length === 0) continue;
+				userAnswersDetails.answer.push(groupData);
+				// is correct? increase score.
+				userAnswersDetails.score += groupData.answers.reduce((sum, answer) => {
+					if (answer.isCorrect) sum += 1;
+					// totalQuestion += 1;
+					return sum;
+				}, 0);
+			}
+			userAnswersDetails.score;
 
-		return userAnswersDetails;
+			return userAnswersDetails;
+		} catch (error) {
+			console.log(error);
+			throw error;
+		}
 	}
 }
 
@@ -72,7 +81,19 @@ class HandleCreateUserAnswersDetailByWriting extends HandleCreateUserAnswersDeta
 	execute(): UserAnswerDetail {
 		const userAnswersDetails: UserAnswerDetail = new UserAnswerDetail();
 		userAnswersDetails.score = -1;
-		userAnswersDetails.answer = JSON.parse(JSON.stringify(this.groupsAnswer));
+		userAnswersDetails.answer = this.groupsAnswer.map(
+			(group) =>
+				new GroupAnswer({
+					id: group.id,
+					answers: [
+						{
+							questionId: group.id,
+							answer: group.answers[0].answer,
+							isCorrect: false,
+						},
+					],
+				}),
+		);
 
 		return userAnswersDetails;
 	}
@@ -89,83 +110,20 @@ class HandleCreateUserAnswersDetailBySpeaking extends HandleCreateUserAnswersDet
 	execute(): UserAnswerDetail {
 		const userAnswersDetails: UserAnswerDetail = new UserAnswerDetail();
 		userAnswersDetails.score = -1;
-		userAnswersDetails.answer = JSON.parse(JSON.stringify(this.groupsAnswer));
+		userAnswersDetails.answer = this.groupsAnswer.map(
+			(group) =>
+				new GroupAnswer({
+					id: group.id,
+					answers: [
+						{
+							questionId: group.id,
+							answer: group.answers[0].answer,
+							isCorrect: false,
+						},
+					],
+				}),
+		);
 
 		return userAnswersDetails;
-	}
-}
-
-class GroupChecker {
-	constructor(
-		protected readonly groupQuestion: GroupQuestion,
-		protected readonly groupAnswer: IReqGroupAnswer,
-	) {}
-
-	instance(): GroupChecker {
-		if (this.groupQuestion.questionType === QuestionType.FillInTheBlank) {
-			return new GroupCheckerModelFillInTheBlank(
-				this.groupQuestion,
-				this.groupAnswer,
-			);
-		}
-
-		return this;
-	}
-
-	execute(): IUserAnswerDetailItem[] {
-		const answers: IUserAnswerDetailItem[] = [];
-		console.log('questions: ', this.groupQuestion.data);
-		// console.log('groupAnswer: ', this.groupAnswer);
-		for (const question of this.groupQuestion.data) {
-			// check user answer is correct
-			for (const userAnswer of this.groupAnswer.answers) {
-				if (userAnswer.groupQuestionId !== this.groupQuestion.id) continue;
-				if (userAnswer.questionId !== question.id) continue;
-				console.log('--------------------------------');
-				console.log('check: ');
-				console.log('userAnswer: ', userAnswer.answer);
-				console.log('question answer: ', question.answers);
-				console.log('--------------------------------');
-				const questionAnswer = question.answers.find(
-					(questionAnswer) => questionAnswer.id === userAnswer.answer,
-				);
-				if (questionAnswer) {
-					userAnswer.isCorrect = questionAnswer.isCorrect;
-				}
-
-				answers.push(userAnswer);
-			}
-		}
-		console.log('result answers: ', answers);
-		return answers;
-	}
-}
-class GroupCheckerModelFillInTheBlank extends GroupChecker {
-	constructor(groupQuestion: GroupQuestion, groupAnswer: IReqGroupAnswer) {
-		super(groupQuestion, groupAnswer);
-	}
-
-	execute(): IUserAnswerDetailItem[] {
-		const answers: IUserAnswerDetailItem[] = [];
-		console.log('questions: ', this.groupQuestion.data);
-		for (const question of this.groupQuestion.data) {
-			// check user answer is correct
-			for (const userAnswer of this.groupAnswer.answers) {
-				const questionAnswer = question.answers.find(
-					(questionAnswer) =>
-						this.groupQuestion.id === userAnswer.groupQuestionId &&
-						(questionAnswer.content === userAnswer.answer ||
-							questionAnswer.subAnswer.find(
-								(subAnswer) => subAnswer === userAnswer.answer,
-							)),
-				);
-				if (!questionAnswer) continue;
-				userAnswer.isCorrect = questionAnswer.isCorrect;
-
-				answers.push(userAnswer);
-			}
-		}
-		console.log('answers: ', answers);
-		return answers;
 	}
 }
