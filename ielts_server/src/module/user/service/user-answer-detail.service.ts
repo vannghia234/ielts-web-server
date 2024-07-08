@@ -15,6 +15,7 @@ import { Part } from 'src/lib/entity/part/Part.entity';
 import { ExamSkillDetail } from 'src/lib/entity/exam/exam-skill-detail.entity';
 import { Skill } from 'src/shared/constant/enum_database';
 import { HandleCreateUserAnswersDetail } from './handle-create-user-answers-detail.manager';
+import { BandScoreService } from 'src/module/bandScore/service/banScore.service';
 
 @Injectable()
 export class UserAnswerDetailService {
@@ -22,6 +23,8 @@ export class UserAnswerDetailService {
 		private readonly userAnswerDetailRepository: UserAnswerDetailRepository,
 		private readonly examSkillService: ExamSkillDetailService,
 		private readonly userExamProcessService: UserExamProcessService,
+		private readonly bandScoreService: BandScoreService,
+		private readonly userAnswerService: UserAnswerService,
 	) {}
 
 	async findAll(): Promise<UserAnswerDetail[]> {
@@ -60,17 +63,20 @@ export class UserAnswerDetailService {
 			const process = await this.userExamProcessService.findOne(
 				userAnswerDetail.processId,
 			);
-			const parts = userAnswerDetail.answersOfParts;
+			const userAnswer = await this.userAnswerService.findOne(
+				process.userAnswer.id,
+			);
+			const listPartsAnswer = userAnswerDetail.answersOfParts;
 
 			const listUserAnswersDetails: UserAnswerDetail[] = []; // <=> every parts
-			for (const part of parts) {
+			for (const partAnswer of listPartsAnswer) {
 				const partDetail = await this.examSkillService.findOneWithRelation(
-					part.examSkillDetailId,
+					partAnswer.examSkillDetailId,
 				);
 				const skillName = partDetail.skillExam.name;
 				const userAnswersDetail = new HandleCreateUserAnswersDetail(
 					skillName,
-					part.groups,
+					partAnswer.groups,
 					partDetail,
 				)
 					.instance()
@@ -81,6 +87,26 @@ export class UserAnswerDetailService {
 
 				listUserAnswersDetails.push(userAnswersDetail);
 			}
+			if (
+				process.skillExam.name === Skill.LISTENING ||
+				process.skillExam.name === Skill.READING
+			) {
+				const bandsScores = await this.bandScoreService.findAll();
+				const bandsScore = bandsScores.find(
+					(band) =>
+						(process.skillExam.name === Skill.READING && band.isReading()) ||
+						band.isListening(),
+				);
+				process.totalScore = bandsScore.check(listUserAnswersDetails);
+				console.log('Total score: ', process.totalScore);
+				if (Number.isFinite(process.totalScore)) {
+					await this.userExamProcessService.updateScore(
+						process.id,
+						process.totalScore,
+					);
+				}
+			}
+
 			// console.log('result score: ', listUserAnswersDetails);
 
 			const data: UserAnswerDetail[] = [];

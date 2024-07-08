@@ -90,6 +90,7 @@ export class UserService {
 			);
 		}
 		try {
+			// update
 			const userMail = await this.usersRepository.findByMail(userDto.mail);
 			if (userMail && !userMail.password) {
 				userMail.name = userDto.name;
@@ -102,6 +103,7 @@ export class UserService {
 				return new EmailAlreadyExistingException();
 			}
 		} catch (error) {
+			// new
 			if (userDto.password.length < 8) {
 				throw new BadRequestException(
 					new ResponseBase('40002', 'Mật khẩu tối thiểu 8 kí tự').toJSON(),

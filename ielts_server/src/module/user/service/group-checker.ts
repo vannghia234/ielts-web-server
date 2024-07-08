@@ -29,31 +29,34 @@ export class GroupChecker {
 			answers: [],
 		};
 		// console.log('questions: ', this.groupQuestion.data);
-		console.log('--------------------------------');
-		console.log('groupAnswer: ', this.groupAnswer.answers);
+		// console.log('--------------------------------');
+		// console.log('groupAnswer: ', this.groupAnswer.answers);
+		if (this.groupAnswer.id !== this.groupQuestion.id)
+			return groupAnswersResult;
 		for (const question of this.groupQuestion.data) {
 			// check user answer is correct
 			for (const userAnswer of this.groupAnswer.answers) {
-				if (userAnswer.groupQuestionId !== this.groupQuestion.id) continue;
 				if (userAnswer.questionId !== question.id) continue;
 				// console.log('--------------------------------');
 				// console.log('check: ');
 				// console.log('userAnswer: ', userAnswer.answer);
 				// console.log('question answer: ', question.answers);
+				const answer: IAnswerData = {
+					answer: userAnswer.answer,
+					questionId: question.id,
+					isCorrect: false,
+				};
 				const questionAnswer = question.answers.find(
 					(questionAnswer) => questionAnswer.id === userAnswer.answer,
 				);
-				if (!questionAnswer) continue;
-				const answer: IAnswerData = {
-					answer: questionAnswer.id,
-					questionId: question.id,
-					isCorrect: questionAnswer.isCorrect,
-				};
+				if (questionAnswer) {
+					answer.isCorrect = questionAnswer.isCorrect;
+				}
 				groupAnswersResult.answers.push(answer);
 			}
 		}
-		console.log('group result: ', groupAnswersResult);
-		console.log('--------------------------------');
+		// console.log('group result: ', groupAnswersResult);
+		// console.log('--------------------------------');
 		return groupAnswersResult;
 	}
 }
@@ -69,12 +72,18 @@ export class GroupCheckerModelFillInTheBlank extends GroupChecker {
 				answers: [],
 			};
 			// console.log('questions: ', this.groupQuestion.data);
-			console.log('--------------------------------');
-			console.log('fill blank: ', this.groupAnswer.answers);
+			// console.log('--------------------------------');
+			// console.log('fill blank: ', this.groupAnswer.answers);
+			if (this.groupAnswer.id !== this.groupQuestion.id)
+				return groupAnswersResult;
 			for (const question of this.groupQuestion.data) {
 				// check user answer is correct
 				for (const userAnswer of this.groupAnswer.answers) {
-					if (userAnswer.groupQuestionId !== this.groupQuestion.id) continue;
+					const answer: IAnswerData = {
+						answer: userAnswer.answer,
+						questionId: question.id,
+						isCorrect: false,
+					};
 					const questionAnswer = question.answers.find(
 						(questionAnswer) =>
 							questionAnswer.content === userAnswer.answer ||
@@ -84,17 +93,14 @@ export class GroupCheckerModelFillInTheBlank extends GroupChecker {
 									(subAnswer) => subAnswer === userAnswer.answer,
 								)),
 					);
-					if (!questionAnswer) continue;
-					const answer: IAnswerData = {
-						answer: questionAnswer.id,
-						questionId: question.id,
-						isCorrect: questionAnswer.isCorrect,
-					};
+					if (questionAnswer) {
+						answer.isCorrect = questionAnswer.isCorrect;
+					}
 					groupAnswersResult.answers.push(answer);
 				}
 			}
-			console.log('group result: ', groupAnswersResult);
-			console.log('--------------------------------');
+			// console.log('group result: ', groupAnswersResult);
+			// console.log('--------------------------------');
 			return groupAnswersResult;
 		} catch (error) {
 			console.log(error);

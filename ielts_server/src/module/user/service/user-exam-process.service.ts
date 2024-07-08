@@ -4,6 +4,10 @@ import { UserAnswerRepository } from '../repository/user-answer.repository';
 import { SkillExamRepository } from 'src/module/exam/repository/skill-exam.repository';
 import { UserExamProcess } from 'src/lib/entity/user/user-exam-process.entity';
 import { UpdateUserExamProcessDTO } from '../dto/update-user-exam-process.dto';
+import { UserAnswerDetailRepository } from '../repository/user-answer-detail.repository';
+import { UpdateUserAnswerProcessDTO } from '../dto/update-user-answer-process';
+import { UserAnswerDetail } from 'src/lib/entity/user/user-answer-detail.entity';
+import { BandScoreEntity } from 'src/lib/entity/bandScore/bandScore.entity';
 
 @Injectable()
 export class UserExamProcessService {
@@ -11,6 +15,7 @@ export class UserExamProcessService {
 		private readonly userExamProcessRepository: UserExamProcessRepository,
 		private readonly userAnswerRepository: UserAnswerRepository,
 		private readonly examSkillRepository: SkillExamRepository,
+		private readonly userAnswerDetailRepository: UserAnswerDetailRepository,
 	) {}
 
 	async findAll(): Promise<UserExamProcess[]> {
@@ -72,6 +77,23 @@ export class UserExamProcessService {
 		} catch (error) {
 			throw error;
 		}
+	}
+
+	async updateScore(id: string, score: number) {
+		return this.userExamProcessRepository.update(id, { totalScore: score });
+	}
+
+	async updateScoreDeep(data: UpdateUserAnswerProcessDTO) {
+		const bandsScore = new BandScoreEntity();
+		for (const detail of data.details) {
+			const updateData = new UserAnswerDetail();
+			updateData.score = detail.score;
+			updateData.feedback = detail.feedback;
+			await this.userAnswerDetailRepository.update(detail.id, updateData);
+		}
+		return this.userExamProcessRepository.update(data.id, {
+			totalScore: bandsScore.round(data.totalScore),
+		});
 	}
 
 	async delete(id: string): Promise<number> {

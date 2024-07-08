@@ -69,6 +69,12 @@ export class UserAnswerController {
 		return this.userAnswerService.findAllWithRelationByExam(code);
 	}
 
+	@Get('/all/by-user/:id')
+	@ApiOperation(publicOperation)
+	async findByUser(@Param('id') id: string) {
+		return this.userAnswerService.findByUserId(id);
+	}
+
 	@Get(':id')
 	@ApiOperation(publicOperation)
 	async findOne(@Param('id') id: string): Promise<UserAnswer> {

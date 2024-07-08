@@ -55,8 +55,13 @@ export class EventGateWay implements OnGatewayConnection, OnGatewayDisconnect {
 
 	//handle disconnection
 	handleDisconnect(@ConnectedSocket() socket: Socket) {
-		this.logger.log(`[Client disconnected] ${socket.data.userId}`);
-		return;
+		try {
+			this.logger.log(`[Client disconnected] ${socket.data.userId}`);
+			clearInterval(this.getTimer(socket));
+			return;
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	@SubscribeMessage('onStartExam')
@@ -83,18 +88,37 @@ export class EventGateWay implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 	}
 
-	startCountDown(socket: Socket, countDownTimer: number) {
-		const countdownInterval = setInterval(() => {
-			this.handleEmitSocket(
-				countDownTimer,
-				socket.data.userId,
-				'onCountDownExamTimer',
-			);
-			countDownTimer--;
-			if (countDownTimer < 0) {
-				clearInterval(countdownInterval);
+	@SubscribeMessage('onSubmitExam')
+	async handleSubmitExam(@ConnectedSocket() socket: Socket) {
+		try {
+			if (socket.data?.countDownTimer) {
+				clearInterval(socket.data?.countDownTimer);
 			}
-		}, 1000);
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	startCountDown(socket: Socket, countDownTimer: number) {
+		try {
+			if (socket.data?.countDownTimer) {
+				clearInterval(socket.data?.countDownTimer);
+			}
+			const countdownInterval = setInterval(() => {
+				this.handleEmitSocket(
+					countDownTimer,
+					socket.data.userId,
+					'onCountDownExamTimer',
+				);
+				countDownTimer--;
+				if (countDownTimer < 0) {
+					clearInterval(countdownInterval);
+				}
+			}, 1000);
+			socket.data.countDownTimer = countdownInterval;
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	handleEmitSocket(data: any, to: string, event: string) {
@@ -103,5 +127,9 @@ export class EventGateWay implements OnGatewayConnection, OnGatewayDisconnect {
 		} else {
 			this.server.emit(event, data);
 		}
+	}
+
+	getTimer(socket: Socket): NodeJS.Timer {
+		return socket.data.countDownTimer;
 	}
 }

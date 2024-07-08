@@ -46,11 +46,13 @@ export class HandleCreateUserAnswersDetail {
 				const groupAnswer = this.groupsAnswer.find(
 					(groupItem) => groupItem.id === group.id,
 				);
+				// console.log('=============================');
+				// console.log('Group: ', groupAnswer);
 				if (!groupAnswer) continue;
 				const groupData: IGroupAnswer = new GroupChecker(group, groupAnswer)
 					.instance()
 					.execute();
-				console.log('new group: ', groupData);
+				// console.log('new group: ', groupData);
 				if (groupData.answers.length === 0) continue;
 				userAnswersDetails.answer.push(groupData);
 				// is correct? increase score.
@@ -59,6 +61,7 @@ export class HandleCreateUserAnswersDetail {
 					// totalQuestion += 1;
 					return sum;
 				}, 0);
+				// console.log('////////////////////////////////');
 			}
 			userAnswersDetails.score;
 
@@ -81,19 +84,18 @@ class HandleCreateUserAnswersDetailByWriting extends HandleCreateUserAnswersDeta
 	execute(): UserAnswerDetail {
 		const userAnswersDetails: UserAnswerDetail = new UserAnswerDetail();
 		userAnswersDetails.score = -1;
-		userAnswersDetails.answer = this.groupsAnswer.map(
-			(group) =>
-				new GroupAnswer({
-					id: group.id,
-					answers: [
-						{
-							questionId: group.id,
-							answer: group.answers[0].answer,
-							isCorrect: false,
-						},
-					],
-				}),
-		);
+		userAnswersDetails.answer = this.groupsAnswer.map((group) => {
+			const newGroup = new GroupAnswer({
+				id: group.id,
+				answers: [],
+			});
+			newGroup.add({
+				questionId: group.id,
+				answer: group.answers[0].answer,
+				isCorrect: false,
+			});
+			return newGroup;
+		});
 
 		return userAnswersDetails;
 	}
@@ -110,19 +112,18 @@ class HandleCreateUserAnswersDetailBySpeaking extends HandleCreateUserAnswersDet
 	execute(): UserAnswerDetail {
 		const userAnswersDetails: UserAnswerDetail = new UserAnswerDetail();
 		userAnswersDetails.score = -1;
-		userAnswersDetails.answer = this.groupsAnswer.map(
-			(group) =>
-				new GroupAnswer({
-					id: group.id,
-					answers: [
-						{
-							questionId: group.id,
-							answer: group.answers[0].answer,
-							isCorrect: false,
-						},
-					],
-				}),
-		);
+		userAnswersDetails.answer = this.groupsAnswer.map((group) => {
+			const newGroup = new GroupAnswer({
+				id: group.id,
+				answers: [],
+			});
+			newGroup.add({
+				questionId: group.id,
+				answer: group.answers[0].answer,
+				isCorrect: false,
+			});
+			return newGroup;
+		});
 
 		return userAnswersDetails;
 	}

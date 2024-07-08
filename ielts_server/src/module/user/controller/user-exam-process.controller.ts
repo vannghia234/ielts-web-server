@@ -1,16 +1,20 @@
 import {
 	BadRequestException,
+	Body,
 	Controller,
 	Delete,
 	Get,
 	Headers,
 	InternalServerErrorException,
+	Patch,
 	Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { HeaderUserDTO } from 'src/module/auth/dto/header-user.dto';
 import { ResponseBase } from 'src/shared/constant/response_base';
 import { UserExamProcessService } from '../service/user-exam-process.service';
+import { UserExamProcess } from 'src/lib/entity/user/user-exam-process.entity';
+import { UpdateUserAnswerProcessDTO } from '../dto/update-user-answer-process';
 
 @ApiTags('user-exam-process')
 @Controller('user-exam-process')
@@ -34,6 +38,11 @@ export class UserExamProcessController {
 				new ResponseBase('500', 'An Error occurred!'),
 			);
 		}
+	}
+
+	@Patch()
+	async updatePoint(@Body() data: UpdateUserAnswerProcessDTO) {
+		return this.userExamProcessService.updateScoreDeep(data);
 	}
 
 	@Delete('/delete')

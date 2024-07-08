@@ -123,6 +123,31 @@ export class UserAnswerRepository {
 		});
 	}
 
+	async findByUserId(userId: string) {
+		return this.userAnswerRepository.find({
+			relations: {
+				user: true,
+				processes: {
+					skillExam: {
+						exam: true,
+					},
+					userAnswerDetails: {
+						examDetail: {
+							part: {
+								groupQuestions: true,
+							},
+						},
+					},
+				},
+			},
+			where: {
+				user: {
+					id: userId,
+				},
+			},
+		});
+	}
+
 	async findOne(id: string): Promise<UserAnswer | null> {
 		const userAnswer = await this.userAnswerRepository.findOne({
 			relations: {

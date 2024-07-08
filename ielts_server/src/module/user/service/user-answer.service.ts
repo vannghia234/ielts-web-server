@@ -42,6 +42,10 @@ export class UserAnswerService {
 		return processes;
 	}
 
+	async findByUserId(userId: string) {
+		return this.userAnswerRepository.findByUserId(userId);
+	}
+
 	async getTop(code: string, numOf: number) {
 		const data: { totalScore: number | null; userAnswer: UserAnswer }[] = (
 			await this.userAnswerRepository.findAllByExam(code)

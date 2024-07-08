@@ -12,14 +12,22 @@ export class UserExamProcessRepository {
 
 	async findAll(): Promise<UserExamProcess[]> {
 		return this.userExamProcess.find({
-			relations: ['userAnswer', 'skillExam'],
+			relations: {
+				skillExam: true,
+				userAnswer: true,
+				userAnswerDetails: true,
+			},
 		});
 	}
 
 	async findByUserAnswerId(userAnswerId: string): Promise<UserExamProcess[]> {
 		try {
 			const userExamProcess = await this.userExamProcess.find({
-				relations: ['userAnswer', 'skillExam'],
+				relations: {
+					skillExam: true,
+					userAnswer: true,
+					userAnswerDetails: true,
+				},
 				where: { userAnswer: { id: userAnswerId } },
 			});
 
@@ -31,7 +39,15 @@ export class UserExamProcessRepository {
 
 	async findOne(id: string): Promise<UserExamProcess | null> {
 		const process = await this.userExamProcess.findOne({
-			relations: ['userAnswer', 'skillExam'],
+			relations: {
+				skillExam: {
+					exam: {
+						skillExam: true,
+					},
+				},
+				userAnswer: true,
+				userAnswerDetails: true,
+			},
 			where: { id: id },
 		});
 		if (!process) {
