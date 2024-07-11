@@ -40,9 +40,14 @@ export class BandScoreEntity {
 
 	round(score: number) {
 		const str = score.toString();
-		let prefix = Number.parseInt(str[2]) * 10 + Number.parseInt(str[3] || '0');
-		if (prefix < 25) return Number.parseFloat(str[0]);
-		if (prefix < 75 && prefix >= 25) return Number.parseFloat(str[0] + '.5');
-		return Number.parseInt(str[0]) + 1;
+		const integerNumber = str[0];
+		const firstPrefix = str.length > 2 ? str[2] : '0';
+		const secondPrefix = str.length > 3 ? str[3] : '0';
+		let prefix =
+			Number.parseInt(firstPrefix) * 10 + Number.parseInt(secondPrefix);
+		if (prefix < 25) return Number.parseFloat(integerNumber);
+		if (prefix < 75 && prefix >= 25)
+			return Number.parseFloat(integerNumber + '.5');
+		return Number.parseInt(integerNumber) + 1;
 	}
 }

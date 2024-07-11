@@ -10,6 +10,7 @@ export const AppConfig = registerAs('app', () => ({
 		username: process.env.DATABASE_USERNAME || 'postgres',
 		password: process.env.DATABASE_PASSWORD || 'postgres',
 		databaseName: process.env.DATABASE_NAME || 'ielts-database',
+		ssl: process.env.DATABASE_EXIST_SSL || false,
 	},
 	jwt: {
 		publicKey: process.env.JWT_PUBLIC_KEY,
