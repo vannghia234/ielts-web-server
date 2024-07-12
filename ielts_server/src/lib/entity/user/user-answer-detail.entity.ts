@@ -1,39 +1,26 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ExamSkillDetail } from '../exam/exam-skill-detail.entity';
-import { UserAnswer } from './user-answer.entity';
-import {
-  MultipleChoice,
-  MultipleResponse,
-  Dropdown,
-  DragAndDrop,
-  MatchingHeading,
-  FillTheBlank,
-  MatchingFillBlank,
-} from '../groupQuestion/QuestionType';
+import { UserExamProcess } from './user-exam-process.entity';
+import { IGroupAnswer } from './i-user-answer-detail-answer.interface';
 @Entity()
 export class UserAnswerDetail {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-  @Column()
-  score: number;
+	@Column({ type: 'float4', nullable: true })
+	score: number | null; // number of correct answers.
 
-  @Column({ type: 'jsonb' })
-  answer:
-    | MultipleChoice[]
-    | MultipleResponse[]
-    | Dropdown[]
-    | DragAndDrop[]
-    | MatchingHeading[]
-    | FillTheBlank[]
-    | MatchingFillBlank[];
+	@Column({ type: 'jsonb' })
+	answer: IGroupAnswer[];
 
-  @Column({ type: 'text' })
-  feedback: string;
+	@Column({ type: 'text' })
+	feedback: string;
 
-  @ManyToOne(() => ExamSkillDetail, (type) => type.id)
-  examDetail: ExamSkillDetail;
+	// #region relationship
+	@ManyToOne(() => ExamSkillDetail, (type) => type.id)
+	examDetail: ExamSkillDetail;
 
-  @ManyToOne(() => UserAnswer, (type) => type.id)
-  userAnswer: UserAnswer;
+	@ManyToOne(() => UserExamProcess, (type) => type.id)
+	userExamProcess: UserExamProcess;
+	// #endregion relationship
 }

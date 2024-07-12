@@ -14,6 +14,7 @@ import { Public } from 'src/shared/constant/meta-data';
 import { CreateSkillExamDto } from '../dto/create-skill-exam.dto';
 import { UpdateSkillExamDto } from '../dto/update-skill-exam.dto';
 import { publicOperation } from 'src/module/user/controller/user-answer.controller';
+import { ResExamSkill } from '../dto/res-exam-skill.dto';
 
 @ApiTags('skill-exam')
 @ApiResponse({
@@ -42,8 +43,8 @@ export class SkillExamController {
 	@ApiOperation(publicOperation)
 	@ApiOperation(publicOperation)
 	@Get(':id')
-	async findOne(@Param('id') id: string): Promise<SkillExam> {
-		return this.skillExamService.findOne(id);
+	async findOne(@Param('id') id: string): Promise<ResExamSkill> {
+		return this.skillExamService.findOneToSend(id);
 	}
 
 	@Post()

@@ -5,14 +5,14 @@ import { Part } from '../part/Part.entity';
 
 @Entity()
 export class ExamSkillDetail {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-  @ManyToOne(() => Part, (type) => type.id)
-  part: Part;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
+	@ManyToOne(() => Part, (type) => type.id)
+	part: Part;
 
-  @ManyToOne(() => SkillExam, (type) => type.id)
-  skillExam: SkillExam;
+	@ManyToOne(() => SkillExam, (type) => type.id)
+	skillExam: SkillExam;
 
-  @Column({ type: 'time' })
-  time: string;
+	@Column({ type: 'time' })
+	time: string;
 }

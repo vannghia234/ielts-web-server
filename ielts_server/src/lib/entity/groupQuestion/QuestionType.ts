@@ -1,49 +1,41 @@
 export type Answer = {
-  id: string;
-  content: string;
-  isCorrect?: boolean; // Note: Corrected to use '?' for optional property
+	id: string;
+	content: string;
+	isCorrect?: boolean; // Note: Corrected to use '?' for optional property
+	subAnswer?: string[];
+	numberOrder?: number;
 };
 
-export type MultipleChoice = {
-  id?: string; // Note: Corrected to use '?' for optional property
-  question?: string; // Note: Corrected to use '?' for optional property
-  answers: Answer[];
-};
+export interface IQuestion {
+	id?: string; // Note: Corrected to use '?' for optional property
+	question?: string; // Note: Corrected to use '?' for optional property
+	answers: Answer[];
+}
 
-export type MultipleResponse = {
-  id?: string; // Note: Corrected to use '?' for optional property
-  question?: string; // Note: Corrected to use '?' for optional property
-  answers: Answer[];
-};
+export interface MultipleChoice extends IQuestion {
+	answers: Answer[];
+}
 
-export type Dropdown = {
-  id?: string; // Note: Corrected to use '?' for optional property
-  question?: string; // Note: Corrected to use '?' for optional property
-  answers: Answer[];
-};
+export interface MultipleResponse extends IQuestion {
+	answers: Answer[];
+}
 
-export type DragAndDrop = {
-  id?: string; // Note: Corrected to use '?' for optional property
-  question?: string; // Note: Corrected to use '?' for optional property
-  answer: Answer;
-};
+export interface Dropdown extends IQuestion {
+	answers: Answer[];
+}
 
-export type MatchingHeading = {
-  id?: string; // Note: Corrected to use '?' for optional property
-  question?: string; // Note: Corrected to use '?' for optional property
-  correctAnswers: Answer[];
-  totalAnswers: Answer[];
-};
+export interface FillTheBlank extends IQuestion {
+	answers: Answer[];
+}
 
-export type FillTheBlank = {
-  id?: string; // Note: Corrected to use '?' for optional property
-  question?: string; // Note: Corrected to use '?' for optional property
-  answers: Answer[];
-};
+export interface DragAndDrop extends IQuestion {
+	answers: Answer[]; // array with one answer
+}
 
-export type MatchingFillBlank = {
-  id?: string; // Note: Corrected to use '?' for optional property
-  question?: string; // Note: Corrected to use '?' for optional property
-  answers: Answer[];
-  totalAnswers: Answer[];
-};
+export interface MatchingHeading extends IQuestion {
+	answers: Answer[]; // array with one answer
+}
+
+export interface MatchingFillBlank extends IQuestion {
+	answers: Answer[]; // array with one answer
+}

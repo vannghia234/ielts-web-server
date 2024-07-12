@@ -16,6 +16,7 @@ import { Public } from 'src/shared/constant/meta-data';
 import { CreateExamDto } from '../dto/create-exam.dto';
 import { UpdateExamDto } from '../dto/update-exam.dto';
 import { publicOperation } from 'src/module/user/controller/user-answer.controller';
+import { ResBaseExam } from '../dto/res-base-exam';
 
 @ApiTags('exam')
 @ApiResponse({
@@ -38,6 +39,20 @@ export class ExamController {
 	@ApiOperation(publicOperation)
 	async findAll(): Promise<Exam[]> {
 		return this.examService.findAll();
+	}
+
+	@Get('/all')
+	@Public()
+	@ApiOperation(publicOperation)
+	async findAllBase(): Promise<ResBaseExam[]> {
+		return this.examService.findAllBase();
+	}
+
+	@Get('/one/:id')
+	@Public()
+	@ApiOperation(publicOperation)
+	async findOneBase(@Param('id') id: string): Promise<ResBaseExam> {
+		return this.examService.findOneBase(id);
 	}
 
 	@Get(':id')

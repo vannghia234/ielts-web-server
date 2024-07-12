@@ -33,5 +33,5 @@ export class UpdateUserAnswerDetailDto {
 	@IsString()
 	@ApiProperty()
 	@IsUUID()
-	userAnswerId: string;
+	userExamProcessId: string;
 }

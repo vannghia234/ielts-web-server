@@ -116,11 +116,13 @@ export class GroupQuestionService {
 							const dragdropObj: DragAndDrop = {
 								id: uuidv4(),
 								question: e.question,
-								answer: {
-									id: uuidv4(),
-									content: e.question,
-									isCorrect: e.answer,
-								},
+								answers: [
+									{
+										id: uuidv4(),
+										content: e.question,
+										isCorrect: e.answer,
+									},
+								],
 							};
 							dataDragAndDrop.push(dragdropObj);
 						}

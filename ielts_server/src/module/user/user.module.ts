@@ -1,30 +1,22 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserController } from './controller/user.controller';
-import { UserService } from './service/user.service';
 import { Module } from '@nestjs/common';
-import { userRepositories } from './repository';
-import { User } from 'src/lib/entity/user/user.entity';
-import { UserAnswer } from 'src/lib/entity/user/user-answer.entity';
-import { UserAnswerDetail } from 'src/lib/entity/user/user-answer-detail.entity';
-import { BCryptService } from './service/bcrypt.service';
-import { UserAnswerService } from './service/user-answer.service';
-import { UserAnswerController } from './controller/user-answer.controller';
-import { userServices } from './service';
-import { UserAnswerDetailController } from './controller/user-answer-detail.controller';
-import { ExamModule } from '../exam/exam.module';
-import { ApiResponse } from '@nestjs/swagger';
+
+import { ExamModule } from 'src/module/exam/exam.module';
+
+import { userEntities } from 'src/lib/entity/user';
+import { userRepositories } from 'src/module/user/repository';
+import { userServices } from 'src/module/user/service';
+import { userControllers } from 'src/module/user/controller';
+import { BandScoreModule } from '../bandScore/bandScore.module';
 
 @Module({
 	imports: [
+		BandScoreModule,
 		ExamModule,
-		TypeOrmModule.forFeature([User, UserAnswer, UserAnswerDetail]),
+		TypeOrmModule.forFeature([...userEntities]),
 	],
-	controllers: [
-		UserController,
-		UserAnswerController,
-		UserAnswerDetailController,
-	],
-	providers: [...userServices, BCryptService, ...userRepositories],
-	exports: [...userServices, BCryptService, ...userRepositories],
+	controllers: [...userControllers],
+	providers: [...userServices, ...userRepositories],
+	exports: [...userServices, ...userRepositories],
 })
 export class UserModule {}

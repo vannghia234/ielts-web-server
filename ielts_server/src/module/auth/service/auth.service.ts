@@ -18,6 +18,7 @@ import {
 	createTempUserDto,
 } from 'src/module/user/dto/create-user.dto';
 import { EmailAlreadyExistingException } from 'src/core/exception';
+import { HeaderUserDTO } from '../dto/header-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -41,7 +42,7 @@ export class AuthService {
 				new ResponseBase('40001', 'Incorrect Username or Password').toJSON(),
 			);
 		}
-		const payload = {
+		const payload: HeaderUserDTO = {
 			userId: user.id,
 			permissionName: user.role,
 		};

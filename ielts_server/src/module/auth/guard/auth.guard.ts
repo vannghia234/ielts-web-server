@@ -31,6 +31,7 @@ export class AuthGuard implements CanActivate {
 			return true;
 		}
 
+		console.log('token: ', !!token);
 		if (!token) {
 			throw new UnauthorizedException();
 		}
@@ -38,11 +39,12 @@ export class AuthGuard implements CanActivate {
 			const payload = await this.jwtService.verifyAsync(token, {
 				secret: this.configService.get<string>('app.jwt.privateKey'),
 			});
-			if (payload.permissionName === 'ADMIN') {
-				request['user'] = payload;
-				return true;
-			}
+			request['user'] = payload;
+			return true;
+			// if (payload.permissionName === 'ADMIN') {
+			// }
 		} catch (error) {
+			console.log(error);
 			throw new UnauthorizedException();
 		}
 		return false;

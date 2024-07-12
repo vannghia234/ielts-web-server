@@ -25,14 +25,16 @@ export class ExamSkillDetailService {
 		return this.examSkillDetailRepository.findOne(id);
 	}
 
+	async findOneWithRelation(id: string): Promise<ExamSkillDetail> {
+		return this.examSkillDetailRepository.findOneWithRelation(id);
+	}
+
 	async create(
 		examSkillDetail: CreateExamSkillDetailDto,
 	): Promise<ExamSkillDetail> {
 		const create = new ExamSkillDetail();
 		create.time = examSkillDetail.time;
-		create.part = await this.PartService.findOne(
-		  examSkillDetail.partOfTestId,
-		);
+		create.part = await this.PartService.findOne(examSkillDetail.partOfTestId);
 		create.skillExam = await this.skillExamService.findOne(
 			examSkillDetail.skillExamId,
 		);
@@ -46,7 +48,7 @@ export class ExamSkillDetailService {
 		const update = await this.examSkillDetailRepository.findOne(id);
 		update.time = updateExamSkillDetail.time;
 		update.part = await this.PartService.findOne(
-		  updateExamSkillDetail.partOfTestId,
+			updateExamSkillDetail.partOfTestId,
 		);
 		update.skillExam = await this.skillExamService.findOne(
 			updateExamSkillDetail.skillExamId,
