@@ -16,6 +16,7 @@ import { Public } from 'src/shared/constant/meta-data';
 import { UpdatePartDto } from './dto/update-part.dto';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { publicOperation } from '../user/controller/user-answer.controller';
+import { Skill } from 'src/shared/constant/enum_database';
 
 @Controller('parts')
 @ApiTags('parts')
@@ -62,6 +63,13 @@ export class PartController {
 		} catch (error) {
 			throw new BadRequestException(error.message);
 		}
+	}
+
+	@Get(':skill')
+	@Public()
+	@ApiOperation(publicOperation)
+	async findBySkill(@Param('skill') skill: string): Promise<any> {
+		return this.partService.findBySkill(skill as Skill);
 	}
 
 	@Get(':id')
