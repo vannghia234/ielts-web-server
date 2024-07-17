@@ -45,6 +45,12 @@ export class PartService {
 			relations: ['groupQuestions'],
 		});
 	}
+	async findBySkill(skill: Skill): Promise<Part[]> {
+		return this.partRepository.find({
+			where: { skill: skill },
+			relations: ['groupQuestions'],
+		});
+	}
 
 	async create(partCreate: CreatePartDto): Promise<Part> {
 		const part = new Part();
