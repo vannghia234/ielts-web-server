@@ -7,12 +7,17 @@ import {
 	Put,
 	Delete,
 	Patch,
+	UseGuards,
+	Req,
 } from '@nestjs/common';
 import { User } from 'src/lib/entity/user/user.entity';
 import { UserService } from '../service/user.service';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/constant/meta-data';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { PermissionAdminGuard } from 'src/module/auth/guard/permissionAdmin.guard';
+import { Request } from 'express';
+import { UserRole } from 'src/shared/constant/enum_database';
 
 @ApiTags('user')
 @Controller('user')
@@ -47,6 +52,12 @@ export class UserController {
 		@Body() updateUser: UpdateUserDto,
 	): Promise<User> {
 		return this.userService.update(id, updateUser);
+	}
+
+	@UseGuards(PermissionAdminGuard)
+	@Patch(':id/role')
+	async updateRole(@Param('id') id: string, @Body('role') role: UserRole) {
+		return this.userService.updateRole(id, role);
 	}
 
 	@Delete(':id')

@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { JWTService } from './service/jwt.service';
 import { PermissionLectureGuard } from './guard/permission.guard';
+import { PermissionAdminGuard } from './guard/permissionAdmin.guard';
 
 @Module({
 	imports: [
@@ -30,6 +31,7 @@ import { PermissionLectureGuard } from './guard/permission.guard';
 	controllers: [AuthController],
 	providers: [
 		PermissionLectureGuard,
+		PermissionAdminGuard,
 		JwtStrategy,
 		AuthService,
 		JWTService,
@@ -38,6 +40,6 @@ import { PermissionLectureGuard } from './guard/permission.guard';
 			useClass: AuthGuard,
 		},
 	],
-	exports: [PermissionLectureGuard, AuthService],
+	exports: [PermissionLectureGuard, AuthService, PermissionAdminGuard],
 })
 export class AuthModule {}

@@ -43,6 +43,7 @@ export class UsersRepository {
 
 	async update(id: string, updateUser: Partial<User>): Promise<User> {
 		await this.findOne(id); // Ensure user exists
+		console.log('update user: ', updateUser);
 		await this.usersRepository.update(id, updateUser);
 		return this.findOne(id);
 	}

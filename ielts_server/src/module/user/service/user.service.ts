@@ -43,10 +43,12 @@ export class UserService {
 				updateUser.password,
 			);
 		}
-		if (updateUser.role) {
-			userInfo.role = updateUser.role;
-		}
 		return this.usersRepository.update(id, userInfo);
+	}
+
+	async updateRole(id: string, newRole: UserRole): Promise<User> {
+		console.log(id, newRole);
+		return this.usersRepository.update(id, { role: newRole });
 	}
 
 	async remove(id: string): Promise<void> {

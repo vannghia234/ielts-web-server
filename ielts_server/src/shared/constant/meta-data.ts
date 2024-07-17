@@ -5,3 +5,6 @@ export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 
 export const IS_LECTURE = 'isLecture';
 export const Lecture = () => SetMetadata(IS_LECTURE, true);
+
+export const IS_ADMIN_KEY = 'isAdmin';
+export const Admin = () => SetMetadata(IS_ADMIN_KEY, true);
