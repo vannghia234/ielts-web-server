@@ -6,7 +6,7 @@ import {
 	Controller,
 	Get,
 	Post,
-	Request,
+	Req,
 	Res,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
@@ -21,6 +21,7 @@ import { ResponseBase } from 'src/shared/constant/response_base';
 import { EmailAlreadyExistingException } from 'src/core/exception';
 import { UserService } from 'src/module/user/service/user.service';
 import { HeaderUserDTO } from '../dto/header-user.dto';
+import { Request } from 'express';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -106,11 +107,11 @@ export class AuthController {
 	}
 
 	@Get('verify')
-	async verifyUser(@Request() userData: HeaderUserDTO) {
+	async verifyUser(@Req() { user }: Request) {
 		try {
-			console.log('[CONTROLLER] Verify');
+			console.log('[CONTROLLER] Verify: ', user);
 			const { password, ...userInfo } = await this.userService.findOne(
-				userData.userId,
+				user['userId'],
 			);
 			return userInfo;
 		} catch (error) {
