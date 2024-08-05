@@ -48,11 +48,11 @@ export class ExamController {
 		return this.examService.findAllBase();
 	}
 
-	@Get('/one/:id')
+	@Get('/one/:code')
 	@Public()
 	@ApiOperation(publicOperation)
-	async findOneBase(@Param('id') id: string): Promise<ResBaseExam> {
-		return this.examService.findOneBase(id);
+	async findOneBase(@Param('code') code: string): Promise<ResBaseExam> {
+		return this.examService.findOneBase(code);
 	}
 
 	@Get(':id')

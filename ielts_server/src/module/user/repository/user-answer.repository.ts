@@ -152,7 +152,13 @@ export class UserAnswerRepository {
 		const userAnswer = await this.userAnswerRepository.findOne({
 			relations: {
 				processes: {
-					userAnswerDetails: true,
+					userAnswerDetails: {
+						examDetail: {
+							part: {
+								groupQuestions: true,
+							},
+						},
+					},
 					skillExam: true,
 				},
 			},
