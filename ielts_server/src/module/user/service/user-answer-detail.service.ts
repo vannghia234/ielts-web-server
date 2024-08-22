@@ -99,11 +99,16 @@ export class UserAnswerDetailService {
 				);
 				process.totalScore = bandsScore.check(listUserAnswersDetails);
 				console.log('Total score: ', process.totalScore);
+				let avgScore = 0;
 				if (Number.isFinite(process.totalScore)) {
 					await this.userExamProcessService.updateScore(
 						process.id,
 						process.totalScore,
 					);
+					avgScore += process.totalScore / 4;
+				}
+				if (avgScore > 0) {
+					await this.userAnswerService.update(userAnswer.id, { avgScore });
 				}
 			}
 

@@ -170,6 +170,20 @@ export class UserAnswerRepository {
 		return userAnswer;
 	}
 
+	async findOneByProcess(answerProcessId: string) {
+		const userAnswer = await this.userAnswerRepository.findOne({
+			where: {
+				processes: {
+					id: answerProcessId,
+				},
+			},
+		});
+		if (!userAnswer) {
+			throw new NotFoundException('User answer not found');
+		}
+		return userAnswer;
+	}
+
 	async findOneRecentBySkillExamId(
 		skillExamIds: string[],
 	): Promise<UserAnswer> | null {

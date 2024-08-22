@@ -115,13 +115,13 @@ export class UserAnswerController {
 		}
 	}
 
-	@Put(':id')
-	async update(
-		@Param('id') id: string,
-		@Body() updateUserAnswer: UpdateUserAnswerDto,
-	): Promise<UserAnswer> {
-		return this.userAnswerService.update(id, updateUserAnswer);
-	}
+	// @Put(':id')
+	// async update(
+	// 	@Param('id') id: string,
+	// 	@Body() updateUserAnswer: UpdateUserAnswerDto,
+	// ): Promise<UserAnswer> {
+	// 	return this.userAnswerService.update(id, updateUserAnswer);
+	// }
 
 	@Delete(':id')
 	async remove(@Param('id') id: string): Promise<void> {

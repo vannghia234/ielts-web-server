@@ -83,11 +83,20 @@ export class UserAnswerService {
 
 	async update(
 		id: string,
-		updateUserAnswer: UpdateUserAnswerDto,
+		updateUserAnswer: Partial<UserAnswer>,
 	): Promise<UserAnswer> {
-		const updateInfo = await this.userAnswerRepository.findOne(id);
-		updateInfo.timeStart = new Date(updateUserAnswer.timeStart);
-		updateInfo.user = await this.userService.findOne(updateUserAnswer.userId);
+		const updateInfo: Record<string, any> = {};
+		if ('avgScore' in updateUserAnswer)
+			updateInfo.avgScore = updateUserAnswer.avgScore;
+		if ('isSendByMail' in updateUserAnswer)
+			updateInfo.isSendByMail = updateUserAnswer.isSendByMail;
+		if ('submittedAt' in updateUserAnswer)
+			updateInfo.submittedAt = updateUserAnswer.submittedAt;
+		if ('timeStart' in updateUserAnswer.timeStart)
+			updateInfo.timeStart = updateUserAnswer.timeStart;
+		// const updateInfo = await this.userAnswerRepository.findOne(id);
+		// updateInfo.timeStart = new Date(updateUserAnswer.timeStart);
+		// updateInfo.user = await this.userService.findOne(updateUserAnswer.userId);
 		return this.userAnswerRepository.update(id, updateInfo);
 	}
 

@@ -91,8 +91,16 @@ export class UserExamProcessService {
 			updateData.feedback = detail.feedback;
 			await this.userAnswerDetailRepository.update(detail.id, updateData);
 		}
+		const totalScore = bandsScore.round(data.totalScore);
+		const userAnswer = await this.userAnswerRepository.findOneByProcess(
+			data.id,
+		);
+		const avgTotalScore = userAnswer.avgScore + totalScore / 4;
+		await this.userAnswerRepository.update(userAnswer.id, {
+			avgScore: avgTotalScore,
+		});
 		return this.userExamProcessRepository.update(data.id, {
-			totalScore: bandsScore.round(data.totalScore),
+			totalScore: totalScore,
 		});
 	}
 
