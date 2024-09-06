@@ -8,6 +8,7 @@ import { UserAnswerDetailRepository } from '../repository/user-answer-detail.rep
 import { UpdateUserAnswerProcessDTO } from '../dto/update-user-answer-process';
 import { UserAnswerDetail } from 'src/lib/entity/user/user-answer-detail.entity';
 import { BandScoreEntity } from 'src/lib/entity/bandScore/bandScore.entity';
+import { MailService } from 'src/shared/service/mail.service';
 
 @Injectable()
 export class UserExamProcessService {
@@ -16,6 +17,7 @@ export class UserExamProcessService {
 		private readonly userAnswerRepository: UserAnswerRepository,
 		private readonly examSkillRepository: SkillExamRepository,
 		private readonly userAnswerDetailRepository: UserAnswerDetailRepository,
+		private readonly mailService: MailService,
 	) {}
 
 	async findAll(): Promise<UserExamProcess[]> {

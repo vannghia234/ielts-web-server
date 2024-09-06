@@ -16,6 +16,7 @@ import { ExamSkillDetail } from 'src/lib/entity/exam/exam-skill-detail.entity';
 import { Skill } from 'src/shared/constant/enum_database';
 import { HandleCreateUserAnswersDetail } from './handle-create-user-answers-detail.manager';
 import { BandScoreService } from 'src/module/bandScore/service/banScore.service';
+import { MailService } from 'src/shared/service/mail.service';
 
 @Injectable()
 export class UserAnswerDetailService {
@@ -25,6 +26,7 @@ export class UserAnswerDetailService {
 		private readonly userExamProcessService: UserExamProcessService,
 		private readonly bandScoreService: BandScoreService,
 		private readonly userAnswerService: UserAnswerService,
+		private readonly mailService: MailService,
 	) {}
 
 	async findAll(): Promise<UserAnswerDetail[]> {
