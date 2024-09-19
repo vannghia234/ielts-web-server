@@ -92,7 +92,7 @@ export class UserAnswerService {
 			updateInfo.isSendByMail = updateUserAnswer.isSendByMail;
 		if ('submittedAt' in updateUserAnswer)
 			updateInfo.submittedAt = updateUserAnswer.submittedAt;
-		if ('timeStart' in updateUserAnswer.timeStart)
+		if ('timeStart' in updateUserAnswer)
 			updateInfo.timeStart = updateUserAnswer.timeStart;
 		// const updateInfo = await this.userAnswerRepository.findOne(id);
 		// updateInfo.timeStart = new Date(updateUserAnswer.timeStart);
