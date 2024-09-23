@@ -62,6 +62,7 @@ export class UserAnswerDetailService {
 		userAnswerDetail: CreateUserAnswerDetailDtoBase,
 	): Promise<UserAnswerDetail[]> {
 		try {
+			console.log('user answer details: ', userAnswerDetail.answersOfParts)
 			const process = await this.userExamProcessService.findOne(
 				userAnswerDetail.processId,
 			);

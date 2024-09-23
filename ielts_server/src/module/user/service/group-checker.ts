@@ -81,7 +81,7 @@ export class GroupCheckerModelFillInTheBlank extends GroupChecker {
 				for (const userAnswer of this.groupAnswer.answers) {
 					const answer: IAnswerData = {
 						answer: userAnswer.answer,
-						questionId: question.id,
+						questionId: userAnswer.questionId,
 						isCorrect: false,
 					};
 					const questionAnswer = question.answers.find(
