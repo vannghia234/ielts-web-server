@@ -31,6 +31,12 @@ export class BandScoreService {
 		return this.bandScoreRepository.create(data);
 	}
 
+	async update(id: string, data: CreateBandScoreDTO) {
+		const bandScore = await this.findOne(id);
+		if (!bandScore) throw new Error(`Data with id ${id} not found`);
+		return this.bandScoreRepository.update(id, data);
+	}
+
 	async delete(id: string) {
 		return this.bandScoreRepository.delete(id);
 	}

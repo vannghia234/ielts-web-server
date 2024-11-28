@@ -12,6 +12,9 @@ export class BandScoreEntity {
 	@Column({ type: 'text', default: '' })
 	name: string;
 
+	@Column({ type: 'text', default: '' })
+	title: string;
+
 	@Column({ type: 'json' })
 	bands: IBandScoreItem[];
 

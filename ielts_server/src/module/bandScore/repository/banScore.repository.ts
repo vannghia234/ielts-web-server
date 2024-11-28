@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BandScoreEntity } from 'src/lib/entity/bandScore/bandScore.entity';
 import { Repository } from 'typeorm';
 import { CreateBandScoreDTO } from '../dto/create-band-score.dto';
+import { UpdateBandScoreDTO } from '../dto/update-band-score.dto';
 
 @Injectable()
 export class BandScoreRepository {
@@ -23,15 +24,33 @@ export class BandScoreRepository {
 
 	async create(data: CreateBandScoreDTO) {
 		const bandsScore = new BandScoreEntity();
-		if (data.name) {
-			bandsScore.name = data.name;
-		}
+		bandsScore.name = data.name;
+		bandsScore.title = data.title;
 		bandsScore.bands = data.bandsScore.map((band) => ({
 			max: band.max,
 			min: band.min,
 			score: band.score,
 		}));
 		return this.bandScoreEntity.save(bandsScore);
+	}
+
+	async update(id: string, data: Partial<UpdateBandScoreDTO>) {
+		const bandsScore = new BandScoreEntity();
+		if (data.name) {
+			bandsScore.name = data.name;
+		}
+
+		if (data.title) {
+			bandsScore.title = data.title;
+		}
+		if (data.bandsScore) {
+			bandsScore.bands = data.bandsScore.map((band) => ({
+				max: band.max,
+				min: band.min,
+				score: band.score,
+			}));
+		}
+		return this.bandScoreEntity.update(id, bandsScore);
 	}
 
 	async delete(id: string) {

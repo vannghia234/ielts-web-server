@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BandScoreEntity } from 'src/lib/entity/bandScore/bandScore.entity';
-import { BandScoreController } from './controller/banScore.controller';
+import { BandScoreController } from './controller/bandScore.controller';
 import { BandScoreService } from './service/banScore.service';
 import { BandScoreRepository } from './repository/banScore.repository';
 
