@@ -26,7 +26,7 @@ export class BandScoreRepository {
 		const bandsScore = new BandScoreEntity();
 		bandsScore.name = data.name;
 		bandsScore.title = data.title;
-		bandsScore.bands = data.bandsScore.map((band) => ({
+		bandsScore.bands = data.bands.map((band) => ({
 			max: band.max,
 			min: band.min,
 			score: band.score,
@@ -43,8 +43,8 @@ export class BandScoreRepository {
 		if (data.title) {
 			bandsScore.title = data.title;
 		}
-		if (data.bandsScore) {
-			bandsScore.bands = data.bandsScore.map((band) => ({
+		if (data.bands) {
+			bandsScore.bands = data.bands.map((band) => ({
 				max: band.max,
 				min: band.min,
 				score: band.score,

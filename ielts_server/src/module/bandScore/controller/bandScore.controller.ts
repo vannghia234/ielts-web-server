@@ -43,7 +43,7 @@ export class BandScoreController {
 		return this.bandScoreService.create(data);
 	}
 
-	@Patch()
+	@Patch(':id')
 	@Public()
 	@ApiOperation(publicOperation)
 	async update(@Param('id') id: string, @Body() data: UpdateBandScoreDTO) {

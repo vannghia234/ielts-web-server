@@ -12,5 +12,5 @@ export class UpdateBandScoreDTO {
 	@IsNotEmpty()
 	@IsArray()
 	@ApiProperty()
-	bandsScore: IBandScoreItem[];
+	bands: IBandScoreItem[];
 }
