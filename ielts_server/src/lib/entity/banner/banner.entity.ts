@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-	name: 'band_score',
+	name: 'banner',
 })
 export class BannerEntity {
 	@PrimaryGeneratedColumn('uuid')

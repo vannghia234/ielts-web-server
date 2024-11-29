@@ -16,18 +16,6 @@ export class BannerService {
 		return this.bannerRepository.findOne(id);
 	}
 
-	async getReading(): Promise<BandScoreEntity | null> {
-		const list = await this.bannerRepository.findAll();
-		if (list.length === 0) return null;
-		return list.find((bandScore) => bandScore.name === 'reading');
-	}
-
-	async getListening(): Promise<BandScoreEntity | null> {
-		const list = await this.bannerRepository.findAll();
-		if (list.length === 0) return null;
-		return list.find((bandScore) => bandScore.name === 'listening');
-	}
-
 	async create(data: CreateBannerDTO) {
 		return this.bannerRepository.create(data);
 	}
