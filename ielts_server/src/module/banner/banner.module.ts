@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BandScoreEntity } from 'src/lib/entity/bandScore/bandScore.entity';
 import { BannerController } from './controller/banner.controller';
 import { BannerService } from './service/banner.service';
 import { BannerRepository } from './repository/banner.repository';
+import { BannerEntity } from 'src/lib/entity/banner/banner.entity';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([BandScoreEntity])],
+	imports: [TypeOrmModule.forFeature([BannerEntity])],
 	controllers: [BannerController],
 	exports: [BannerService, BannerRepository],
 	providers: [BannerService, BannerRepository],
 })
-export class BandScoreModule {}
+export class BannerModule {}

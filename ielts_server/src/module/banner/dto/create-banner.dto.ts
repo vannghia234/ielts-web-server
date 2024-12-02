@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsString } from 'class-validator';
-import { IBandScoreItem } from 'src/lib/entity/bandScore/i-bandScore-item';
+import { EBannerType } from 'src/lib/entity/banner/EBannerType';
 
 export class CreateBannerDTO {
 	@ApiProperty()
 	@IsString()
-	type: string;
+	type: EBannerType;
 
 	@ApiProperty()
 	@IsString()

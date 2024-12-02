@@ -6,8 +6,8 @@ import { Public } from 'src/shared/constant/meta-data';
 import { CreateBannerDTO } from '../dto/create-banner.dto';
 import { UpdateBannerDTO } from '../dto/update-banner.dto';
 
-@Controller('band-score')
-@ApiTags('BandScore')
+@Controller('banners')
+@ApiTags('banner')
 @ApiResponse({
 	status: 200,
 	description: 'OK',

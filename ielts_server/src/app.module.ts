@@ -20,6 +20,7 @@ import { GroupQuestionModule } from './module/group-question/group-question.modu
 import { ResourceModule } from './module/resource/resource.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BandScoreModule } from './module/bandScore/bandScore.module';
+import { BannerModule } from './module/banner/banner.module';
 @Module({
 	imports: [
 		ScheduleModule.forRoot(),
@@ -50,6 +51,7 @@ import { BandScoreModule } from './module/bandScore/bandScore.module';
 		ExamModule,
 		ResourceModule,
 		BandScoreModule,
+		BannerModule,
 	],
 	controllers: [AppController],
 	providers: [
