@@ -3,6 +3,8 @@ import { BannerRepository } from '../repository/banner.repository';
 import { CreateBannerDTO } from '../dto/create-banner.dto';
 import { BandScoreEntity } from 'src/lib/entity/bandScore/bandScore.entity';
 import { UpdateBannerDTO } from '../dto/update-banner.dto';
+import { FilterQueryBannerDTO } from '../dto/filter-query-banner.dto';
+import { EBannerType } from 'src/lib/entity/banner/EBannerType';
 
 @Injectable()
 export class BannerService {
@@ -21,8 +23,8 @@ export class BannerService {
 	}
 
 	async update(id: string, data: UpdateBannerDTO) {
-		const bandScore = await this.findOne(id);
-		if (!bandScore) throw new Error(`Data with id ${id} not found`);
+		const banner = await this.findOne(id);
+		if (!banner) throw new Error(`Data with id ${id} not found`);
 		return this.bannerRepository.update(id, data);
 	}
 

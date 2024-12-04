@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, In, Repository } from 'typeorm';
 import { CreateBannerDTO } from '../dto/create-banner.dto';
 import { UpdateBannerDTO } from '../dto/update-banner.dto';
 import { BannerEntity } from 'src/lib/entity/banner/banner.entity';
+import { FilterQueryBannerDTO } from '../dto/filter-query-banner.dto';
 
 @Injectable()
 export class BannerRepository {
@@ -16,10 +17,19 @@ export class BannerRepository {
 		return this.bannerEntity.find();
 	}
 
-	async findOne(id: string) {
+	async findOne(id: string): Promise<BannerEntity | null> {
 		return this.bannerEntity.findOne({
 			where: { id },
 		});
+	}
+
+	async filter(query: FilterQueryBannerDTO): Promise<BannerEntity[]> {
+		const params: FindOptionsWhere<BannerEntity> = {}
+		if (query?.type) {
+			params.type = In([query.type])
+		}
+
+		return this.bannerEntity.findBy(params)
 	}
 
 	async create(data: CreateBannerDTO) {

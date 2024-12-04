@@ -1,10 +1,11 @@
 import { BannerService } from '../service/banner.service';
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { publicOperation } from 'src/module/user/controller/user-answer.controller';
 import { Public } from 'src/shared/constant/meta-data';
 import { CreateBannerDTO } from '../dto/create-banner.dto';
 import { UpdateBannerDTO } from '../dto/update-banner.dto';
+import { EBannerType } from 'src/lib/entity/banner/EBannerType';
 
 @Controller('banners')
 @ApiTags('banner')
