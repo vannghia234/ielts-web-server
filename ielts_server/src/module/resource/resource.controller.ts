@@ -5,15 +5,16 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadService } from './resource.service';
 import { Express } from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Public } from 'src/shared/constant/meta-data';
+import { ImageUploadService } from './image.service';
+import { AudioUploadService } from './audio.service';
 
 @Controller('resource')
 export class UploadController {
-  constructor(private uploadService: UploadService) {}
+  constructor(private imageService: ImageUploadService, private audioService: AudioUploadService) {}
 
   @Post('image')
   @Public()

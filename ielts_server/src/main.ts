@@ -20,13 +20,14 @@ async function bootstrap() {
 	SwaggerModule.setup('api', app, document);
 
 	await app.listen(process.env.APP_PORT);
+	const url = await app.getUrl()
 
 	new Logger('main').debug('Server is running on port ' + process.env.APP_PORT);
 	new Logger('main').debug(
-		`Go to swagger http://localhost:${process.env.APP_PORT}/api/`,
+		`Go to swagger ${url}/api/`,
 	);
 	new Logger('main').debug(
-		`SOCKET ON PORT http://localhost:${process.env.SOCKET_PORT}/`,
+		`SOCKET ON PORT ${url.substring(0, url.lastIndexOf(':'))}:${process.env.SOCKET_PORT}/`,
 	);
 }
 bootstrap();

@@ -1,11 +1,15 @@
 import { BannerService } from '../service/banner.service';
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, NotFoundException, Param, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { publicOperation } from 'src/module/user/controller/user-answer.controller';
 import { Public } from 'src/shared/constant/meta-data';
 import { CreateBannerDTO } from '../dto/create-banner.dto';
 import { UpdateBannerDTO } from '../dto/update-banner.dto';
 import { EBannerType } from 'src/lib/entity/banner/EBannerType';
+import { FileInterceptor } from '@nestjs/platform-express';
+import path from 'path';
+
+import * as fs from 'fs';
 
 @Controller('banners')
 @ApiTags('banner')
@@ -44,11 +48,23 @@ export class BannerController {
 		return this.bannerService.create(data);
 	}
 
+	// @Patch(':id')
+	// @Public()
+	// @ApiOperation(publicOperation)
+	// async update(@Param('id') id: string, @Body() data: UpdateBannerDTO) {
+	// 	const banner = await this.bannerService.findOne(id);
+	// 	if (!banner) throw new NotFoundException(`Data with id ${id} not found`);
+	// 	return this.bannerService.update(banner, data);
+	// }
+
 	@Patch(':id')
 	@Public()
 	@ApiOperation(publicOperation)
-	async update(@Param('id') id: string, @Body() data: UpdateBannerDTO) {
-		return this.bannerService.update(id, data);
+	@UseInterceptors(FileInterceptor('image'))
+	async uploadWithFile(@Param('id') id: string, @Body() data: UpdateBannerDTO, @UploadedFile() file?: Express.Multer.File) {
+		const banner = await this.bannerService.findOne(id);
+		if (!banner) throw new NotFoundException(`Data with id ${id} not found`);
+		return this.bannerService.updateWithFile(banner, data, file)
 	}
 
 	@Delete(':id')
