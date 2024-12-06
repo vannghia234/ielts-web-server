@@ -1,9 +1,11 @@
 import {
 	Column,
+	CreateDateColumn,
 	Entity,
 	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
+	UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { UserAnswerDetail } from './user-answer-detail.entity';
@@ -32,6 +34,19 @@ export class UserAnswer {
 
 	@OneToMany(() => UserExamProcess, (type) => type.userAnswer)
 	processes: UserExamProcess[];
+
+	@CreateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+	})
+	createdAt: Date;
+
+	@UpdateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+		onUpdate: 'CURRENT_TIMESTAMP',
+	})
+	updatedAt: Date;
 
 	calcAvg(numberOfSkillExam: number) {
 		let totalScore = 0;

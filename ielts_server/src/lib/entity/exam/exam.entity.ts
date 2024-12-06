@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { SkillExam } from './skill-exam.entity';
 import { TestStatus } from 'src/shared/constant/enum_database';
 
@@ -33,4 +33,17 @@ export class Exam {
 
 	@OneToMany(() => SkillExam, (type) => type.exam)
 	skillExam: SkillExam[];
+
+	@CreateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+	})
+	createdAt: Date;
+
+	@UpdateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+		onUpdate: 'CURRENT_TIMESTAMP',
+	})
+	updatedAt: Date;
 }

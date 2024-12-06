@@ -1,6 +1,6 @@
 import { UserAnswerDetail } from '../user/user-answer-detail.entity';
 import { IBandScoreItem } from './i-bandScore-item';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({
 	name: 'band_score',
@@ -17,6 +17,19 @@ export class BandScoreEntity {
 
 	@Column({ type: 'json' })
 	bands: IBandScoreItem[];
+
+	@CreateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+	})
+	createdAt: Date;
+
+	@UpdateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+		onUpdate: 'CURRENT_TIMESTAMP',
+	})
+	updatedAt: Date;
 
 	check(data: UserAnswerDetail[]): number {
 		const sortBands: IBandScoreItem[] = JSON.parse(JSON.stringify(this.bands));

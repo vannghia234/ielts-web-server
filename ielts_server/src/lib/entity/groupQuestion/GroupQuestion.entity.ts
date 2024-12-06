@@ -9,7 +9,7 @@ import {
 	MultipleResponse,
 	IQuestion,
 } from 'src/lib/entity/groupQuestion/QuestionType';
-import { PrimaryGeneratedColumn, Column, ManyToOne, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, ManyToOne, Entity, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Part } from '../part/Part.entity';
 @Entity()
 export class GroupQuestion {
@@ -29,4 +29,17 @@ export class GroupQuestion {
 
 	@ManyToOne(() => Part, (part) => part.groupQuestions)
 	part: Part;
+
+	@CreateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+	})
+	createdAt: Date;
+
+	@UpdateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+		onUpdate: 'CURRENT_TIMESTAMP',
+	})
+	updatedAt: Date;
 }

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { ExamSkillDetail } from '../exam/exam-skill-detail.entity';
 import { UserExamProcess } from './user-exam-process.entity';
 import { IGroupAnswer } from './i-user-answer-detail-answer.interface';
@@ -23,4 +23,17 @@ export class UserAnswerDetail {
 	@ManyToOne(() => UserExamProcess, (type) => type.id)
 	userExamProcess: UserExamProcess;
 	// #endregion relationship
+
+	@CreateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+	})
+	createdAt: Date;
+
+	@UpdateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+		onUpdate: 'CURRENT_TIMESTAMP',
+	})
+	updatedAt: Date;
 }

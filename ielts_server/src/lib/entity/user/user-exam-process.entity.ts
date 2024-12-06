@@ -1,9 +1,11 @@
 import {
 	Column,
+	CreateDateColumn,
 	Entity,
 	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
+	UpdateDateColumn,
 } from 'typeorm';
 import { UserAnswer } from './user-answer.entity';
 import { SkillExam } from '../exam/skill-exam.entity';
@@ -28,4 +30,17 @@ export class UserExamProcess {
 
 	@ManyToOne(() => SkillExam, (type) => type.id)
 	skillExam: SkillExam;
+
+	@CreateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+	})
+	createdAt: Date;
+
+	@UpdateDateColumn({
+		type: 'timestamp with time zone',
+		default: () => 'CURRENT_TIMESTAMP',
+		onUpdate: 'CURRENT_TIMESTAMP',
+	})
+	updatedAt: Date;
 }
