@@ -4,6 +4,7 @@ import { ExamRepository } from '../repository/exam.repository';
 import { CreateExamDto } from '../dto/create-exam.dto';
 import { UpdateExamDto } from '../dto/update-exam.dto';
 import { ResBaseExam } from '../dto/res-base-exam';
+import { TestStatus } from 'src/shared/constant/enum_database';
 
 @Injectable()
 export class ExamService {
@@ -31,10 +32,11 @@ export class ExamService {
 		const examInfo = new Exam();
 		examInfo.code = exam.code;
 		examInfo.description = exam.description;
-		examInfo.name = exam.name;
-		examInfo.password = exam.password;
+		examInfo.name = exam.title;
+		if (exam?.password) {
+			examInfo.password = exam.password;
+		}
 		examInfo.src = exam.src;
-		examInfo.status = exam.status;
 		examInfo.time = exam.time;
 		examInfo.title = exam.title;
 		return this.examRepository.create(examInfo);

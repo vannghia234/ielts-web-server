@@ -28,7 +28,7 @@ export class Exam {
 	@Column({ type: 'enum', enum: TestStatus, default: TestStatus.DRAFT })
 	status: TestStatus;
 
-	@Column()
+	@Column({ default: '' })
 	password: string;
 
 	@OneToMany(() => SkillExam, (type) => type.exam)

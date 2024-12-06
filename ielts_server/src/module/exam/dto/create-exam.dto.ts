@@ -16,7 +16,7 @@ export class CreateExamDto {
 	@ApiProperty()
 	code: string;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@ApiProperty()
 	name: string;
@@ -46,7 +46,7 @@ export class CreateExamDto {
 	@ApiProperty()
 	status: TestStatus;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@ApiProperty()
 	password: string;
