@@ -22,7 +22,7 @@ export class Exam {
 	@Column({ type: 'text' })
 	description: string;
 
-	@Column({ type: 'time', nullable: true })
+	@Column({ type: 'time', default: '00:00:00' })
 	time: string;
 
 	@Column({ type: 'enum', enum: TestStatus, default: TestStatus.DRAFT })

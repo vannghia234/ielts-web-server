@@ -17,6 +17,9 @@ export class SkillExam {
 	@Column({ type: 'enum', enum: Skill, default: Skill.LISTENING })
 	name: Skill;
 
+	@Column({ type: 'time' })
+	time: string;
+
 	@ManyToOne(() => Exam, (type) => type.skillExam)
 	exam: Exam;
 
