@@ -13,19 +13,21 @@ import { examServices } from './service';
 import { ApiResponse } from '@nestjs/swagger';
 import { SkillExamService } from './service/skill-exam.service';
 import { PartModule } from '../part/part.module';
+import { SharedModule } from 'src/shared/shared.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Exam, ExamSkillDetail, SkillExam]),
-    PartModule,
-  ],
-  controllers: [ExamController, ExamSkillDetailController, SkillExamController],
-  providers: [
-    ...examServices,
-    ...examRepositories,
-    ExamService,
-    SkillExamService,
-  ],
-  exports: [...examServices, ...examRepositories],
+	imports: [
+		TypeOrmModule.forFeature([Exam, ExamSkillDetail, SkillExam]),
+		PartModule,
+		SharedModule,
+	],
+	controllers: [ExamController, ExamSkillDetailController, SkillExamController],
+	providers: [
+		...examServices,
+		...examRepositories,
+		ExamService,
+		SkillExamService,
+	],
+	exports: [...examServices, ...examRepositories],
 })
 export class ExamModule {}
