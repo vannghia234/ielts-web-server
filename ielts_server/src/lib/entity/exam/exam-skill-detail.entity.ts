@@ -13,6 +13,6 @@ export class ExamSkillDetail {
 	@ManyToOne(() => SkillExam, (type) => type.id)
 	skillExam: SkillExam;
 
-	@Column({ type: 'time' })
+	@Column({ type: 'time', default: '00:04:00' })
 	time: string;
 }

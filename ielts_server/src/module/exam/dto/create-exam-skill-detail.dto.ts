@@ -5,6 +5,7 @@ import {
 	IsUUID,
 	IsString,
 	IsTimeZone,
+	IsOptional,
 } from 'class-validator';
 
 export class CreateExamSkillDetailDto {
@@ -18,7 +19,7 @@ export class CreateExamSkillDetailDto {
 	@ApiProperty()
 	skillExamId: string;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@ApiProperty({ example: '09:30:00' })
 	time: string;

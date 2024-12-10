@@ -31,7 +31,7 @@ export class CreateExamDto {
 	@ApiProperty()
 	src: string;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@ApiProperty()
 	description: string;

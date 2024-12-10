@@ -19,7 +19,7 @@ export class Exam {
 	@Column()
 	src: string;
 
-	@Column({ type: 'text' })
+	@Column({ type: 'text', default: '' })
 	description: string;
 
 	@Column({ type: 'time', default: '00:00:00' })
