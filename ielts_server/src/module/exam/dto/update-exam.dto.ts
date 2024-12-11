@@ -10,27 +10,27 @@ import {
 import { TestStatus } from 'src/shared/constant/enum_database';
 
 export class UpdateExamDto {
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@ApiProperty()
 	code: string;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@ApiProperty()
 	name: string;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@ApiProperty()
 	title: string;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@ApiProperty()
 	src: string;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@ApiProperty()
 	description: string;
@@ -46,7 +46,7 @@ export class UpdateExamDto {
 	@ApiProperty()
 	status: TestStatus;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@ApiProperty()
 	password: string;

@@ -7,6 +7,7 @@ import {
 	Put,
 	Delete,
 	UseGuards,
+	Patch,
 } from '@nestjs/common';
 import { Exam } from 'src/lib/entity/exam/exam.entity';
 import { ExamService } from '../service/exam.service';
@@ -67,7 +68,7 @@ export class ExamController {
 		return this.examService.create(exam);
 	}
 
-	@Put(':id')
+	@Patch(':id')
 	async update(
 		@Param('id') id: string,
 		@Body() updateExam: UpdateExamDto,
