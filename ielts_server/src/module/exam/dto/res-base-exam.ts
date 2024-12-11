@@ -14,6 +14,20 @@ export class ResBaseExam {
 	skillsExam: {
 		id: string;
 		name: Skill;
+
+		details: ({
+			id: string;
+			part: {
+				id: string
+				publicId: string
+				title: string
+				content: string
+				resource: string
+				partNumber: string
+				createdAt: string
+				updatedAt: string
+			}
+		})[]
 	}[];
 
 	constructor(data: Exam) {
@@ -30,6 +44,22 @@ export class ResBaseExam {
 			return {
 				id: skill.id,
 				name: skill.name,
+
+				details: skill.details.map(detail => {
+					return {
+						id: detail.id,
+						part: {
+							id: detail.part.id,
+							publicId: detail.part.publicId.toString(),
+							title: detail.part.title,
+							content: detail.part.content,
+							resource: detail.part.resource,
+							partNumber: detail.part.partNumber,
+							createdAt: detail.part.createdAt.toISOString(),
+							updatedAt: detail.part.updatedAt.toISOString(),
+						}
+					}
+				})
 			};
 		});
 	}

@@ -46,6 +46,7 @@ export class ExamService {
 
 	async findOneBase(code: string): Promise<ResBaseExam> {
 		const exam = await this.examRepository.findOneWithRelation(code);
+		exam.src = this.initFullPath(exam)
 		return new ResBaseExam(exam);
 	}
 

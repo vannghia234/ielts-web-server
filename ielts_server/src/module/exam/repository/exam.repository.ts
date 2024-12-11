@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Exam } from 'src/lib/entity/exam/exam.entity';
 import { Repository } from 'typeorm';
+import { ExamFilterDTO } from '../dto/exam-filter.dto';
 
 @Injectable()
 export class ExamRepository {
@@ -31,10 +32,15 @@ export class ExamRepository {
 	}
 
 	async findOneWithRelation(code: string): Promise<Exam> {
+		console.log('code: ', code)
 		return this.examRepository.findOne({
 			where: { code },
 			relations: {
-				skillExam: true,
+				skillExam: {
+					details: {
+						part: true,
+					}
+				},
 			},
 		});
 	}
