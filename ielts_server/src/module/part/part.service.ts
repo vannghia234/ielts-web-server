@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Part } from 'src/lib/entity/part/Part.entity';
-import { ILike, Like, Repository } from 'typeorm';
+import { ILike, Like, Repository, Not, FindOperator, In, DeleteDateColumn } from 'typeorm';
 import { CreatePartDto } from './dto/create-part.dto';
 import { UpdatePartDto } from './dto/update-part.dto';
 import { PartNumber, Skill } from 'src/shared/constant/enum_database';
@@ -18,11 +18,30 @@ export class PartService {
 		page?: number,
 		skill?: string,
 		partNumber?: string,
+		notInCode?: string,
 	): Promise<{ parts: Part[]; totalPage: number }> {
 		const offset = limit * (page - 1);
 
 		const part: PartNumber = PartNumber[partNumber as keyof typeof PartNumber];
 		const skillChosen: Skill = Skill[skill as keyof typeof Skill];
+
+		const customWhere: Record<string, FindOperator<string>> = {}
+
+		if (notInCode.length > 0) {
+			const listPartContained = await this.partRepository.find({
+				where: {
+					skill: skillChosen,
+					examSkillDetail: {
+						skillExam: {
+							exam: {
+								code: notInCode
+							}
+						}
+					}
+				}
+			})
+			customWhere['id'] = Not(In(listPartContained.map(item => item.id)))
+		}
 
 		const [parts, totalCount] = await this.partRepository.findAndCount({
 			take: limit,
@@ -31,6 +50,7 @@ export class PartService {
 				title: ILike(`%${search}%`),
 				partNumber: part,
 				skill: skillChosen,
+				...customWhere,
 			},
 		});
 

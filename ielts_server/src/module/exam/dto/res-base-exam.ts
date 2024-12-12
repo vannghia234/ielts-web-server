@@ -45,7 +45,7 @@ export class ResBaseExam {
 				id: skill.id,
 				name: skill.name,
 
-				details: skill.details.map(detail => {
+				details: skill.details ? skill.details.map(detail => {
 					return {
 						id: detail.id,
 						part: {
@@ -59,7 +59,7 @@ export class ResBaseExam {
 							updatedAt: detail.part.updatedAt.toISOString(),
 						}
 					}
-				})
+				}) : []
 			};
 		});
 	}

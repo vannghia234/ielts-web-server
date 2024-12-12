@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { ExamSkillDetail } from 'src/lib/entity/exam/exam-skill-detail.entity';
 import { ExamSkillDetailRepository } from '../repository/exam-skill-detail.repository';
 import {
@@ -32,6 +32,8 @@ export class ExamSkillDetailService {
 	async create(
 		examSkillDetail: CreateExamSkillDetailDto,
 	): Promise<ExamSkillDetail> {
+		const isExistSkillDetail = await this.examSkillDetailRepository.checkExist(examSkillDetail.skillExamId, examSkillDetail.partOfTestId)
+		if (isExistSkillDetail) throw new ConflictException('This part exists in the exam.')
 		const create = new ExamSkillDetail();
 		create.time = examSkillDetail.time;
 		create.part = await this.PartService.findOne(examSkillDetail.partOfTestId);

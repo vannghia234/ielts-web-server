@@ -43,6 +43,7 @@ export class PartController {
 		@Query('page') page = 1,
 		@Query('skill') skill = '',
 		@Query('partnumber') partNumber = '',
+		@Query('notInCode') notInCode = '',
 	): Promise<any> {
 		try {
 			const { parts, totalPage } = await this.partService.find(
@@ -51,6 +52,7 @@ export class PartController {
 				page,
 				skill,
 				partNumber,
+				notInCode,
 			);
 			return {
 				message: 'Get Parts Successfully',

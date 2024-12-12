@@ -5,12 +5,14 @@ import {
 	CreateDateColumn,
 	Entity,
 	Generated,
+	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 	getRepository,
 } from 'typeorm';
 import { GroupQuestion } from '../groupQuestion/GroupQuestion.entity';
+import { ExamSkillDetail } from '../exam/exam-skill-detail.entity';
 
 @Entity()
 export class Part {
@@ -44,9 +46,6 @@ export class Part {
 	})
 	partNumber: PartNumber;
 
-	@OneToMany(() => GroupQuestion, (groupQuestion) => groupQuestion.part)
-	groupQuestions: GroupQuestion[];
-
 	@CreateDateColumn({
 		type: 'timestamp with time zone',
 		default: () => 'CURRENT_TIMESTAMP',
@@ -59,4 +58,10 @@ export class Part {
 		onUpdate: 'CURRENT_TIMESTAMP',
 	})
 	updatedAt: Date;
+
+	@OneToMany(() => GroupQuestion, (groupQuestion) => groupQuestion.part)
+	groupQuestions: GroupQuestion[];
+
+	@OneToMany(() => ExamSkillDetail, examSkillDetail => examSkillDetail.part)
+	examSkillDetail: ExamSkillDetail;
 }

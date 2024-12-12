@@ -24,6 +24,19 @@ export class ExamSkillDetailRepository {
 		return examSkillDetail;
 	}
 
+	async checkExist(skillExamId: string, partId: string): Promise<boolean> {
+		return this.examSkillDetailRepository.exists({
+			where: {
+				skillExam: {
+					id: skillExamId,
+				},
+				part: {
+					id: partId,
+				}
+			}
+		})
+	}
+
 	async findOneWithRelation(id: string): Promise<ExamSkillDetail | null> {
 		const examSkillDetail = await this.examSkillDetailRepository.findOne({
 			relations: {
