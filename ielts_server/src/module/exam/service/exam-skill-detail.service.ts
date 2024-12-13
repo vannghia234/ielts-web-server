@@ -61,4 +61,8 @@ export class ExamSkillDetailService {
 	async remove(id: string): Promise<void> {
 		return this.examSkillDetailRepository.remove(id);
 	}
+
+	async removeByRef(idSkillExam: string, idPart: string): Promise<void> {
+		return this.examSkillDetailRepository.removeByRef(idSkillExam, idPart);
+	}
 }

@@ -76,4 +76,15 @@ export class ExamSkillDetailRepository {
 			throw new NotFoundException('Exam skill detail not found');
 		}
 	}
+
+	async removeByRef(idSkillExam: string, idPart: string): Promise<void> {
+		const result = await this.examSkillDetailRepository.delete({
+			skillExam: {
+				id: idSkillExam,
+			},
+			part: {
+				id: idPart
+			}
+		})
+	}
 }

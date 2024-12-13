@@ -68,4 +68,9 @@ export class ExamSkillDetailController {
   async remove(@Param('id') id: string): Promise<void> {
     return this.examSkillDetailService.remove(id);
   }
+
+  @Delete(':idSkillExam/:idPart')
+  async removeRefPart(@Param('idSkillExam') idSkillExam: string, @Param('idPart') idPart: string): Promise<void> {
+    return this.examSkillDetailService.removeByRef(idSkillExam, idPart)
+  }
 }
